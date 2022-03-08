@@ -3,6 +3,8 @@
     <NoticeBar
       msg="提醒：您所负责的单位有应收账款逾期，请前往逾期管理进行填报"
       ref="notice"
+      :dialyTimer="100"
+      :speed="60"
     />
   </div>
 </template>

@@ -37,11 +37,20 @@ interface requestQueue {
 @Component
 export default class NoticeBar extends Vue implements noticeBar {
   // TODO: 绝对定位占位的方式解决
+  // setTimeOut 的宏任务有问题
   @Prop() private msg!: string;
-  speed = 60;
+  @Prop() private speed!: number;
+  @Prop() private dialyTimer!: number; // 开始滚动延迟时间 100
+
   spaceTimer = 0; //间距的时间
-  dialy = 2 / 3; // 延迟2/3的时间下次滚动
-  dialyTimer = 100; // 开始滚动延迟时间
+  dialy: number = 2 / 3; // 延迟2/3的时间下次滚动
+
+  $refs!: {
+    noticeBar: HTMLDivElement;
+    warp: HTMLDivElement;
+    alternate: HTMLDivElement;
+  };
+
   queue: [requestQueue, requestQueue] = [
     {
       isScroll: true,
@@ -70,12 +79,11 @@ export default class NoticeBar extends Vue implements noticeBar {
    */
   scrollInit(num: number): void {
     this.queue[num].isScroll = true;
-    this.queue[num].noticeBarStyle.transform = `translateX(-${
-      (this.$refs.noticeBar as HTMLDivElement).offsetWidth
-    }px)`;
+    this.queue[
+      num
+    ].noticeBarStyle.transform = `translateX(-${this.$refs.noticeBar.offsetWidth}px)`;
     this.queue[num].noticeBarStyle['transition-duration'] =
-      ((this.$refs.warp as HTMLDivElement).offsetWidth +
-        (this.$refs.noticeBar as HTMLDivElement).offsetWidth) /
+      (this.$refs.warp.offsetWidth + this.$refs.noticeBar.offsetWidth) /
         this.speed +
       's';
   }
@@ -85,13 +93,10 @@ export default class NoticeBar extends Vue implements noticeBar {
   transitionend = (event: TransitionEvent): void => {
     const num: number = event.target === this.queue[0].node ? 0 : 1;
     this.queue[num].isScroll = false;
-    this.queue[num].noticeBarStyle.transform = `translateX(${
-      (this.$refs.warp as HTMLDivElement).offsetWidth
-    }px)`;
+    this.queue[
+      num
+    ].noticeBarStyle.transform = `translateX(${this.$refs.warp.offsetWidth}px)`;
     this.queue[num].noticeBarStyle['transition-duration'] = '0s';
-    setTimeout(() => {
-      this.timingFunction(num === 0 ? 1 : 0);
-    }, this.spaceTimer * 1000);
   };
 
   /**
@@ -99,6 +104,7 @@ export default class NoticeBar extends Vue implements noticeBar {
    */
   start(): void {
     new Promise<number>((resolve) => {
+      // 这里宏任务结束之后才会执行微任务 resolve(0)
       setTimeout(() => {
         resolve(0);
       }, this.dialyTimer);
@@ -106,42 +112,38 @@ export default class NoticeBar extends Vue implements noticeBar {
       .then((res) => {
         return new Promise<number>((resolve) => {
           const number: number = this.queue[res].isScroll ? 0 : 1;
-          this.spaceTimer =
-            (((this.$refs.noticeBar as HTMLDivElement).offsetWidth +
-              (this.$refs.warp as HTMLDivElement).offsetWidth) /
-              this.speed) *
-            this.dialy;
           // isScroll真值滚动一次 另一个以 2/3的时间延迟滚动
-          this.queue[number].noticeBarStyle.transform = `translateX(-${
-            (this.$refs.noticeBar as HTMLDivElement).offsetWidth
-          }px)`;
+          // 初始滚动
+          this.queue[
+            number
+          ].noticeBarStyle.transform = `translateX(-${this.$refs.noticeBar.offsetWidth}px)`;
           this.queue[number].noticeBarStyle['transition-duration'] =
-            (this.$refs.noticeBar as HTMLDivElement).offsetWidth / this.speed +
-            's';
+            this.$refs.noticeBar.offsetWidth / this.speed + 's';
           const thisTimer =
-            ((this.$refs.noticeBar as HTMLDivElement).offsetWidth /
-              this.speed) *
-            this.dialy;
+            (this.$refs.noticeBar.offsetWidth / this.speed) * this.dialy; // thisTimer 延迟滚动了2/3的时间
           setTimeout(() => {
             resolve(1);
           }, thisTimer * 1000);
         });
       })
       .then((res) => {
+        // 第二个开始滚动
         this.timingFunction(res);
       });
   }
+  /**
+   * 每次滚动到dialy时间的位置的时候 唤起另外一个滚动开始
+   */
   timingFunction(num: number): void {
     this.queue[num].isScroll = true;
     new Promise<number>((resolve) => {
       setTimeout(() => {
         // 延迟加载
-        this.queue[num].noticeBarStyle.transform = `translateX(-${
-          (this.$refs.warp as HTMLDivElement).offsetWidth
-        }px)`;
+        this.queue[
+          num
+        ].noticeBarStyle.transform = `translateX(-${this.$refs.warp.offsetWidth}px)`;
         this.queue[num].noticeBarStyle['transition-duration'] =
-          ((this.$refs.noticeBar as HTMLDivElement).offsetWidth +
-            (this.$refs.warp as HTMLDivElement).offsetWidth) /
+          (this.$refs.noticeBar.offsetWidth + this.$refs.warp.offsetWidth) /
             this.speed +
           's';
         resolve(num === 0 ? 1 : 0);
@@ -153,11 +155,13 @@ export default class NoticeBar extends Vue implements noticeBar {
     });
   }
   init(): void {
-    this.queue[0].node = this.$refs.noticeBar as HTMLDivElement;
-    this.queue[1].node = this.$refs.alternate as HTMLDivElement;
-    this.queue[1].noticeBarStyle.transform = `translateX(${
-      (this.$refs.warp as HTMLDivElement).offsetWidth
-    }px)`;
+    this.queue[0].node = this.$refs.noticeBar;
+    this.queue[1].node = this.$refs.alternate;
+    this.queue[1].noticeBarStyle.transform = `translateX(${this.$refs.warp.offsetWidth}px)`;
+    this.spaceTimer =
+      ((this.$refs.noticeBar.offsetWidth + this.$refs.warp.offsetWidth) /
+        this.speed) *
+      this.dialy;
     this.start();
   }
   clear(): void {
