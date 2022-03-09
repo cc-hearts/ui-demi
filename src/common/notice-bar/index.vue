@@ -16,7 +16,10 @@
 </template>
 
 <script lang="ts">
-// DONE: 完成
+/**
+ * 循环滚动完成
+ * //TODO:单项滚动 待完成
+ */
 import { Component, Prop, Vue } from 'vue-property-decorator';
 export interface noticeBar {
   init(): void;
@@ -35,10 +38,8 @@ interface requestQueue {
 interface warpStyleType {
   height: string;
 }
-type propsType = `noticeBar_${number}`;
 @Component
 export default class NoticeBar extends Vue implements noticeBar {
-  // TODO: 绝对定位占位的方式解决
   @Prop() private msg!: string;
   @Prop() private speed!: number;
   @Prop() private dialyTimer!: number; // 开始滚动延迟时间 100
@@ -49,7 +50,7 @@ export default class NoticeBar extends Vue implements noticeBar {
   noticeBarOffset = 0;
   $refs!: {
     warp: HTMLDivElement;
-    [props: propsType]: HTMLDivElement | HTMLDivElement[];
+    [key: string]: HTMLDivElement | HTMLDivElement[];
   };
   warpStyle: warpStyleType = {
     height: '0px',
@@ -202,14 +203,13 @@ export default class NoticeBar extends Vue implements noticeBar {
 </script>
 
 <style lang="less">
-@font-color: #e11e1e;
-
+@background-color: rgb(244, 211, 183);
 .notice {
   display: flex;
   position: relative;
   align-items: center;
-  border: 1px solid @font-color;
-  color: @font-color;
+  overflow: hidden;
+  background-color: @background-color;
 }
 .notice-bar {
   font-size: 12px;

@@ -1,7 +1,7 @@
 <template>
   <div class="notice-barItem">
     <NoticeBar
-      msg="提醒：您所负责的单位有应收账款逾期，请前往逾期管理进行填报"
+      msg="Write HTML/CSS in this editor and replicate the given target image in the least code possible. What you write here, renders as it is"
       ref="notice"
       :dialyTimer="100"
       :speed="60"
