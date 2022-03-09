@@ -1,22 +1,5 @@
 <template>
-  <div class="notice" ref="warp">
-    <!-- <span
-      class="notice-bar"
-      ref="noticeBar_0"
-      :style="queue[0].noticeBarStyle"
-      @transitionend="transitionend"
-      v-show="queue[0].isScroll"
-    >
-      {{ msg }}
-    </span>
-    <span
-      class="notice-bar"
-      ref="noticeBar_1"
-      :style="queue[1].noticeBarStyle"
-      @transitionend="transitionend"
-      v-show="queue[1].isScroll"
-      >{{ msg }}</span
-    > -->
+  <div class="notice" ref="warp" :style="warpStyle">
     <template v-for="(item, index) in queue">
       <span
         :key="index"
@@ -49,6 +32,9 @@ interface requestQueue {
     ['transition-delay']: string;
   };
 }
+interface warpStyleType {
+  height: string;
+}
 type propsType = `noticeBar_${number}`;
 @Component
 export default class NoticeBar extends Vue implements noticeBar {
@@ -65,7 +51,9 @@ export default class NoticeBar extends Vue implements noticeBar {
     warp: HTMLDivElement;
     [props: propsType]: HTMLDivElement | HTMLDivElement[];
   };
-
+  warpStyle: warpStyleType = {
+    height: '0px',
+  };
   queue: [requestQueue, requestQueue] = [
     {
       isScroll: true,
@@ -125,7 +113,7 @@ export default class NoticeBar extends Vue implements noticeBar {
       .then((res) => {
         return new Promise<number>((resolve) => {
           const number: number = this.queue[res].isScroll ? 0 : 1;
-          // isScroll真值滚动一次 另一个以 2/3的时间延迟滚动
+          // isScroll真值滚动一次 另一个以 dialy的时间延迟滚动
           // 初始滚动
           this.queue[
             number
@@ -172,18 +160,19 @@ export default class NoticeBar extends Vue implements noticeBar {
           this.queue[index].node = node[node.length - 1];
           if (index === 0) {
             this.noticeBarOffset = node[node.length - 1].offsetWidth;
+            this.warpStyle.height =
+              node[node.length - 1].offsetHeight + 4 + 'px';
           }
         } else {
           this.queue[index].node = node;
           if (index === 0) {
             this.noticeBarOffset = node.offsetWidth;
+            this.warpStyle.height = node.offsetHeight + 4 + 'px';
           }
         }
       });
 
       this.warpOffset = this.$refs.warp.offsetWidth;
-      console.log(this.$refs['noticeBar_0']);
-
       this.spaceTimer =
         ((this.noticeBarOffset + this.warpOffset) / this.speed) * this.dialy;
       this.queue[1].noticeBarStyle.transform = `translateX(${this.warpOffset}px)`;
@@ -218,6 +207,7 @@ export default class NoticeBar extends Vue implements noticeBar {
 .notice {
   display: flex;
   position: relative;
+  align-items: center;
   border: 1px solid @font-color;
   color: @font-color;
 }
