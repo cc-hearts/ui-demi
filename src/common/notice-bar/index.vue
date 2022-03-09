@@ -1,24 +1,39 @@
 <template>
   <div class="notice" ref="warp">
-    <span
+    <!-- <span
       class="notice-bar"
-      ref="noticeBar"
+      ref="noticeBar_0"
       :style="queue[0].noticeBarStyle"
       @transitionend="transitionend"
+      v-show="queue[0].isScroll"
     >
       {{ msg }}
     </span>
     <span
       class="notice-bar"
-      ref="alternate"
+      ref="noticeBar_1"
       :style="queue[1].noticeBarStyle"
       @transitionend="transitionend"
+      v-show="queue[1].isScroll"
       >{{ msg }}</span
-    >
+    > -->
+    <template v-for="(item, index) in queue">
+      <span
+        :key="index"
+        class="notice-bar"
+        :ref="'noticeBar_' + index"
+        :style="queue[index].noticeBarStyle"
+        @transitionend="transitionend"
+        v-show="queue[index].isScroll"
+      >
+        {{ msg }}
+      </span>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
+// DONE: 完成
 import { Component, Prop, Vue } from 'vue-property-decorator';
 export interface noticeBar {
   init(): void;
@@ -34,21 +49,21 @@ interface requestQueue {
     ['transition-delay']: string;
   };
 }
+type propsType = `noticeBar_${number}`;
 @Component
 export default class NoticeBar extends Vue implements noticeBar {
   // TODO: 绝对定位占位的方式解决
-  // setTimeOut 的宏任务有问题
   @Prop() private msg!: string;
   @Prop() private speed!: number;
   @Prop() private dialyTimer!: number; // 开始滚动延迟时间 100
 
   spaceTimer = 0; //间距的时间
   dialy: number = 2 / 3; // 延迟2/3的时间下次滚动
-
+  warpOffset = 0;
+  noticeBarOffset = 0;
   $refs!: {
-    noticeBar: HTMLDivElement;
     warp: HTMLDivElement;
-    alternate: HTMLDivElement;
+    [props: propsType]: HTMLDivElement | HTMLDivElement[];
   };
 
   queue: [requestQueue, requestQueue] = [
@@ -81,23 +96,21 @@ export default class NoticeBar extends Vue implements noticeBar {
     this.queue[num].isScroll = true;
     this.queue[
       num
-    ].noticeBarStyle.transform = `translateX(-${this.$refs.noticeBar.offsetWidth}px)`;
+    ].noticeBarStyle.transform = `translateX(-${this.noticeBarOffset}px)`;
     this.queue[num].noticeBarStyle['transition-duration'] =
-      (this.$refs.warp.offsetWidth + this.$refs.noticeBar.offsetWidth) /
-        this.speed +
-      's';
+      (this.warpOffset + this.noticeBarOffset) / this.speed + 's';
   }
   /**
    * 滚动结束监听事件 将值立即移动到右侧
    */
-  transitionend = (event: TransitionEvent): void => {
+  transitionend(event: TransitionEvent): void {
     const num: number = event.target === this.queue[0].node ? 0 : 1;
     this.queue[num].isScroll = false;
     this.queue[
       num
-    ].noticeBarStyle.transform = `translateX(${this.$refs.warp.offsetWidth}px)`;
+    ].noticeBarStyle.transform = `translateX(${this.warpOffset}px)`;
     this.queue[num].noticeBarStyle['transition-duration'] = '0s';
-  };
+  }
 
   /**
    * 延迟dialyTimer 秒后 开始轮播滚动
@@ -105,7 +118,7 @@ export default class NoticeBar extends Vue implements noticeBar {
   start(): void {
     new Promise<number>((resolve) => {
       // 这里宏任务结束之后才会执行微任务 resolve(0)
-      setTimeout(() => {
+      this.queue[0].timer = setTimeout(() => {
         resolve(0);
       }, this.dialyTimer);
     })
@@ -116,12 +129,11 @@ export default class NoticeBar extends Vue implements noticeBar {
           // 初始滚动
           this.queue[
             number
-          ].noticeBarStyle.transform = `translateX(-${this.$refs.noticeBar.offsetWidth}px)`;
+          ].noticeBarStyle.transform = `translateX(-${this.noticeBarOffset}px)`;
           this.queue[number].noticeBarStyle['transition-duration'] =
-            this.$refs.noticeBar.offsetWidth / this.speed + 's';
-          const thisTimer =
-            (this.$refs.noticeBar.offsetWidth / this.speed) * this.dialy; // thisTimer 延迟滚动了2/3的时间
-          setTimeout(() => {
+            this.noticeBarOffset / this.speed + 's';
+          const thisTimer = (this.noticeBarOffset / this.speed) * this.dialy; // thisTimer 延迟滚动dialy了的时间
+          this.queue[1].timer = setTimeout(() => {
             resolve(1);
           }, thisTimer * 1000);
         });
@@ -137,32 +149,48 @@ export default class NoticeBar extends Vue implements noticeBar {
   timingFunction(num: number): void {
     this.queue[num].isScroll = true;
     new Promise<number>((resolve) => {
-      setTimeout(() => {
+      this.queue[num].timer = setTimeout(() => {
         // 延迟加载
         this.queue[
           num
-        ].noticeBarStyle.transform = `translateX(-${this.$refs.warp.offsetWidth}px)`;
+        ].noticeBarStyle.transform = `translateX(-${this.noticeBarOffset}px)`;
         this.queue[num].noticeBarStyle['transition-duration'] =
-          (this.$refs.noticeBar.offsetWidth + this.$refs.warp.offsetWidth) /
-            this.speed +
-          's';
+          (this.noticeBarOffset + this.warpOffset) / this.speed + 's';
         resolve(num === 0 ? 1 : 0);
       }, 100);
     }).then((res) => {
-      setTimeout(() => {
+      this.queue[res].timer = setTimeout(() => {
         this.timingFunction(res);
       }, this.spaceTimer * 1000);
     });
   }
   init(): void {
-    this.queue[0].node = this.$refs.noticeBar;
-    this.queue[1].node = this.$refs.alternate;
-    this.queue[1].noticeBarStyle.transform = `translateX(${this.$refs.warp.offsetWidth}px)`;
-    this.spaceTimer =
-      ((this.$refs.noticeBar.offsetWidth + this.$refs.warp.offsetWidth) /
-        this.speed) *
-      this.dialy;
-    this.start();
+    new Promise<void>((resolve) => {
+      this.queue.forEach((val, index) => {
+        const node = this.$refs[`noticeBar_${index}`];
+        if (node instanceof Array) {
+          this.queue[index].node = node[node.length - 1];
+          if (index === 0) {
+            this.noticeBarOffset = node[node.length - 1].offsetWidth;
+          }
+        } else {
+          this.queue[index].node = node;
+          if (index === 0) {
+            this.noticeBarOffset = node.offsetWidth;
+          }
+        }
+      });
+
+      this.warpOffset = this.$refs.warp.offsetWidth;
+      console.log(this.$refs['noticeBar_0']);
+
+      this.spaceTimer =
+        ((this.noticeBarOffset + this.warpOffset) / this.speed) * this.dialy;
+      this.queue[1].noticeBarStyle.transform = `translateX(${this.warpOffset}px)`;
+      resolve();
+    }).then(() => {
+      this.start();
+    });
   }
   clear(): void {
     for (let i = 0; i < this.queue.length; i++) {
@@ -174,6 +202,11 @@ export default class NoticeBar extends Vue implements noticeBar {
       this.queue[i].noticeBarStyle.transform = 'translate(0px)';
       this.queue[i].noticeBarStyle['transition-duration'] = '0s';
       this.queue[i].node = null;
+      // 清除副作用
+      const timer = this.queue[i].timer;
+      if (timer) {
+        clearTimeout(timer);
+      }
     }
   }
 }
