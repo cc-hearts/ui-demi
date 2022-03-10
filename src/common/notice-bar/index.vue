@@ -21,9 +21,9 @@
  * //TODO:单项滚动 待完成
  */
 import { Component, Prop, Vue } from 'vue-property-decorator';
-export interface noticeBar {
-  init(): void;
-  clear(): void;
+export interface noticeBar extends Vue {
+  init(): void; // 开始滚动
+  clear(): void; // 结束滚动
 }
 interface requestQueue {
   isScroll: boolean;

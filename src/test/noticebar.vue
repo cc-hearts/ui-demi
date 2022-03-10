@@ -2,7 +2,7 @@
   <div class="notice-barItem">
     <NoticeBar
       msg="Write HTML/CSS in this editor and replicate the given target image in the least code possible. What you write here, renders as it is"
-      ref="notice"
+      ref="notices"
       :dialyTimer="100"
       :speed="60"
     />
@@ -11,15 +11,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import NoticeBar, { noticeBar } from '../common/notice-bar/index.vue';
+import NoticeBar from '../common/notice-bar/index.vue';
+import type { noticeBar } from '../common/notice-bar/index.vue';
 @Component({
   components: {
     NoticeBar,
   },
 })
 export default class NoticeBarTest extends Vue {
+  $refs!: {
+    notices: noticeBar;
+  };
   mounted(): void {
-    const noteBar = this.$refs.notice as any as noticeBar;
+    const noteBar = this.$refs['notices'];
     if (noteBar instanceof Vue) {
       noteBar.init();
     }
