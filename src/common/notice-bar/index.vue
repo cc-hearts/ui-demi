@@ -20,6 +20,11 @@
  * 循环滚动完成
  * //TODO:单项滚动 待完成
  */
+type Param<T extends string> = T extends `${infer r}`
+  ? {
+      [K in `${r}_${number}`]: HTMLElement | HTMLElement[];
+    }
+  : never;
 import { Component, Prop, Vue } from 'vue-property-decorator';
 export interface noticeBar extends Vue {
   init(): void; // 开始滚动
@@ -48,10 +53,10 @@ export default class NoticeBar extends Vue implements noticeBar {
   dialy: number = 2 / 3; // 延迟2/3的时间下次滚动
   warpOffset = 0;
   noticeBarOffset = 0;
+
   $refs!: {
     warp: HTMLDivElement;
-    [key: string]: HTMLDivElement | HTMLDivElement[];
-  };
+  } & Param<'noticeBar'>;
   warpStyle: warpStyleType = {
     height: '0px',
   };
