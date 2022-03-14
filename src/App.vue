@@ -3,7 +3,14 @@
     <router-view />
   </div>
 </template>
-
+<script>
+export default {
+  mounted() {
+    // eslint-disable-next-line no-debugger
+    // debugger;
+  },
+};
+</script>
 <style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

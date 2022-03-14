@@ -25,6 +25,12 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "notices-bar" */ '../test/noticebar.vue'),
   },
+  {
+    path: '/pages/input',
+    name: 'notices-bar',
+    component: () =>
+      import(/* webpackChunkName: "notices-bar" */ '../test/input.vue'),
+  },
 ];
 
 const router = new VueRouter({

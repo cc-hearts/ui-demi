@@ -23,6 +23,8 @@ export default class NoticeBarTest extends Vue {
     notices: noticeBar;
   };
   mounted(): void {
+    // eslint-disable-next-line no-debugger
+    // debugger;
     const noteBar = this.$refs['notices'];
     if (noteBar instanceof Vue) {
       noteBar.init();
