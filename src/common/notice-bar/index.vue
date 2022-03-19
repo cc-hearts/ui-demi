@@ -53,11 +53,11 @@ type deter<T> = {
     ? T extends `${T}_${number}`
       ? `${T}_${number}`
       : string
-    : any]: T extends string
+    : string | number | symbol]: T extends string
     ? T extends `${T}_${number}`
       ? HTMLElement | HTMLElement[]
       : HTMLElement
-    : any;
+    : unknown;
 };
 @Component
 export default class NoticeBar extends Vue implements noticeBar {

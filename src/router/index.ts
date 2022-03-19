@@ -31,6 +31,17 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "notices-bar" */ '../test/input.vue'),
   },
+  {
+    path: '/pages/card',
+    name: 'card',
+    component: () => import(/* webpackChunkName: "card") */ '../test/card.vue'),
+  },
+  {
+    path: '*',
+    name: '404',
+    component: () =>
+      import(/* webpackChunkName: "404 */ '../common/404/index.vue'),
+  },
 ];
 
 const router = new VueRouter({
