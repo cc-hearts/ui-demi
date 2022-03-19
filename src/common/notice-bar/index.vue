@@ -20,11 +20,6 @@
  * 循环滚动完成
  * //TODO:单项滚动 待完成
  */
-type Param<T extends string> = T extends `${infer r}`
-  ? {
-      [K in `${r}_${number}`]: HTMLElement | HTMLElement[];
-    }
-  : never;
 import { Component, Prop, Vue } from 'vue-property-decorator';
 export interface noticeBar extends Vue {
   init(): void; // 开始滚动
@@ -43,6 +38,27 @@ interface requestQueue {
 interface warpStyleType {
   height: string;
 }
+type MergeObj<
+  T extends Record<string, unknown>,
+  U extends Record<string, unknown>
+> = {
+  [K in keyof T | keyof U]: K extends keyof T
+    ? T[K]
+    : K extends keyof U
+    ? U[K]
+    : never;
+};
+type deter<T> = {
+  [props in T extends string
+    ? T extends `${T}_${number}`
+      ? `${T}_${number}`
+      : string
+    : any]: T extends string
+    ? T extends `${T}_${number}`
+      ? HTMLElement | HTMLElement[]
+      : HTMLElement
+    : any;
+};
 @Component
 export default class NoticeBar extends Vue implements noticeBar {
   @Prop() private msg!: string;
@@ -54,12 +70,18 @@ export default class NoticeBar extends Vue implements noticeBar {
   warpOffset = 0;
   noticeBarOffset = 0;
 
-  $refs!: {
-    warp: HTMLDivElement;
-  } & Param<'noticeBar'>;
+  // $refs!: {
+  //   warp: HTMLDivElement;
+  // } & Param<'noticeBar'>;
   warpStyle: warpStyleType = {
     height: '0px',
   };
+  $refs!: MergeObj<
+    deter<'noticeBar'>,
+    {
+      warp: HTMLDivElement;
+    }
+  >;
   queue: [requestQueue, requestQueue] = [
     {
       isScroll: true,
