@@ -27,7 +27,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/pages/input',
-    name: 'notices-bar',
+    name: 'pages input',
     component: () =>
       import(/* webpackChunkName: "notices-bar" */ '../test/input.vue'),
   },
@@ -35,6 +35,12 @@ const routes: Array<RouteConfig> = [
     path: '/pages/card',
     name: 'card',
     component: () => import(/* webpackChunkName: "card") */ '../test/card.vue'),
+  },
+  {
+    path: '/pages/button',
+    name: 'button',
+    component: () =>
+      import(/* webpackChunkName: "button" */ '../test/button.vue'),
   },
   {
     path: '*',
