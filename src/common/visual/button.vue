@@ -3,7 +3,7 @@
     <div class="container">
       <div class="visual-button">
         <div class="visual-button-prefix-icon iconfont icon-sushe"></div>
-       学生宿舍
+        学生宿舍
       </div>
     </div>
   </div>

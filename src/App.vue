@@ -20,7 +20,8 @@ export default {
   color: #2c3e50;
 }
 html,
-body {
-  overflow-x: hidden;
+body,#app {
+  height: 100%;
+  width: 100%;
 }
 </style>
