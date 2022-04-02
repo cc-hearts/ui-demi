@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2080133",
+      "name": "宿舍",
+      "font_class": "sushe",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    }
+  ]
+}
