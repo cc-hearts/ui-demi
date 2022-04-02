@@ -44,7 +44,7 @@
         (t.style.width = 0),
         (t.style.height = 0),
         (t.style.overflow = 'hidden'),
-        (t = t),
+        true,
         (e = document.body).firstChild ? l(t, e.firstChild) : e.appendChild(t));
   }),
     document.addEventListener

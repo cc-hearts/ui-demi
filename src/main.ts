@@ -6,7 +6,8 @@ import store from './store';
 import './permission';
 import 'nprogress/nprogress.css';
 import './index.less';
-import '@/assets/font/iconfont.css'
+import '@/assets/font/iconfont.css';
+import '@/assets/font2/iconfont.css';
 Vue.config.productionTip = false;
 
 new Vue({

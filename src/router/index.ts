@@ -49,6 +49,19 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "button" */ '../common/visual/button.vue'),
   },
   {
+    path: '/pages/visualTitle',
+    name: 'visualTitle',
+    component: () =>
+      import(
+        /* webpackChunkName: "button" */ '@/views/visual/test-visual-title.vue'
+      ),
+  },
+  {
+    path: '/pages/visual-button',
+    name: 'visual-button',
+    component: () => import('@/views/visual/visual-button.vue'),
+  },
+  {
     path: '*',
     name: '404',
     component: () =>

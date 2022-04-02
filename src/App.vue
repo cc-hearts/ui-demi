@@ -4,12 +4,7 @@
   </div>
 </template>
 <script>
-export default {
-  mounted() {
-    // eslint-disable-next-line no-debugger
-    // debugger;
-  },
-};
+export default {};
 </script>
 <style lang="less">
 #app {
@@ -20,7 +15,8 @@ export default {
   color: #2c3e50;
 }
 html,
-body,#app {
+body,
+#app {
   height: 100%;
   width: 100%;
 }
