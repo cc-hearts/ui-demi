@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
+// import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
-const routes: Array<RouteConfig> = [
+export const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: () => import('../views/home/index.vue'),
   },
   {
     path: '/about',
@@ -40,11 +40,13 @@ const routes: Array<RouteConfig> = [
     path: '/pages/button',
     name: 'button',
     component: () =>
-      import(/* webpackChunkName: "button" */ '../test/button.vue'),
+      import(
+        /* webpackChunkName: "button" */ '../components/button/button.vue'
+      ),
   },
   {
-    path: '/pages/visualButton',
-    name: 'button',
+    path: '/pages/visualButtonMask',
+    name: 'visualButtonMask',
     component: () =>
       import(/* webpackChunkName: "button" */ '../common/visual/button.vue'),
   },
@@ -57,9 +59,14 @@ const routes: Array<RouteConfig> = [
       ),
   },
   {
-    path: '/pages/visual-button',
+    path: '/pages/visualButton',
     name: 'visual-button',
     component: () => import('@/views/visual/visual-button.vue'),
+  },
+  {
+    path: '/pages/sidebar-icon-open',
+    name: 'sidebar-icon-open',
+    component: () => import('@/views/icon/sidebar-open.vue'),
   },
   {
     path: '*',

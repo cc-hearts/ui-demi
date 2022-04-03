@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button class="slide">slide</button>
+    <button class="slide">
+      <slot></slot>
+    </button>
   </div>
 </template>
 
@@ -17,11 +19,11 @@ export default {};
   border: none;
   background-color: transparent;
   border: 1px solid @btn-primary;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.9s ease-in-out;
 }
 .slide:hover,
 .slide:focus {
   color: @white-color;
-  box-shadow: inset 6.5em 0 0 0 @btn-primary;
+  box-shadow: inset 9.5em 0 0 0 @btn-primary;
 }
 </style>
