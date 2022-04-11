@@ -1,25 +1,35 @@
 <template>
   <div class="flex">
-    <div class="container">
-      <div class="visual-button">
-        <div class="visual-button-prefix-icon iconfont icon-sushe"></div>
-        学生宿舍
+    <div class="container" ref="visualButton">
+      <div>
+        <div class="visual-button">
+          <div class="visual-button-prefix-icon iconfont icon-sushe"></div>
+          学生宿舍
+          <slot></slot>
+        </div>
       </div>
     </div>
+    <div ref="showCanvas"></div>
   </div>
 </template>
 
 <script>
 // 可视化button
+import html2canvas from 'html2canvas';
 export default {
   name: 'visual-button',
+  mounted() {
+    html2canvas(this.$refs.visualButton).then((canvas) => {
+      this.$refs.showCanvas.appendChild(canvas);
+    });
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .visual-button {
   display: inline-block;
-  padding: 3px 18px;
+  padding: 3px 18px 3px 28px;
   padding-left: 22px;
   border: 1px solid #3b99f1;
   border-radius: 10px;
@@ -68,5 +78,6 @@ export default {
 }
 .container {
   margin: auto;
+  padding: 5px 0 5px 20px;
 }
 </style>
