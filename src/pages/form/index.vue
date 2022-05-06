@@ -1,41 +1,37 @@
 <template>
   <div>
-    <van-form>
-      <template v-for="item in column">
-        <template v-if="item.type === 'input'">
-          <van-field :key="item.field">
-            <!--  -->
-          </van-field>
-        </template>
-        <!-- <template v-else-if="">
-
-        </template> -->
-      </template>
-    </van-form>
+    <range-date-picker
+      type="date"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :show.sync="isShow"
+      :currentDate="currentDate"
+    />
+    <button @click="handleClick">handle click</button>
   </div>
 </template>
 
 <script>
-import { Form, Field } from 'vant'
+import RangeDatePicker from '../../components/rangeDatePicker.vue'
 
 export default {
   name: 'StudentForm',
   components: {
-    'van-form': Form,
-    'van-field': Field,
+    RangeDatePicker,
   },
   data() {
     return {
-      column: [
-        {
-          label: '学生姓名',
-          type: 'input',
-          field: 'name',
-        },
-      ],
+      currentDate: new Date(),
+      isShow: true,
+      minDate: new Date(1990, 2, 10),
+      maxDate: new Date(2035, 8, 12),
     }
   },
-  methods: {},
+  methods: {
+    handleClick() {
+      this.isShow = true
+    },
+  },
 }
 </script>
 
