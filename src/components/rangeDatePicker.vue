@@ -79,6 +79,7 @@ export default {
       minDay: 1,
       showNative: false,
       columnsOrder: [],
+      tip: ['年', '月', '日'],
     }
   },
   watch: {
@@ -100,22 +101,39 @@ export default {
       // 根据当前的时间来初始化
       const year = this.getYearRange(true, true)
       let columnsOrder = []
+      let defaultValue = this.getArrayDate('defaultDate')
+      let defaultDate = this.defaultDate || new Date()
+      if (this.minDate > this.defaultDate) {
+        defaultValue = this.getArrayDate('minDate')
+        defaultDate = this.minDate
+      } else if (this.maxDate < this.defaultDate) {
+        defaultValue = this.getArrayDate('maxDate')
+        defaultDate = this.maxDate
+      }
+      if (this.isDate) {
+        defaultValue = defaultValue.map((val, ind) => {
+          return val + this.tip[ind]
+        })
+      }
+      defaultValue = [...defaultValue].concat(defaultValue)
       if (this.type === 'date') {
         const month = this.getMonthRange()
         const date = this.getDateRange()
-        this.columns = this.formatRangeDate(year, month, date)
+        this.columns = this.formatRangeDate(defaultDate, year, month, date)
         columnsOrder = ['year', 'month', 'date']
       } else if (this.type === 'month') {
         const month = this.getMonthRange()
-        this.columns = this.formatRangeDate(year, month)
+        this.columns = this.formatRangeDate(defaultDate, year, month)
         columnsOrder = ['year', 'month']
       } else if (this.type === 'year') {
-        this.columns = this.formatRangeDate(year)
+        this.columns = this.formatRangeDate(defaultDate, year)
         columnsOrder = ['year']
       }
       this.columnsOrder = [...columnsOrder].concat(columnsOrder)
+      this.handleChange(null, defaultValue, 0)
+      this.handleChange(null, defaultValue, this.columnsOrder.length / 2)
     },
-    formatRangeDate(...args) {
+    formatRangeDate(defaultValue, ...args) {
       let api = []
       const arr = [...args].concat(args)
       return arr.map((val, index) => {
@@ -123,32 +141,31 @@ export default {
           values: val,
           defaultIndex: val.findIndex((i) => {
             if (this.isDate) {
-              let suffix = ''
+              const suffix = this.tip[index >= args.length ? index - args.length : index]
               if (arr.length === 6) {
                 // 年 月 日
-                suffix =
-                  index === 2 || index === 5
-                    ? '日'
-                    : index === 1 || index === 4
-                    ? '月'
-                    : index === 0 || index === 3
-                    ? '年'
-                    : ''
                 api = ['getFullYear', 'getMonth', 'getDate']
               } else if (arr.length === 4) {
-                suffix = index === 0 || index === 2 ? '年' : index === 1 || index === 3 ? '月' : ''
-                api = ['getFullYear', ' getMonth']
+                api = ['getFullYear', 'getMonth']
               } else if (arr.length === 2) {
-                suffix = '年'
                 api = ['getFullYear']
               }
               api = [...api].concat(api)
-              return String(i) === this.defaultDate[api[index]]() + suffix
+              return String(i) === defaultValue[api[index]]() + suffix
             }
-            return i === this.defaultDate[api[index]]()
+            return i === defaultValue[api[index]]()
           }),
         }
       })
+    },
+    getArrayDate(api) {
+      if (this.type === 'date') {
+        return [this[api].getFullYear(), this[api].getMonth() + 1, this[api].getDate()]
+      }
+      if (this.type === 'month') {
+        return [this[api].getFullYear(), this[api].getMonth() + 1]
+      }
+      return [this[api].getFullYear()]
     },
     getData(api, maxBool, minBool) {
       const arr = []
@@ -162,9 +179,6 @@ export default {
         max = this.maxDate[api]()
         if (api === 'getMonth') max++
       }
-      if (api === 'getFullYear') {
-        console.log(min, max)
-      }
       for (let i = min; i <= max; i++) {
         arr.push(i)
       }
@@ -172,17 +186,17 @@ export default {
     },
     getYearRange(isMax = false, isMin = false) {
       return this.isDate
-        ? this.getData('getFullYear', isMax, isMin).map((val) => `${val}年`)
+        ? this.getData('getFullYear', isMax, isMin).map((val) => `${val + this.tip[0]}`)
         : this.getData('getFullYear', isMax, isMin)
     },
     getMonthRange(isMax = false, isMin = false) {
       return this.isDate
-        ? this.getData('getMonth', isMax, isMin).map((val) => `${val}月`)
+        ? this.getData('getMonth', isMax, isMin).map((val) => `${val + this.tip[1]}`)
         : this.getData('getMonth', isMax, isMin)
     },
     getDateRange(isMax = false, isMin = false) {
       return this.isDate
-        ? this.getData('getDate', isMax, isMin).map((val) => `${val}日`)
+        ? this.getData('getDate', isMax, isMin).map((val) => `${val + this.tip[2]}`)
         : this.getData('getDate', isMax, isMin)
     },
     handleChangeShow(val) {
@@ -195,80 +209,106 @@ export default {
       }
       return true
     },
-    dateFilter(getData, isMax, isMin, index) {
+    dateFilter(getData, isMax, isMin, index, defaultDate) {
       const day = this[getData](isMax, isMin)
       this.columns.splice(index, 1, {
         values: day,
+        defaultIndex: day.findIndex((val) => val === defaultDate),
       })
     },
-    getMonth(index, field, picker) {
-      const val = Number(picker[index].replace(/[年月日]/g, '')) || 0
-      const min = this.minDate.getFullYear()
-      const max = this.maxDate.getFullYear()
-      if (field === 'year') {
-        // TODO:
-        if (val === min || val === max) {
-          // 对月份限制
-          this.dateFilter('getMonthRange', val === max, val === min, index + 1)
-          // 对日期限制
-          if (this.type === 'date') {
-            this.dateFilter('getDateRange', val === max, val === min, index + 2)
+    //  isFlag 大于max true 小于 false arrDate maxDate
+    equestDate(maxOrMinDate, defaultDate, isFlag = false) {
+      const arr = new Array(6).fill(false)
+      let formatDefaultDate = defaultDate
+      if (this.isDate) {
+        formatDefaultDate = formatDefaultDate
+          .join('-')
+          .replace(/[年月日]/g, '')
+          .split('-')
+      }
+      // 比较是否是大于的情况 defaultDate === pickerDate
+      for (let i = 0; i < formatDefaultDate.length; i++) {
+        if (isFlag) {
+          // 比较大于的情况
+          if (formatDefaultDate[i] >= maxOrMinDate[i]) {
+            arr[i] = true
           }
-        } else {
-          this.initMonth(index)
-          if (this.type === 'date') {
-            this.initDay(index + 1)
-          }
-        }
-      } else if (field === 'month') {
-        if (val === min || val === max) {
-          this.getDay(index, 'month', val)
-        } else {
-          this.initDay(index)
+        } else if (formatDefaultDate[i] <= maxOrMinDate[i]) {
+          arr[i] = true
         }
       }
+      return arr
     },
-    getDay(index, field, picker) {
-      const val = Number(picker[index].replace(/[年月日]/g, '')) || 0
-      const min = this.minDate.getMonth()
-      const max = this.maxDate.getMonth()
-      if (val === min || val === max) {
-        // 对日限制
-        this.dateFilter('getDateRange', val === max, val === min, index + 1)
-      } else {
-        this.initDay(index)
+    changeDate(index, field, picker) {
+      // 年月日
+      const i = index < picker.length / 2 ? 0 : picker.length / 2
+      const isMin = this.equestDate(
+        [...this.getArrayDate('minDate')].concat(this.getArrayDate('minDate')),
+        picker,
+        false
+      )
+      const isMax = this.equestDate(
+        [...this.getArrayDate('maxDate')].concat(this.getArrayDate('maxDate')),
+        picker,
+        true
+      )
+      if (this.type === 'date') {
+        if (field === 'year' || field === 'month') {
+          if (isMin[i] || isMax[i]) {
+            // 刷新月份
+            this.dateFilter('getMonthRange', isMax[i], isMin[i], i + 1, picker[i + 1])
+            if (isMin[i + 1] || isMax[i + 1]) {
+              // 刷新日
+              if (this.type === 'date') {
+                // 应该按最大日期计算
+                this.dateFilter(
+                  'getDateRange',
+                  isMax[i] && isMax[i + 1],
+                  isMin[i] && isMin[i + 1],
+                  i + 2,
+                  picker[i + 2]
+                )
+              }
+            } else {
+              // 重置刷新日
+              this.initFormatDate('getDateRange', i + 2, picker[i + 2])
+            }
+          } else {
+            // 重置刷新月份
+            this.initFormatDate('getMonthRange', i + 1, picker[i + 1])
+            if (this.type === 'date') {
+              this.initFormatDate('getDateRange', i + 2, picker[i + 2])
+            }
+          }
+        }
+      } else if (this.type === 'month') {
+        // 年月
+        if (isMin[i] || isMax[i]) {
+          this.dateFilter('getMonthRange', isMax[i], isMin[i], i + 1, picker[i + 1])
+        } else {
+          this.initFormatDate('getMonthRange', i + 1, picker[i + 1])
+        }
       }
     },
-    initDay(index) {
-      const arr = this.getDateRange()
-      if (!this.enquireArray(arr, this.columns[index + 1])) {
-        const { defaultIndex } = this.columns[index + 1]
-        this.columns.splice(index + 1, 1, {
+    initFormatDate(api, index, defaultDate) {
+      const arr = this[api]()
+      if (!this.enquireArray(arr, this.columns[index].values)) {
+        this.columns.splice(index, 1, {
           values: arr,
-          defaultIndex,
-        })
-      }
-    },
-    initMonth(index) {
-      const arr = this.getMonthRange()
-      if (!this.enquireArray(arr, this.columns[index + 1])) {
-        const { defaultIndex } = this.columns[index + 1]
-        this.columns.splice(index + 1, 1, {
-          values: arr,
-          defaultIndex,
+          defaultIndex: arr.findIndex((val) => val === defaultDate),
         })
       }
     },
     handleChange(val, picker, index) {
       if (this.type === 'date') {
         if (index === 3 || index === 0) {
-          this.getMonth(index, 'year', picker, index)
+          this.changeDate(index, 'year', picker)
         } else if (index === 1 || index === 4) {
-          this.getDay(index, 'month', picker, index)
+          this.changeDate(index, 'month', picker)
         }
       } else if (this.type === 'month') {
         if (index === 0 || index === 2) {
-          this.getMonth(index, 'year', picker, index)
+          this.changeDate(index, 'year', picker)
         }
       }
     },
@@ -281,6 +321,7 @@ export default {
       if (this.type === 'year' && val === '年') return ''
       return '-'
     },
+
     handleConfirm(date) {
       let startDate = ''
       let endDate = ''
@@ -294,7 +335,6 @@ export default {
       }
       startDate = startDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
       endDate = endDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
-      console.log(startDate, endDate)
       return [startDate, endDate]
     },
   },
