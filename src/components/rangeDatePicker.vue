@@ -151,9 +151,11 @@ export default {
                 api = ['getFullYear']
               }
               api = [...api].concat(api)
-              return String(i) === defaultValue[api[index]]() + suffix
+              const dateDefault =
+                api[index] === 'getMonth' ? defaultValue[api[index]]() + 1 : defaultValue[api[index]]()
+              return String(i) === dateDefault + suffix
             }
-            return i === defaultValue[api[index]]()
+            return (i === api[index]) === 'getMonth' ? defaultValue[api[index]]() + 1 : defaultValue[api[index]]()
           }),
         }
       })

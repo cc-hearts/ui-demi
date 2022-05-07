@@ -25,8 +25,8 @@ export default {
       currentDate: new Date(),
       isShow: true,
       // 这里的 2 是 dateIndex 0 - 11
-      minDate: new Date(2008, 3, 12),
-      maxDate: new Date(2010, 5, 23),
+      minDate: new Date(1990, 0, 1),
+      maxDate: new Date(2035, 11, 31),
     }
   },
   methods: {
