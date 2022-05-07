@@ -137,7 +137,7 @@ export default {
                 api = ['getFullYear', 'getMonth', 'getDate']
               } else if (arr.length === 4) {
                 suffix = index === 0 || index === 2 ? '年' : index === 1 || index === 3 ? '月' : ''
-                api = ['getFullYear', 'getMonth']
+                api = ['getFullYear', ' getMonth']
               } else if (arr.length === 2) {
                 suffix = '年'
                 api = ['getFullYear']
