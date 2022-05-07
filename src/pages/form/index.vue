@@ -1,11 +1,12 @@
 <template>
   <div>
     <range-date-picker
-      type="date"
+      type="month"
       :min-date="minDate"
       :max-date="maxDate"
       :show.sync="isShow"
       :currentDate="currentDate"
+      :isDate="true"
     />
     <button @click="handleClick">handle click</button>
   </div>
@@ -23,8 +24,9 @@ export default {
     return {
       currentDate: new Date(),
       isShow: true,
-      minDate: new Date(1990, 2, 10),
-      maxDate: new Date(2035, 8, 12),
+      // 这里的 2 是 dateIndex 0 - 11
+      minDate: new Date(1990, 0, 1),
+      maxDate: new Date(2035, 11, 31),
     }
   },
   methods: {

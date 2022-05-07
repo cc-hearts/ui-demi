@@ -1,7 +1,14 @@
 <template>
-  <div>
+  <div class="range-date-picker">
     <van-popup position="bottom" :style="{ height: '60%' }" :value="showNative" @input="handleChangeShow">
-      <van-picker :title="title" show-toolbar :columns="columns" @change="handleChange" />
+      <van-picker
+        :title="title"
+        show-toolbar
+        :columns="columns"
+        @change="handleChange"
+        @cancel="handleCancel"
+        @confirm="handleConfirm"
+      />
     </van-popup>
   </div>
 </template>
@@ -55,6 +62,11 @@ export default {
       type: Function,
       default: () => {},
     },
+    // 是否显示年月日
+    isDate: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -66,6 +78,7 @@ export default {
       maxDay: 31,
       minDay: 1,
       showNative: false,
+      columnsOrder: [],
     }
   },
   watch: {
@@ -86,25 +99,54 @@ export default {
     initRangeDate() {
       // 根据当前的时间来初始化
       const year = this.getYearRange(true, true)
+      let columnsOrder = []
       if (this.type === 'date') {
         const month = this.getMonthRange()
         const date = this.getDateRange()
         this.columns = this.formatRangeDate(year, month, date)
+        columnsOrder = ['year', 'month', 'date']
       } else if (this.type === 'month') {
         const month = this.getMonthRange()
         this.columns = this.formatRangeDate(year, month)
+        columnsOrder = ['year', 'month']
       } else if (this.type === 'year') {
         this.columns = this.formatRangeDate(year)
+        columnsOrder = ['year']
       }
+      this.columnsOrder = [...columnsOrder].concat(columnsOrder)
     },
     formatRangeDate(...args) {
-      let api = ['getFullYear', 'getMonth', 'getDate']
-      api = [...api].concat(api)
+      let api = []
       const arr = [...args].concat(args)
       return arr.map((val, index) => {
         return {
           values: val,
-          defaultIndex: val.findIndex((i) => i === this.defaultDate[api[index]]()),
+          defaultIndex: val.findIndex((i) => {
+            if (this.isDate) {
+              let suffix = ''
+              if (arr.length === 6) {
+                // 年 月 日
+                suffix =
+                  index === 2 || index === 5
+                    ? '日'
+                    : index === 1 || index === 4
+                    ? '月'
+                    : index === 0 || index === 3
+                    ? '年'
+                    : ''
+                api = ['getFullYear', 'getMonth', 'getDate']
+              } else if (arr.length === 4) {
+                suffix = index === 0 || index === 2 ? '年' : index === 1 || index === 3 ? '月' : ''
+                api = ['getFullYear', 'getMonth']
+              } else if (arr.length === 2) {
+                suffix = '年'
+                api = ['getFullYear']
+              }
+              api = [...api].concat(api)
+              return String(i) === this.defaultDate[api[index]]() + suffix
+            }
+            return i === this.defaultDate[api[index]]()
+          }),
         }
       })
     },
@@ -114,24 +156,34 @@ export default {
       let max = api === 'getFullYear' ? this.maxYear : api === 'getMonth' ? this.maxMonth : this.maxDay
       if (minBool) {
         min = this.minDate[api]()
+        if (api === 'getMonth') min++
       }
       if (maxBool) {
         max = this.maxDate[api]()
+        if (api === 'getMonth') max++
       }
-
+      if (api === 'getFullYear') {
+        console.log(min, max)
+      }
       for (let i = min; i <= max; i++) {
         arr.push(i)
       }
       return arr
     },
     getYearRange(isMax = false, isMin = false) {
-      return this.getData('getFullYear', isMax, isMin)
+      return this.isDate
+        ? this.getData('getFullYear', isMax, isMin).map((val) => `${val}年`)
+        : this.getData('getFullYear', isMax, isMin)
     },
     getMonthRange(isMax = false, isMin = false) {
-      return this.getData('getMonth', isMax, isMin)
+      return this.isDate
+        ? this.getData('getMonth', isMax, isMin).map((val) => `${val}月`)
+        : this.getData('getMonth', isMax, isMin)
     },
     getDateRange(isMax = false, isMin = false) {
-      return this.getData('getDate', isMax, isMin)
+      return this.isDate
+        ? this.getData('getDate', isMax, isMin).map((val) => `${val}日`)
+        : this.getData('getDate', isMax, isMin)
     },
     handleChangeShow(val) {
       this.$emit('update:show', val)
@@ -150,10 +202,11 @@ export default {
       })
     },
     getMonth(index, field, picker) {
-      const val = picker[index]
+      const val = Number(picker[index].replace(/[年月日]/g, '')) || 0
       const min = this.minDate.getFullYear()
       const max = this.maxDate.getFullYear()
       if (field === 'year') {
+        // TODO:
         if (val === min || val === max) {
           // 对月份限制
           this.dateFilter('getMonthRange', val === max, val === min, index + 1)
@@ -176,8 +229,7 @@ export default {
       }
     },
     getDay(index, field, picker) {
-      console.log(index, field, picker)
-      const val = picker[index]
+      const val = Number(picker[index].replace(/[年月日]/g, '')) || 0
       const min = this.minDate.getMonth()
       const max = this.maxDate.getMonth()
       if (val === min || val === max) {
@@ -220,8 +272,37 @@ export default {
         }
       }
     },
+    handleCancel() {
+      this.$emit('update:show', false)
+    },
+    replaceFormat(val) {
+      if (this.type === 'date' && val === '日') return ''
+      if (this.type === 'month' && val === '月') return ''
+      if (this.type === 'year' && val === '年') return ''
+      return '-'
+    },
+    handleConfirm(date) {
+      let startDate = ''
+      let endDate = ''
+
+      for (let i = 0; i < date.length; i++) {
+        if (i < date.length / 2) {
+          startDate += date[i]
+        } else {
+          endDate += date[i]
+        }
+      }
+      startDate = startDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
+      endDate = endDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
+      console.log(startDate, endDate)
+      return [startDate, endDate]
+    },
   },
 }
 </script>
 
-<style></style>
+<style>
+.range-date-picker .van-picker-column__item {
+  padding: 0 !important;
+}
+</style>
