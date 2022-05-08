@@ -337,7 +337,7 @@ export default {
       }
       startDate = startDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
       endDate = endDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
-      return [startDate, endDate]
+      this.$emit('submit', [startDate, endDate])
     },
   },
 }

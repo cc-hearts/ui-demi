@@ -1,12 +1,13 @@
 <template>
   <div>
     <range-date-picker
-      type="date"
+      type="month"
       :min-date="minDate"
       :max-date="maxDate"
       :show.sync="isShow"
       :defaultDate="currentDate"
       :isDate="true"
+      @submit="handleSubmit"
     />
     <button @click="handleClick">handle click</button>
   </div>
@@ -32,6 +33,9 @@ export default {
   methods: {
     handleClick() {
       this.isShow = true
+    },
+    handleSubmit(...args) {
+      console.log(...args)
     },
   },
 }
