@@ -78,7 +78,6 @@ export default {
       maxDay: 31,
       minDay: 1,
       showNative: false,
-      columnsOrder: [],
       tip: ['年', '月', '日'],
     }
   },
@@ -97,8 +96,8 @@ export default {
     },
   },
   methods: {
+    // 根据当前的时间来初始化
     initRangeDate() {
-      // 根据当前的时间来初始化
       const year = this.getYearRange(true, true)
       let columnsOrder = []
       let defaultValue = this.getArrayDate('defaultDate')
@@ -129,9 +128,8 @@ export default {
         this.columns = this.formatRangeDate(defaultDate, year)
         columnsOrder = ['year']
       }
-      this.columnsOrder = [...columnsOrder].concat(columnsOrder)
       this.handleChange(null, defaultValue, 0)
-      this.handleChange(null, defaultValue, this.columnsOrder.length / 2)
+      this.handleChange(null, defaultValue, columnsOrder.length * 2)
     },
     formatRangeDate(defaultValue, ...args) {
       let api = []
@@ -262,7 +260,7 @@ export default {
             if (isMin[i + 1] || isMax[i + 1]) {
               // 刷新日
               if (this.type === 'date') {
-                // 应该按最大日期计算
+                // 按最大日期计算
                 this.dateFilter(
                   'getDateRange',
                   isMax[i] && isMax[i + 1],
@@ -314,9 +312,6 @@ export default {
         }
       }
     },
-    handleCancel() {
-      this.$emit('update:show', false)
-    },
     replaceFormat(val) {
       if (this.type === 'date' && val === '日') return ''
       if (this.type === 'month' && val === '月') return ''
@@ -327,7 +322,6 @@ export default {
     handleConfirm(date) {
       let startDate = ''
       let endDate = ''
-
       for (let i = 0; i < date.length; i++) {
         if (i < date.length / 2) {
           startDate += date[i]
@@ -338,6 +332,9 @@ export default {
       startDate = startDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
       endDate = endDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
       this.$emit('submit', [startDate, endDate])
+    },
+    handleCancel() {
+      this.$emit('update:show', false)
     },
   },
 }
