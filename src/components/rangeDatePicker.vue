@@ -86,7 +86,6 @@ export default {
       handler() {
         this.initRangeDate()
       },
-      immediate: true,
     },
     show: {
       handler(val) {
@@ -94,6 +93,9 @@ export default {
       },
       immediate: true,
     },
+  },
+  mounted() {
+    this.initRangeDate()
   },
   methods: {
     initDate(defaultValue, defaultDate) {
@@ -118,7 +120,7 @@ export default {
       let defaultValue = [...startDateValue, ...endDateValue]
       if (this.isDate) {
         defaultValue = defaultValue.map((val, ind) => {
-          return val + this.tip[ind % this.tip.length]
+          return val + this.tip[ind % (defaultValue.length / 2)]
         })
       }
       if (this.type === 'date') {
@@ -134,6 +136,7 @@ export default {
         this.columns = this.formatRangeDate(defaultDate, year)
         columnsOrder = ['year']
       }
+      console.log(defaultValue)
       this.handleChange(null, defaultValue, 0)
       this.handleChange(null, defaultValue, columnsOrder.length)
     },
@@ -351,6 +354,7 @@ export default {
       startDate = startDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
       endDate = endDate.replace(/[年月日]/g, (val) => this.replaceFormat(val))
       this.$emit('submit', [startDate, endDate])
+      this.handleCancel()
     },
     handleCancel() {
       this.$emit('update:show', false)

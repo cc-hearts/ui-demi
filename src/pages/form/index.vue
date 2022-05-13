@@ -1,7 +1,7 @@
 <template>
   <div>
     <range-date-picker
-      type="date"
+      type="month"
       :min-date="minDate"
       :max-date="maxDate"
       :show.sync="isShow"
@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      currentDate: [new Date(2019, 11, 3), new Date(2019, 11, 3)],
+      currentDate: [new Date(2020, 11, 3), new Date(2020, 11, 3)],
       isShow: true,
       // 这里的 2 是 dateIndex 0 - 11
       minDate: new Date(2020, 8, 2),
