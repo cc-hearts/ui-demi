@@ -49,8 +49,8 @@ export default {
     },
     // 日期范围选择框的默认日期范围
     defaultDate: {
-      type: Date,
-      default: () => new Date(),
+      type: Array,
+      default: () => [new Date(), new Date()],
     },
     // 日期范围选择框的日期范围
     range: {
@@ -96,25 +96,31 @@ export default {
     },
   },
   methods: {
+    initDate(defaultValue, defaultDate) {
+      let val = defaultValue
+      let date = defaultDate
+      if (this.minDate > defaultDate) {
+        val = this.getArrayDate('minDate')
+        date = this.minDate
+      } else if (this.maxDate < defaultDate) {
+        val = this.getArrayDate('maxDate')
+        date = this.maxDate
+      }
+      return [val, date]
+    },
     // 根据当前的时间来初始化
     initRangeDate() {
       const year = this.getYearRange(true, true)
       let columnsOrder = []
-      let defaultValue = this.getArrayDate('defaultDate')
-      let defaultDate = this.defaultDate || new Date()
-      if (this.minDate > this.defaultDate) {
-        defaultValue = this.getArrayDate('minDate')
-        defaultDate = this.minDate
-      } else if (this.maxDate < this.defaultDate) {
-        defaultValue = this.getArrayDate('maxDate')
-        defaultDate = this.maxDate
-      }
+      const [startDateValue, startDate] = this.initDate(this.getArrayDate('defaultDate', 0), this.defaultDate[0])
+      const [endDateValue, endDate] = this.initDate(this.getArrayDate('defaultDate', 1), this.defaultDate[1])
+      const defaultDate = [startDate, endDate]
+      let defaultValue = [...startDateValue, ...endDateValue]
       if (this.isDate) {
         defaultValue = defaultValue.map((val, ind) => {
-          return val + this.tip[ind]
+          return val + this.tip[ind % this.tip.length]
         })
       }
-      defaultValue = [...defaultValue].concat(defaultValue)
       if (this.type === 'date') {
         const month = this.getMonthRange()
         const date = this.getDateRange()
@@ -129,15 +135,17 @@ export default {
         columnsOrder = ['year']
       }
       this.handleChange(null, defaultValue, 0)
-      this.handleChange(null, defaultValue, columnsOrder.length * 2)
+      this.handleChange(null, defaultValue, columnsOrder.length)
     },
     formatRangeDate(defaultValue, ...args) {
+      console.log(defaultValue)
       let api = []
       const arr = [...args].concat(args)
       return arr.map((val, index) => {
         return {
           values: val,
           defaultIndex: val.findIndex((i) => {
+            const ind = index < arr.length / 2 ? 0 : 1
             if (this.isDate) {
               const suffix = this.tip[index >= args.length ? index - args.length : index]
               if (arr.length === 6) {
@@ -150,20 +158,31 @@ export default {
               }
               api = [...api].concat(api)
               const dateDefault =
-                api[index] === 'getMonth' ? defaultValue[api[index]]() + 1 : defaultValue[api[index]]()
+                api[index] === 'getMonth' ? defaultValue[ind][api[index]]() + 1 : defaultValue[ind][api[index]]()
               return String(i) === dateDefault + suffix
             }
-            return (i === api[index]) === 'getMonth' ? defaultValue[api[index]]() + 1 : defaultValue[api[index]]()
+            return (i === api[index]) === 'getMonth'
+              ? defaultValue[ind][api[index]]() + 1
+              : defaultValue[ind][api[index]]()
           }),
         }
       })
     },
-    getArrayDate(api) {
+    getArrayDate(api, index) {
       if (this.type === 'date') {
+        if (api === 'defaultDate') {
+          return [this[api][index].getFullYear(), this[api][index].getMonth() + 1, this[api][index].getDate()]
+        }
         return [this[api].getFullYear(), this[api].getMonth() + 1, this[api].getDate()]
       }
       if (this.type === 'month') {
+        if (api === 'defaultDate') {
+          return [this[api][index].getFullYear(), this[api][index].getMonth() + 1]
+        }
         return [this[api].getFullYear(), this[api].getMonth() + 1]
+      }
+      if (api === 'defaultDate') {
+        return [this[api][index].getFullYear()]
       }
       return [this[api].getFullYear()]
     },
