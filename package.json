@@ -18,7 +18,7 @@
     "eslint-plugin-import": "^2.26.0",
     "husky": "^7.0.4",
     "jest": "^28.0.3",
-    "mockjs": "^1.1.0",
+    "mockjs": "^1.1.1",
     "register-service-worker": "^1.7.2",
     "stylelint": "^14.8.2",
     "stylelint-config-prettier": "^9.0.3",
