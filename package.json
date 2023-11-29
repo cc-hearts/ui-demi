@@ -17,7 +17,10 @@
     "url": "https://github.com/cc-hearts/ui-demi/issues"
   },
   "homepage": "",
-  "scripts": {},
+  "scripts": {
+    "prettier": "prettier --write .",
+    "prepare": "husky install"
+  },
   "dependencies": {
     "husky": "^8.0.3",
     "prettier": "^2.8.8"
