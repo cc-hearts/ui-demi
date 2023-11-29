@@ -1,5 +1,5 @@
 {
-  "name": "ui-demi",
+  "name": "@cc-heart/ui-demi",
   "version": "0.0.1",
   "main": "",
   "module": "",
@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/cc-hearts/ui-demi.git"
   },
-  "files": [],
+  "files": ["element-plus"],
   "keywords": [],
   "author": "cc heart",
   "license": "MIT",

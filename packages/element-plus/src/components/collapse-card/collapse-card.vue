@@ -29,14 +29,18 @@ defineOptions({
   name: 'CollapseCard',
 })
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: '',
   },
+  visible: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const isCollapse = ref(false)
+const isCollapse = ref(props.visible)
 
 const handleToggleCollapse = () => {
   isCollapse.value = !isCollapse.value

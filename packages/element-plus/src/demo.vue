@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import TableAction from '@/components/table-action/table-action.vue'
+import CollapseCard from '@/components/collapse-card/collapse-card.vue'
 </script>
 
 <template>
-  <TableAction />
+  <CollapseCard>
+    <TableAction />
+  </CollapseCard>
 </template>
 
 <style lang="scss">

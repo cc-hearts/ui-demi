@@ -1,8 +1,6 @@
 import { createApp } from 'vue'
 import App from './demo.vue'
 import 'uno.css'
-import '@/assets/scss/index.scss'
-
 
 const app = createApp(App)
 
