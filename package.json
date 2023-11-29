@@ -1,0 +1,26 @@
+{
+  "name": "ui-demi",
+  "version": "0.0.1",
+  "main": "",
+  "module": "",
+  "description": "A library for secondary encapsulation of the UI",
+  "typings": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cc-hearts/ui-demi.git"
+  },
+  "files": [],
+  "keywords": [],
+  "author": "cc heart",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cc-hearts/ui-demi/issues"
+  },
+  "homepage": "",
+  "scripts": {},
+  "dependencies": {
+    "husky": "^8.0.3",
+    "prettier": "^2.8.8"
+  },
+  "devDependencies": {}
+}
