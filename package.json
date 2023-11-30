@@ -1,29 +1,32 @@
 {
   "name": "@cc-heart/ui-demi",
   "version": "0.0.1",
-  "main": "",
-  "module": "",
   "description": "A library for secondary encapsulation of the UI",
-  "typings": "",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cc-hearts/ui-demi.git"
   },
-  "files": ["element-plus"],
-  "keywords": [],
+  "keywords": [
+    "element-plus"
+  ],
   "author": "cc heart",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cc-hearts/ui-demi/issues"
   },
-  "homepage": "",
   "scripts": {
-    "prettier": "prettier --write .",
+    "format": "prettier --write .",
     "prepare": "husky install"
   },
-  "dependencies": {
+  "devDependencies": {
     "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
     "prettier": "^2.8.8"
   },
-  "devDependencies": {}
+  "lint-staged": {
+    "*.{vue,js,ts,jsx,tsx,json}": [
+      "prettier --write"
+    ],
+    "*.{md}": "prettier --write"
+  }
 }
