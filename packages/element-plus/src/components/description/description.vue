@@ -19,7 +19,7 @@ defineProps({
 </script>
 <template>
   <el-descriptions :column="count" border>
-    <template v-for="(item, index) in column" :key="item.field">
+    <template v-for="item in column" :key="item.field">
       <el-descriptions-item :label="item.label">
         <template v-if="item.slot">
           <slot :name="item.slot.name"></slot>
