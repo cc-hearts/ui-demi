@@ -27,14 +27,17 @@ const props = defineProps({
     required: true,
     default: () => ({}),
   },
-  onUploadHeaders: {
+  uploadHeaders: {
+    type: Object,
+    default: () => ({}),
+  },
+  extraData: {
     type: Function,
     default: () => ({}),
   },
 })
 
 const uploadRef = ref()
-const uploadHeaders = ref({})
 const url = props.url || '<your_url>'
 const uploadData = ref({ filename: '' })
 const fileList = ref([])
@@ -46,12 +49,6 @@ const closeLoading = () => {
 
 const handleUpload = (file: UploadRequestOptions) => {
   uploadData.value.filename = file.filename
-}
-
-const submitUpload = () => {
-  loading.value = true
-  uploadHeaders.value = props.onUploadHeaders() || {}
-  unref(uploadRef).submit()
 }
 
 const handleSuccess = (...rest: any[]) => {
@@ -70,28 +67,33 @@ const handleError = () => {
     type: 'error',
     message: '上传失败，请您重新上传！',
   })
+  closeLoading()
+}
+
+const beforeUpload = () => {
+  loading.value = true
+  return true
 }
 </script>
 <template>
   <el-upload
     ref="uploadRef"
+    v-model:file-list="fileList"
     :action="url"
+    :data="extraData"
     :headers="uploadHeaders"
     :disabled="loading"
-    v-model:file-list="fileList"
     :limit="limit"
     :multiple="multiple"
-    :auto-upload="false"
     :on-change="handleUpload"
     :on-success="handleSuccess"
     :on-error="handleError"
     :on-exceed="handleExceed"
+    :before-upload="beforeUpload"
   >
     <template #trigger>
       <slot name="trigger">
-        <el-button :icon="ButtonUploadIcon" @click="submitUpload">{{
-          text
-        }}</el-button>
+        <el-button :icon="ButtonUploadIcon">{{ text }}</el-button>
       </slot>
     </template>
 
