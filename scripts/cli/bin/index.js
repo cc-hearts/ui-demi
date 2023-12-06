@@ -1,13 +1,63 @@
-import { createReadStream, createWriteStream, mkdirSync } from 'fs'
-import { readdir } from 'fs/promises'
+import { existsSync, mkdirSync, createWriteStream, createReadStream } from 'fs'
+import { stat, readdir } from 'fs/promises'
 import inquirer from 'inquirer'
-import { join, resolve } from 'path'
-import { templateDir } from './config.js'
-import { genComponentPrompt, genSelectTemplatePrompt } from './prompt.js'
-import { findUpFile } from '@cc-heart/utils-service'
+import { resolve, join } from 'path'
 import { fileURLToPath } from 'url'
 
-function readTemplateDirConfig(rootPath: string) {
+const templateDir = ['packages/element-plus']
+
+function genSelectTemplatePrompt(choices) {
+  return {
+    type: 'list',
+    message: 'select a components template',
+    name: 'selectTemplate',
+    choices,
+  }
+}
+function genComponentPrompt(choices) {
+  return {
+    type: 'list',
+    message: 'select components',
+    name: 'selectComponents',
+    choices,
+  }
+}
+
+/**
+ * Checks if the given path is a directory.
+ *
+ * @param {string} path - The path to check.
+ * @return {Promise<boolean>} A promise that resolves to true if the path is a directory, false otherwise.
+ */
+async function isDirectory(path) {
+  const file = await stat(path)
+  return file.isDirectory()
+}
+
+/**
+ * Step up to find the most recent file
+ *
+ * @param path
+ * @returns
+ */
+async function findUpFile(path, fileName) {
+  if (fileName === void 0) {
+    throw new Error('fileName is required')
+  }
+  let curPath
+  if (await isDirectory(path)) {
+    curPath = resolve(path, 'package.json')
+  } else {
+    curPath = resolve(path, '../package.json')
+  }
+  if (existsSync(curPath)) {
+    return curPath
+  }
+  if (path === '/') return null
+  return findUpFile(resolve(path, '..'), fileName)
+}
+
+function readTemplateDirConfig(rootPath) {
   return templateDir.map((target) => {
     return {
       value: resolve(rootPath, target),
@@ -15,10 +65,9 @@ function readTemplateDirConfig(rootPath: string) {
     }
   })
 }
-
 async function readTemplateComponents(
-  templateDir: string,
-  componentNameList: string[] = ['src/components']
+  templateDir,
+  componentNameList = ['src/components']
 ) {
   const componentList = await Promise.all(
     componentNameList.map(async (componentName) => {
@@ -37,14 +86,12 @@ async function readTemplateComponents(
       }
     })
   )
-
   return componentList.reduce((acc, cur) => {
     return [...acc, ...cur]
   }, [])
 }
-
 async function getComponentFilePaths(
-  componentDir: string,
+  componentDir,
   relativePath = process.cwd()
 ) {
   try {
@@ -63,18 +110,7 @@ async function getComponentFilePaths(
     return []
   }
 }
-
-function writeComponentFile(
-  componentPath: string,
-  relativePath: string,
-  dirname: string
-) {
-  const dryRun = false
-  // dry run output to console
-  if (dryRun) {
-    console.log(`write file: ${relativePath}`)
-    return
-  }
+function writeComponentFile(componentPath, relativePath, dirname) {
   mkdirSync(relativePath, { recursive: true })
   const writeFilePath = resolve(relativePath, dirname)
   const writeStream = createWriteStream(writeFilePath)
@@ -83,34 +119,28 @@ function writeComponentFile(
   })
   createReadStream(componentPath).pipe(writeStream)
 }
-
 async function prompt() {
   const rootPkgPath =
     (await findUpFile(
       resolve(fileURLToPath(import.meta.url), '..', '..', '..', '..'),
       'package.json'
     )) || ''
-
   if (!rootPkgPath) {
     console.error('not found package.json')
     return
   }
-
   const rootPath = resolve(rootPkgPath, '..')
   const templateDirConfig = readTemplateDirConfig(rootPath)
   const templatePrompt = genSelectTemplatePrompt(templateDirConfig)
   try {
     const { selectTemplate } = await inquirer.prompt([templatePrompt])
     const componentConfig = await readTemplateComponents(selectTemplate)
-
     const componentPrompt = genComponentPrompt(componentConfig)
     const { selectComponents } = await inquirer.prompt([componentPrompt])
-
     const componentPaths = await getComponentFilePaths(selectComponents)
     componentPaths.forEach((config) => {
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })
   } catch (error) {}
 }
-
 prompt()

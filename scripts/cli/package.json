@@ -3,17 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node --loader ts-node/esm --experimental-specifier-resolution=node ./index.ts",
+    "build": "rollup -c"
   },
   "keywords": [],
   "author": "cc heart",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^20.10.0",
     "inquirer": "^9.2.12"
   },
   "devDependencies": {
-    "@types/inquirer": "^9.0.7"
+    "@cc-heart/utils-service": "^2.0.1",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.10.0",
+    "rollup": "^4.6.1",
+    "ts-node": "^10.9.1"
   }
 }
