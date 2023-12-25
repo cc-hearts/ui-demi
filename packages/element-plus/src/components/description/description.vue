@@ -8,7 +8,7 @@ defineOptions({
 interface Column {
   label: string
   field: string
-  value: string
+  value: any
   span?: number
   slot?: { name: string }
 }

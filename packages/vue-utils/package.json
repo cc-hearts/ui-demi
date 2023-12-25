@@ -1,0 +1,29 @@
+{
+  "name": "@packages/vue-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/esm/index.js",
+  "keywords": [],
+  "author": "cc heart",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^3.3.9"
+  },
+  "scripts": {
+    "build": "rollup -c && tsc -p tsconfig.build.json"
+  },
+  "exports": {
+    ".": [
+      {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/types/index.d.ts"
+      }
+    ]
+  },
+  "devDependencies": {
+    "rollup": "^4.6.1",
+    "rollup-plugin-typescript2": "^0.36.0"
+  }
+}

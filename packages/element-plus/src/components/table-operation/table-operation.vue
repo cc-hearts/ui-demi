@@ -1,4 +1,5 @@
 <script setup lang="ts">
+defineOptions({ name: 'TableOperation' })
 const props = defineProps({
   action: {
     type: Array,

@@ -25,9 +25,14 @@ const props = defineProps({
     type: Array as PropType<Array<Column>>,
     default: () => [],
   },
+  onWillRemoveRow: {
+    type: Function,
+    default: () => true,
+  },
 })
 
 const dataSource = ref([] as Array<(typeof props)['originData']>)
+
 const getDataSource = () => {
   return dataSource
 }
@@ -45,6 +50,8 @@ const handleAddTableColumn = () => {
 }
 
 const removeTableColumn = (index: number) => {
+  const bool = props.onWillRemoveRow()
+  if (!bool) return
   dataSource.value.splice(index, 1)
 }
 </script>

@@ -17,6 +17,13 @@
   "bugs": {
     "url": "https://github.com/cc-hearts/ui-demi/issues"
   },
+  "exports": {
+    "./vue-utils": {
+      "require": "./packages/vue-utils/dist/cjs/index.cjs",
+      "import": "./packages/vue-utils/dist/esm/index.js",
+      "types": "./packages/vue-utils/dist/types/index.d.ts"
+    }
+  },
   "scripts": {
     "format": "prettier --write .",
     "prepare": "husky install"
