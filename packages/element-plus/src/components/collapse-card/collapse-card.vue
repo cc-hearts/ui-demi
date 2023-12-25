@@ -7,7 +7,9 @@
           @click="handleToggleCollapse"
         >
           <div class="collapse-card__arrow">
-            <arrow-down-icon />
+            <slot name="title-icon">
+              <arrow-down-icon />
+            </slot>
           </div>
           <span class="collapse-card__title--text">{{ title }}</span>
         </div>
