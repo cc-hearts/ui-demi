@@ -51608,8 +51608,6 @@ async function prompt() {
     const { selectComponents } = await inquirer.prompt([componentPrompt])
     const componentPaths = await getComponentFilePaths(selectComponents)
     componentPaths.forEach((config) => {
-      console.log(config)
-      console.log(process.argv)
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })
   } catch (error) {
