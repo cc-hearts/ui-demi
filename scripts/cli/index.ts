@@ -1,11 +1,12 @@
-import { createReadStream, createWriteStream, mkdirSync } from 'fs'
+import { findUpFile } from '@cc-heart/utils-service'
+import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { readdir } from 'fs/promises'
 import inquirer from 'inquirer'
 import { join, resolve } from 'path'
+import { fileURLToPath } from 'url'
+import { replaceImport } from './compile/replace-import.js'
 import { templateDir } from './config.js'
 import { genComponentPrompt, genSelectTemplatePrompt } from './prompt.js'
-import { findUpFile } from '@cc-heart/utils-service'
-import { fileURLToPath } from 'url'
 
 function readTemplateDirConfig(rootPath: string) {
   return templateDir.map((target) => {
@@ -77,11 +78,15 @@ function writeComponentFile(
   }
   mkdirSync(relativePath, { recursive: true })
   const writeFilePath = resolve(relativePath, dirname)
-  const writeStream = createWriteStream(writeFilePath)
-  writeStream.on('finish', () => {
-    console.log(`write file: ${writeFilePath}`)
-  })
-  createReadStream(componentPath).pipe(writeStream)
+  let files = readFileSync(componentPath, 'utf-8')
+
+  if (!/\.vue$/.test(componentPath)) {
+    files = replaceImport(files)
+  }
+
+  writeFileSync(writeFilePath, files, 'utf-8')
+
+  console.log(`write file: ${writeFilePath}`)
 }
 
 async function prompt() {
@@ -110,7 +115,9 @@ async function prompt() {
     componentPaths.forEach((config) => {
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })
-  } catch (error) {}
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 prompt()
