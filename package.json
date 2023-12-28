@@ -39,5 +39,8 @@
       "prettier --write"
     ],
     "*.{md}": "prettier --write"
+  },
+  "dependencies": {
+    "inquirer": "^9.2.12"
   }
 }

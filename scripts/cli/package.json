@@ -12,9 +12,6 @@
   "keywords": [],
   "author": "cc heart",
   "license": "MIT",
-  "dependencies": {
-    "inquirer": "^9.2.12"
-  },
   "devDependencies": {
     "@babel/generator": "^7.23.6",
     "@babel/parser": "^7.23.6",
