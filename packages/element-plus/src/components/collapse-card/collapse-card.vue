@@ -17,7 +17,9 @@
     </div>
     <el-collapse-transition>
       <div v-show="isCollapse">
-        <slot />
+        <div class="collapse-card__content">
+          <slot />
+        </div>
       </div>
     </el-collapse-transition>
   </div>
@@ -25,7 +27,9 @@
 
 <script setup lang="ts">
 import { ElCollapseTransition } from 'element-plus'
+import { ref } from 'vue'
 import ArrowDownIcon from './arrow-down-icon.vue'
+import 'element-plus/theme-chalk/base.css'
 
 defineOptions({
   name: 'CollapseCard',
@@ -51,12 +55,13 @@ const handleToggleCollapse = () => {
 
 <style lang="scss">
 .collapse-card {
-  --collapse-card-bgc: #fff;
+  --collapse-card-bg-color: var(--el-card-bg-color, #fff);
   --collapse-card-border: #ebeef5;
   --collapse-arrow-icon-color: #4e80f7;
+  --collapse-card-padding: 12px;
 
   border-radius: 4px;
-  background-color: var(--collapse-card-bgc);
+  background-color: var(--collapse-card-bg-color);
   border: 1px solid var(--collapse-card-border);
 
   &__title {
@@ -65,6 +70,7 @@ const handleToggleCollapse = () => {
     &--default {
       display: flex;
       cursor: pointer;
+      align-items: center;
     }
 
     &--text {
@@ -72,13 +78,8 @@ const handleToggleCollapse = () => {
     }
   }
 
-  &__contain {
-    overflow: hidden;
-    height: 0;
-
-    & > div {
-      padding: 12px;
-    }
+  &__content {
+    padding: var(--collapse-card-padding);
   }
 
   &__arrow {
