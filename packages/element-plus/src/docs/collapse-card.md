@@ -8,8 +8,15 @@
 
 ```vue
 <template>
-  <collapse-card title="title"> content </collapse-card>
+  <collapse-card title="title" v-model:visible="visible">
+    content
+  </collapse-card>
 </template>
+<script setup>
+import { ref } from 'vue'
+
+const visible = ref(false)
+</script>
 ```
 
 :::
