@@ -26,6 +26,7 @@ export default defineConfig({
         text: 'Component',
         items: [
           { text: 'CollapseCard', link: '/src/docs/collapse-card' },
+          { text: 'Description', link: '/src/docs/description' },
         ]
       }
     ],

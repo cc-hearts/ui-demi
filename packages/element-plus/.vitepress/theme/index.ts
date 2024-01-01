@@ -21,8 +21,9 @@ export default {
     // ...
     Object.entries(Comp).forEach(([name, component]) => {
       app.component(name, component)
-      app.component('Demo', Demo)
-      app.component('DemoBlock', DemoBlock)
     })
+
+    app.component('Demo', Demo)
+    app.component('DemoBlock', DemoBlock)
   },
 } satisfies Theme

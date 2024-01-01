@@ -26,3 +26,5 @@ dist-ssr
 auto-imports.d.ts
 components.d.ts
 publish.sh
+
+packages/**/.vitepress/cache
