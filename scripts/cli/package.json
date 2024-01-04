@@ -17,20 +17,21 @@
     "@babel/parser": "^7.23.6",
     "@babel/preset-typescript": "^7.23.3",
     "@babel/template": "^7.22.15",
-    "@babel/traverse": "^7.23.6",
+    "@babel/traverse": "^7.23.7",
     "@babel/types": "^7.23.6",
+    "@cc-heart/utils": "^5.1.1",
     "@cc-heart/utils-service": "^2.0.1",
     "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.5",
     "@types/babel__core": "^7.20.5",
-    "@types/inquirer": "^9.0.7",
     "@types/babel__generator": "^7.6.8",
     "@types/babel__template": "^7.4.4",
-    "@types/babel__traverse": "^7.20.4",
-    "@types/node": "^20.10.0",
-    "rollup": "^4.6.1",
-    "ts-node": "^10.9.1"
+    "@types/babel__traverse": "^7.20.5",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.10.6",
+    "rollup": "^4.9.2",
+    "ts-node": "^10.9.2"
   }
 }

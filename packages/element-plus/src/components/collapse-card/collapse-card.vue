@@ -55,9 +55,9 @@ const handleToggleCollapse = () => {
 
 <style lang="scss">
 .collapse-card {
-  --collapse-card-bg-color: var(--el-card-bg-color, #fff);
-  --collapse-card-border: #ebeef5;
-  --collapse-arrow-icon-color: #4e80f7;
+  --collapse-card-bg-color: var(--el-bg-color-overlay, #fff);
+  --collapse-card-border: var(--el-border-color-light, #ebeef5);
+  --collapse-arrow-icon-color: var(--el-primary-color, #409eff);
   --collapse-card-padding: 12px;
 
   border-radius: 4px;

@@ -1,0 +1,3 @@
+ .vp-doc .el-descriptions tr:nth-child(2n) {
+  background-color: transparent;
+}
