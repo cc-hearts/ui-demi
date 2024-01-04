@@ -113,7 +113,10 @@ async function prompt() {
     const { selectComponents } = await inquirer.prompt([componentPrompt])
 
     const componentPaths = await getComponentFilePaths(selectComponents)
-    tryRunPresetScript(selectComponents)
+    const hasNoInstallDeps = await tryRunPresetScript(selectComponents)
+    if (hasNoInstallDeps) {
+      return
+    }
     componentPaths.forEach((config) => {
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })
@@ -137,7 +140,9 @@ async function tryRunPresetScript(componentModulePath: string) {
       .join(sep)
     if (existsSync(presetScriptPath)) {
       const modules = await import(presetScriptPath)
-      await modules?.default?.()
+      return (await modules?.default?.()) || false
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }

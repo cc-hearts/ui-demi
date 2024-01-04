@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@cc-heart/utils": "^2.0.17",
+    "@packages/_utils": "workspace:^",
     "@packages/vue-utils": "workspace:^",
     "@vueuse/core": "^10.7.1",
     "element-plus": "^2.4.3",

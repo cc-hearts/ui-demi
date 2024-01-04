@@ -7,6 +7,12 @@
   "scripts": {
     "build": "rollup -c"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/packages/_utils/index.js"
+    }
+  },
   "keywords": [],
   "author": "cc heart",
   "license": "MIT",

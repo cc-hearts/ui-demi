@@ -51720,7 +51720,10 @@ async function prompt() {
     const componentPrompt = genComponentPrompt(componentConfig)
     const { selectComponents } = await inquirer.prompt([componentPrompt])
     const componentPaths = await getComponentFilePaths(selectComponents)
-    tryRunPresetScript(selectComponents)
+    const hasNoInstallDeps = await tryRunPresetScript(selectComponents)
+    if (hasNoInstallDeps) {
+      return
+    }
     componentPaths.forEach((config) => {
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })
@@ -51729,19 +51732,22 @@ async function prompt() {
   }
 }
 pipe(initHelp, prompt)()
-// 尝试运行脚本
 async function tryRunPresetScript(componentModulePath) {
-  const componentName = componentModulePath.split(sep).pop()
-  if (!componentName) {
-    return
-  }
-  const presetScriptPath = componentModulePath
-    .split(sep)
-    .slice(0, -2)
-    .concat(['pre-scripts', `${componentName}.js`])
-    .join(sep)
-  if (existsSync(presetScriptPath)) {
-    const modules = await import(presetScriptPath)
-    await modules?.default?.()
+  try {
+    const componentName = componentModulePath.split(sep).pop()
+    if (!componentName) {
+      return
+    }
+    const presetScriptPath = componentModulePath
+      .split(sep)
+      .slice(0, -2)
+      .concat(['pre-scripts', `${componentName}.js`])
+      .join(sep)
+    if (existsSync(presetScriptPath)) {
+      const modules = await import(presetScriptPath)
+      return (await modules?.default?.()) || false
+    }
+  } catch (error) {
+    console.log(error)
   }
 }
