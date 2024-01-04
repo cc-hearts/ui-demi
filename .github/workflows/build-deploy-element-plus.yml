@@ -35,7 +35,7 @@ jobs:
         with:
           folder: packages/element-plus/.vitepress/dist
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository-name: cc-hearts-ui-demi.github.io
+          repository-name: cc-hearts.github.io/element-plus
           target-folder: element-plus
           single-commit: true
           clean: true
