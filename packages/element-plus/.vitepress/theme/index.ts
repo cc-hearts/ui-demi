@@ -20,7 +20,6 @@ export default {
   enhanceApp({ app, router, siteData }) {
     // ...
     Object.entries({ ...Comp, ...Elp }).forEach(([name, component]) => {
-      console.log(name)
       app.component(name, component)
     })
 
