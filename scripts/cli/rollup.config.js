@@ -19,6 +19,6 @@ export default function () {
       rollupJson(),
       nodeResolve({ symlinks: false }),
     ],
-    external: ['inquirer'],
+    external: ['inquirer', 'commander'],
   }
 }

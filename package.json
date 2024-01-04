@@ -30,9 +30,15 @@
     "test": "vitest "
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@types/node": "^20.10.6",
     "husky": "^8.0.3",
-    "lint-staged": "^15.1.0",
-    "prettier": "^2.8.8"
+    "lint-staged": "^15.2.0",
+    "prettier": "^2.8.8",
+    "rollup": "^4.9.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.1"
   },
   "lint-staged": {
     "*.{vue,js,ts,jsx,tsx,json}": [
@@ -41,6 +47,7 @@
     "*.{md}": "prettier --write"
   },
   "dependencies": {
+    "commander": "^11.1.0",
     "inquirer": "^9.2.12"
   }
 }

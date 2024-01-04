@@ -1,11 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
-import { stat, readdir } from 'fs/promises'
+import { stat, readFile, readdir } from 'fs/promises'
 import { fileURLToPath } from 'url'
 import { resolve as resolve$1, join } from 'path'
 import inquirer from 'inquirer'
 import require$$0$2 from 'tty'
 import require$$1 from 'util'
 import require$$0$1 from 'os'
+import { Command } from 'commander'
 
 /**
  * Checks if the given path is a directory.
@@ -39,6 +40,77 @@ async function findUpFile(path, fileName) {
   }
   if (path === '/') return null
   return findUpFile(resolve$1(path, '..'), fileName)
+}
+/**
+ * Finds the nearest "package.json" file by traversing up the directory tree starting from the given path.
+ *
+ * @param {string} path - The starting path to search from.
+ * @return {Promise<string>} A Promise that resolves to the path of the nearest "package.json" file, or null if not found.
+ */
+async function findUpPkg(path) {
+  return findUpFile(path, 'package.json')
+}
+
+const _toString = Object.prototype.toString
+/**
+ * Checks if the given value is a function.
+ *
+ * @param {unknown} val - The value to be checked.
+ * @return {boolean} Returns true if the value is a function, false otherwise.
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+function isFn(val) {
+  return typeof val === 'function'
+}
+/**
+ * Checks if the given value is null.
+ *
+ * @param {unknown} val - The value to check.
+ * @return {boolean} Returns true if the value is null, false otherwise.
+ */
+function isNull(val) {
+  return val === null
+}
+/**
+ * Checks if a value is a Promise.
+ *
+ * @param {unknown} val - The value to check.
+ * @return {boolean} Returns `true` if the value is a Promise, else `false`.
+ */
+function isPromise(val) {
+  return (
+    typeof val === 'object' &&
+    !isNull(val) &&
+    (_toString.call(val) === '[object Promise]' ||
+      isFn(Reflect.get(val, 'then')))
+  )
+}
+
+const definePrams = (params, index) => {
+  if (index === 0 && Array.isArray(params)) {
+    return params
+  }
+  return [params]
+}
+/**
+ * Takes a series of functions and returns a new function that runs these functions in sequence.
+ * If a function returns a Promise, the next function is called with the resolved value.
+ *
+ * @param {...Array<fn>} fns - The functions to pipe.
+ * @returns {function} A new function that takes any number of arguments and pipes them through `fns`.
+ */
+function pipe(...fns) {
+  return (...args) => {
+    if (fns.length === 0) return args[0]
+    return fns.reduce((arg, fn, index) => {
+      if (isPromise(arg)) {
+        return arg.then((res) => {
+          return fn(...definePrams(res, index))
+        })
+      }
+      return fn(...definePrams(arg, index))
+    }, args)
+  }
 }
 
 var commonjsGlobal =
@@ -47841,12 +47913,12 @@ const expression$1 = {
   },
 }
 formatters$1.expression = expression$1
-const program$1 = {
+const program$2 = {
   code: (str) => str,
   validate: () => {},
   unwrap: (ast) => ast.program,
 }
-formatters$1.program = program$1
+formatters$1.program = program$2
 
 var builder = {}
 
@@ -48468,14 +48540,14 @@ const statements = (0, _builder.default)(formatters.statements)
 lib.statements = statements
 const expression = (0, _builder.default)(formatters.expression)
 lib.expression = expression
-const program = (0, _builder.default)(formatters.program)
-lib.program = program
+const program$1 = (0, _builder.default)(formatters.program)
+lib.program = program$1
 var _default$1 = Object.assign(smart.bind(undefined), {
   smart,
   statement,
   statements,
   expression,
-  program,
+  program: program$1,
   ast: smart.ast,
 })
 lib.default = _default$1
@@ -50083,8 +50155,10 @@ function requireRemoval() {
     Object.keys(bindings).forEach((name) => this.scope.removeBinding(name))
   }
   function _callRemovalHooks() {
-    for (const fn of _removalHooks.hooks) {
-      if (fn(this, this.parentPath)) return true
+    if (this.parentPath) {
+      for (const fn of _removalHooks.hooks) {
+        if (fn(this, this.parentPath)) return true
+      }
     }
   }
   function _remove() {
@@ -51525,6 +51599,28 @@ function genComponentPrompt(choices) {
   }
 }
 
+const program = new Command()
+async function initHelp() {
+  const rootPkgPath = await findUpPkg(
+    resolve$1(fileURLToPath(import.meta.url), '../../../')
+  )
+  if (!rootPkgPath) {
+    throw new Error('not find package.json: ' + rootPkgPath)
+  }
+  try {
+    let pkg = await readFile(rootPkgPath, 'utf-8')
+    pkg = JSON.parse(pkg)
+    program
+      .name('ui-demi')
+      // @ts-ignore
+      .version(pkg.version)
+      .usage('[options]')
+      .option('--dry-run', 'dry run')
+    program.parse()
+  } catch (e) {}
+}
+const getArgvOptions = () => program.opts()
+
 function readTemplateDirConfig(rootPath) {
   return templateDir.map((target) => {
     return {
@@ -51579,6 +51675,12 @@ async function getComponentFilePaths(
   }
 }
 function writeComponentFile(componentPath, relativePath, dirname) {
+  // dry run output to console
+  const { dryRun } = getArgvOptions() || {}
+  if (dryRun) {
+    console.log(`dry run write file: ${relativePath}`)
+    return
+  }
   mkdirSync(relativePath, { recursive: true })
   const writeFilePath = resolve$1(relativePath, dirname)
   let files = readFileSync(componentPath, 'utf-8')
@@ -51614,4 +51716,4 @@ async function prompt() {
     console.error(error)
   }
 }
-prompt()
+pipe(initHelp, prompt)()

@@ -1,25 +1,26 @@
-// https://vitepress.dev/guide/custom-theme
 import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import './style.css'
+import CustomTheme from './custom-theme.vue'
 import * as Comp from '../../src/components/index'
-// Demo组件和DemoBlock是两个vue组件，等会我们要在md文件中使用他来展示组件
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
-
-import Demo from 'vitepress-theme-demoblock/dist/client/components/Demo.vue'
+import * as Elp from './elp'
 import DemoBlock from 'vitepress-theme-demoblock/dist/client/components/DemoBlock.vue'
+import Demo from 'vitepress-theme-demoblock/dist/client/components/Demo.vue'
+import './style.css'
+import './override-ui.css'
 
 export default {
   extends: DefaultTheme,
   Layout: () => {
-    return h(DefaultTheme.Layout, null, {
+    return h(CustomTheme, null, {
       // https://vitepress.dev/guide/extending-default-theme#layout-slots
     })
   },
   enhanceApp({ app, router, siteData }) {
     // ...
-    Object.entries(Comp).forEach(([name, component]) => {
+    Object.entries({ ...Comp, ...Elp }).forEach(([name, component]) => {
+      console.log(name)
       app.component(name, component)
     })
 

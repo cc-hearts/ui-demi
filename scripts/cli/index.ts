@@ -1,5 +1,6 @@
 import { findUpFile } from '@cc-heart/utils-service'
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { pipe } from '@cc-heart/utils'
 import { readdir } from 'fs/promises'
 import inquirer from 'inquirer'
 import { join, resolve } from 'path'
@@ -7,6 +8,7 @@ import { fileURLToPath } from 'url'
 import { replaceImport } from './compile/replace-import.js'
 import { templateDir } from './config.js'
 import { genComponentPrompt, genSelectTemplatePrompt } from './prompt.js'
+import { initHelp, getArgvOptions } from './commander.js'
 
 function readTemplateDirConfig(rootPath: string) {
   return templateDir.map((target) => {
@@ -70,10 +72,10 @@ function writeComponentFile(
   relativePath: string,
   dirname: string
 ) {
-  const dryRun = false
   // dry run output to console
+  const { dryRun } = getArgvOptions() || {}
   if (dryRun) {
-    console.log(`write file: ${relativePath}`)
+    console.log(`dry run write file: ${relativePath}`)
     return
   }
   mkdirSync(relativePath, { recursive: true })
@@ -85,7 +87,6 @@ function writeComponentFile(
   }
 
   writeFileSync(writeFilePath, files, 'utf-8')
-
   console.log(`write file: ${writeFilePath}`)
 }
 
@@ -120,4 +121,4 @@ async function prompt() {
   }
 }
 
-prompt()
+pipe(initHelp, prompt)()
