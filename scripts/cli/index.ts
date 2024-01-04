@@ -1,9 +1,9 @@
 import { findUpFile } from '@cc-heart/utils-service'
-import { mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pipe } from '@cc-heart/utils'
 import { readdir } from 'fs/promises'
 import inquirer from 'inquirer'
-import { join, resolve } from 'path'
+import { join, resolve, sep } from 'path'
 import { fileURLToPath } from 'url'
 import { replaceImport } from './compile/replace-import.js'
 import { templateDir } from './config.js'
@@ -113,6 +113,7 @@ async function prompt() {
     const { selectComponents } = await inquirer.prompt([componentPrompt])
 
     const componentPaths = await getComponentFilePaths(selectComponents)
+    tryRunPresetScript(selectComponents)
     componentPaths.forEach((config) => {
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })
@@ -122,3 +123,21 @@ async function prompt() {
 }
 
 pipe(initHelp, prompt)()
+
+async function tryRunPresetScript(componentModulePath: string) {
+  try {
+    const componentName = componentModulePath.split(sep).pop()
+    if (!componentName) {
+      return
+    }
+    const presetScriptPath = componentModulePath
+      .split(sep)
+      .slice(0, -2)
+      .concat(['pre-scripts', `${componentName}.js`])
+      .join(sep)
+    if (existsSync(presetScriptPath)) {
+      const modules = await import(presetScriptPath)
+      await modules?.default?.()
+    }
+  } catch (error) {}
+}
