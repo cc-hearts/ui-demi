@@ -33,9 +33,10 @@ jobs:
       - name: Deploy to element-plus branch
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
+          branch: ui-demi-docs
           folder: packages/element-plus/.vitepress/dist
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository-name: cc-hearts.github.io/element-plus
+          repository-name: cc-hearts/ui-demi
           target-folder: element-plus
           single-commit: true
           clean: true
