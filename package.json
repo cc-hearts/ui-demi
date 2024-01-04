@@ -28,6 +28,7 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "test": "vitest ",
+    "build:vue-utils": "pnpm --filter vue-utils run build",
     "build:element-plus": "pnpm --filter element-plus run build"
   },
   "devDependencies": {
