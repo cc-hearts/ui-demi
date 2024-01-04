@@ -27,7 +27,8 @@
   "scripts": {
     "format": "prettier --write .",
     "prepare": "husky install",
-    "test": "vitest "
+    "test": "vitest ",
+    "build:element-plus": "pnpm --filter element-plus run build"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
