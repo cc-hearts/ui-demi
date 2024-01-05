@@ -6,7 +6,7 @@ import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
 export default defineConfig({
   title: "ui-demi/element-plus",
   description: "A VitePress Site",
-  base: './',
+  base: '/ui-demi/element-plus',
   markdown: {
     config: md => {
       md.use(demoblockPlugin)
