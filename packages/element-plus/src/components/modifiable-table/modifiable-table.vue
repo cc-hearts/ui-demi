@@ -1,43 +1,14 @@
 <script setup lang="ts">
-import { PropType, ref } from 'vue'
+import { ref } from 'vue'
+import { _props } from './helper'
 
-interface Column {
-  label: string
-  prop: string
-  width?: string
-  align?: string
-  slot?: { name: string }
-  labelSlot?: { name: string }
-}
-
-defineOptions({ name: 'DynamicTable' })
-
-const props = defineProps({
-  modalValue: {
-    type: Array,
-    default: () => [],
-  },
-  originData: {
-    type: [Object, Function],
-    default: () => ({}),
-  },
-  columns: {
-    type: Array as PropType<Array<Column>>,
-    default: () => [],
-  },
-  onWillRemoveRow: {
-    type: Function,
-    default: () => true,
-  },
-})
+defineOptions({ name: 'ModifiableTable' })
+const props = defineProps(_props)
 
 const dataSource = ref([] as Array<(typeof props)['originData']>)
-
 const getDataSource = () => {
   return dataSource
 }
-
-defineExpose({ getDataSource })
 
 const handleAddTableColumn = () => {
   const newColumn =
@@ -46,14 +17,18 @@ const handleAddTableColumn = () => {
       : {
           ...props.originData,
         }
+
   dataSource.value.push(newColumn)
 }
 
 const removeTableColumn = (index: number) => {
   const bool = props.onWillRemoveRow()
   if (!bool) return
+
   dataSource.value.splice(index, 1)
 }
+
+defineExpose({ getDataSource })
 </script>
 <template>
   <div>
@@ -64,6 +39,11 @@ const removeTableColumn = (index: number) => {
     </slot>
 
     <el-table :data="dataSource">
+      <template #empty>
+        <slot name="empty">
+          <el-empty />
+        </slot>
+      </template>
       <template v-for="item in columns" :key="item.prop">
         <el-table-column
           :align="item.align || 'center'"
@@ -80,9 +60,12 @@ const removeTableColumn = (index: number) => {
       </template>
 
       <slot name="action">
-        <el-table-column label="操作">
+        <el-table-column
+          :label="defaultActionColumnLabel"
+          v-if="useDefaultActionSlot"
+        >
           <template #default="{ $index }">
-            <el-button danger @click="removeTableColumn($index)">
+            <el-button type="danger" @click="removeTableColumn($index)">
               删除</el-button
             >
           </template>

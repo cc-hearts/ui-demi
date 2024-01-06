@@ -1,39 +1,20 @@
 <script setup lang="ts">
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus'
-import { PropType } from 'vue'
-defineOptions({
-  name: 'Description',
-})
+import { _props } from './helper'
 
-interface Column {
-  label: string
-  field: string
-  value: any
-  span?: number
-  slot?: { name: string }
-}
-defineProps({
-  count: {
-    type: Number,
-    default: 3,
-  },
-  column: {
-    type: Array as PropType<Array<Column>>,
-    default: () => [],
-  },
-  border: {
-    type: Boolean,
-    default: true,
-  },
-})
+defineOptions({ name: 'Description' })
+defineProps(_props)
 </script>
 
 <template>
   <el-descriptions :column="count" :border="border">
-    <template v-for="item in column" :key="item.field">
+    <template v-for="item in descriptionItems" :key="item.field">
       <el-descriptions-item :span="item.span" :label="item.label">
-        <template v-if="item.slot" :data="item">
-          <slot :name="item.slot.name" :data="item"></slot>
+        <template v-if="item.labelSlot" #label>
+          <slot :name="item.labelSlot.name" :data="item" />
+        </template>
+        <template v-if="item.slot">
+          <slot :name="item.slot.name" :data="item" />
         </template>
         <template v-else>
           {{ item.value }}

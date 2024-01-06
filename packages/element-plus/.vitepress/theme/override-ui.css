@@ -1,3 +1,21 @@
- .vp-doc .el-descriptions tr:nth-child(2n) {
+.vp-doc .el-descriptions tr:nth-child(2n) {
   background-color: transparent;
+}
+
+.el-table__header-wrapper {
+  min-height: auto;
+  min-width: auto;
+}
+
+.vp-doc .el-table table {
+  margin: 0;
+}
+
+.vp-doc .el-table tr {
+  border-top: 0;
+}
+
+.vp-doc .el-table th,
+.vp-doc .el-table td {
+  border: none;
 }

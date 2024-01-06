@@ -28,26 +28,13 @@
 <script setup lang="ts">
 import { ElCollapseTransition } from 'element-plus'
 import ArrowDownIcon from './arrow-down-icon.vue'
-import 'element-plus/theme-chalk/base.css'
+import { _props } from './helper'
 import { useVModel } from '@vueuse/core'
 
-defineOptions({
-  name: 'CollapseCard',
-})
-
-const props = defineProps({
-  title: {
-    type: String,
-    default: '',
-  },
-  visible: {
-    type: Boolean,
-    default: false,
-  },
-})
+const props = defineProps(_props)
+defineOptions({ name: 'CollapseCard' })
 
 const isCollapse = useVModel(props, 'visible')
-
 const handleToggleCollapse = () => {
   isCollapse.value = !isCollapse.value
 }

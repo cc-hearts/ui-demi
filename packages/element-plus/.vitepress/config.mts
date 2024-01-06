@@ -1,20 +1,32 @@
+import { readdirSync } from 'fs'
+import { resolve } from 'path'
 import { defineConfig } from 'vitepress'
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
 
+const sidebarItems = readdirSync(resolve(process.cwd(), './src/docs'), {
+  withFileTypes: true,
+})
 
+const sidebar = sidebarItems
+  .filter((_) => _.isFile())
+  .map((item) => {
+    const name = item.name.replace('.md', '')
+
+    return { text: name, link: `/src/docs/${name}` }
+  })
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "ui-demi/element-plus",
-  description: "A VitePress Site",
+  title: 'ui-demi/element-plus',
+  description: 'A VitePress Site',
   base: '/ui-demi/element-plus',
   markdown: {
-    config: md => {
+    config: (md) => {
       md.use(demoblockPlugin)
     },
   },
   vite: {
     // @ts-ignore
-    plugins: [demoblockVitePlugin()]
+    plugins: [demoblockVitePlugin()],
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -25,15 +37,12 @@ export default defineConfig({
     sidebar: [
       {
         text: 'Component',
-        items: [
-          { text: 'CollapseCard', link: '/src/docs/collapse-card' },
-          { text: 'Description', link: '/src/docs/description' },
-        ]
-      }
+        items: [...sidebar],
+      },
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/cc-hearts/ui-demi.git' }
-    ]
-  }
+      { icon: 'github', link: 'https://github.com/cc-hearts/ui-demi.git' },
+    ],
+  },
 })
