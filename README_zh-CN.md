@@ -2,6 +2,10 @@
 
 ui-demi 是一个用于对前端各种 UI 库进行二次封装的项目，旨在提供独立的组件，并通过命令行工具将这些组件集成到业务中。
 
+## 文档
+
+- [element-plus](https://cc-hearts.github.io/ui-demi/element-plus)
+
 ## 功能特性
 
 - 封装常用 UI 库的组件，提供统一的接口
