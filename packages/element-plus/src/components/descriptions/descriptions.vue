@@ -2,7 +2,7 @@
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus'
 import { _props } from './helper'
 
-defineOptions({ name: 'Description' })
+defineOptions({ name: 'Descriptions' })
 defineProps(_props)
 </script>
 

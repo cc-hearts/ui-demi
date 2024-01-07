@@ -65,3 +65,13 @@ const descriptionItems = ref([
 ```
 
 :::
+
+## API
+
+### Props
+
+| 参数             | 描述           | 类型                     | 默认值 |
+| ---------------- | -------------- | ------------------------ | ------ |
+| count            | 每行显示的数量 | number                   | 3      |
+| descriptionItems | 配置描述       | Array\<DescriptionItem\> | []     |
+| border           | 是否显示边框   | boolean                  | true   |

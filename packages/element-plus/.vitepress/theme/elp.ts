@@ -9,4 +9,5 @@ export {
   ElButton,
   ElEmpty,
   ElTableColumn,
+  ElInput,
 } from 'element-plus'

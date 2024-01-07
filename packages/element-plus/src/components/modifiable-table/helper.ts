@@ -1,4 +1,5 @@
-import { PropType } from 'vue'
+import { PropType, type UnwrapRef } from 'vue'
+import { ElTable } from 'element-plus'
 
 export const VERSION = '0.0.1'
 
@@ -11,9 +12,19 @@ export interface Column {
   labelSlot?: { name: string }
 }
 
+export interface RowSelectionOptions<T extends Record<PropertyKey, unknown>> {
+  type?: 'radio' | 'checkbox'
+  rowKey?: string
+  tableRef?: Ref<typeof ElTable>
+  dataSource?: Ref<Array<T>>
+  watchDataSourceChangeRefreshSelection?: boolean
+}
+
 export const _props = {
   originData: {
-    type: [Object, Function],
+    type: [Object, Function] as PropType<
+      Record<PropertyKey, unknown> | (() => Record<PropertyKey, unknown>)
+    >,
     default: () => ({}),
   },
   columns: {
@@ -30,6 +41,16 @@ export const _props = {
   },
   defaultActionColumnLabel: {
     type: String,
-    default: '操作',
+    default: 'action',
   },
 }
+
+export type RemoveUndefined<T> = T extends T
+  ? T extends undefined
+    ? never
+    : T
+  : never
+
+export type SelectNodes<
+  T extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>
+> = RemoveUndefined<UnwrapRef<RowSelectionOptions<T>['dataSource']>>

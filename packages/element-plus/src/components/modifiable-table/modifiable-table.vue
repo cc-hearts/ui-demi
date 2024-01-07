@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { _props } from './helper'
+import { ElTable } from 'element-plus'
+import { useTableSelection } from './use-table-selection'
 
 defineOptions({ name: 'ModifiableTable' })
 const props = defineProps(_props)
+const tableRef = ref()
+const dataSource = ref([] as Array<Record<PropertyKey, unknown>>)
 
-const dataSource = ref([] as Array<(typeof props)['originData']>)
 const getDataSource = () => {
   return dataSource
 }
+
+const { onRowSelectionChange, toggleAllSelection, exposeRowSelectionFactory } =
+  useTableSelection({
+    dataSource,
+    tableRef,
+  })
 
 const handleAddTableColumn = () => {
   const newColumn =
@@ -28,17 +37,26 @@ const removeTableColumn = (index: number) => {
   dataSource.value.splice(index, 1)
 }
 
-defineExpose({ getDataSource })
+defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
 </script>
 <template>
-  <div>
+  <div class="modifiable-table">
     <slot name="header">
-      <div class="p-2 text-right">
-        <el-button @click="handleAddTableColumn"> 新增 </el-button>
+      <div class="modifiable-table__action">
+        <el-button type="primary" @click="handleAddTableColumn">
+          新增
+        </el-button>
       </div>
     </slot>
 
-    <el-table :data="dataSource">
+    <el-table
+      ref="tableRef"
+      @select="onRowSelectionChange"
+      @select-all="toggleAllSelection"
+      :data="dataSource"
+    >
+      <el-table-column type="selection" />
+
       <template #empty>
         <slot name="empty">
           <el-empty />
@@ -74,3 +92,13 @@ defineExpose({ getDataSource })
     </el-table>
   </div>
 </template>
+
+<style lang="scss">
+.modifiable-table {
+  --modifiable-table-padding: 12px 0;
+
+  &__action {
+    padding: var(--modifiable-table-padding);
+  }
+}
+</style>
