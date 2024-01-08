@@ -43,6 +43,10 @@ export const _props = {
     type: String,
     default: 'action',
   },
+  selectType: {
+    type: String as PropType<'radio' | 'checkbox'>,
+    default: 'checkbox',
+  },
 }
 
 export type RemoveUndefined<T> = T extends T

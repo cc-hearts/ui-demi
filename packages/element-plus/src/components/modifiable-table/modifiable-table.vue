@@ -17,6 +17,7 @@ const { onRowSelectionChange, toggleAllSelection, exposeRowSelectionFactory } =
   useTableSelection({
     dataSource,
     tableRef,
+    type: props.selectType,
   })
 
 const handleAddTableColumn = () => {
