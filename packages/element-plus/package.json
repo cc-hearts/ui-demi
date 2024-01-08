@@ -2,7 +2,7 @@
   "name": "@packages/element-plus",
   "version": "0.0.1",
   "type": "module",
-  "author": "cc heart",
+  "author": "carl chen",
   "license": "MIT",
   "scripts": {
     "dev": "vitepress dev",

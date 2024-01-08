@@ -12,7 +12,7 @@
   "bin": {
     "ui-demi": "./scripts/cli/bin/app.mjs"
   },
-  "author": "cc heart",
+  "author": "carl chen",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/cc-hearts/ui-demi/issues"

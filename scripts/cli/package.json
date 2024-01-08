@@ -10,7 +10,7 @@
     "test": "vitest"
   },
   "keywords": [],
-  "author": "cc heart",
+  "author": "carl chen",
   "license": "MIT",
   "devDependencies": {
     "@babel/generator": "^7.23.6",
