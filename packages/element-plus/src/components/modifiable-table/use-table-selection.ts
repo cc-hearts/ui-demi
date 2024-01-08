@@ -34,8 +34,7 @@ export function useTableSelection<T extends Record<PropertyKey, unknown>>(
     if (type === 'radio') {
       rowSelection.selectNodes = nodes = rows.slice(-1)
     } else {
-      // multiple selection checkbox
-      // TODO:
+      rowSelection.selectNodes = nodes = [...rows]
     }
 
     if (tableRef) {
