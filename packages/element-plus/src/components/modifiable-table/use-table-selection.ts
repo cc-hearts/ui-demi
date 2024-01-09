@@ -1,5 +1,5 @@
-import type { SelectNodes, RowSelectionOptions } from './helper'
-import { watch, shallowReactive } from 'vue'
+import { shallowReactive, watch } from 'vue'
+import type { RowSelectionOptions, SelectNodes } from './helper'
 
 export function useTableSelection<T extends Record<PropertyKey, unknown>>(
   options: RowSelectionOptions<T> = {}
@@ -64,11 +64,23 @@ export function useTableSelection<T extends Record<PropertyKey, unknown>>(
     return { getRowSelection: () => rowSelection }
   }
 
-  const toggleAllSelection = () => {
+  const toggleAllSelection = (rows: SelectNodes<T>) => {
     const { type } = getOptionWithDefaultValue()
     if (type === 'radio') {
       clearSelection()
       return
+    } else {
+      rowSelection.selectNodes = [...rows]
+    }
+  }
+
+  const removeRowSelectionByRowKey = (rowKey: unknown) => {
+    const { rowKey: key } = getOptionWithDefaultValue()
+    const index = rowSelection.selectNodes.findIndex(
+      (node) => node[key] === rowKey
+    )
+    if (index > -1) {
+      rowSelection.selectNodes.splice(index, 1)
     }
   }
 
@@ -83,10 +95,11 @@ export function useTableSelection<T extends Record<PropertyKey, unknown>>(
 
   return {
     rowSelection,
-    onRowSelectionChange,
     clearSelection,
-    toggleAllSelection,
     refreshSelection,
+    toggleAllSelection,
+    onRowSelectionChange,
+    removeRowSelectionByRowKey,
     exposeRowSelectionFactory,
   }
 }

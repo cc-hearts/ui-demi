@@ -13,12 +13,18 @@ const getDataSource = () => {
   return dataSource
 }
 
-const { onRowSelectionChange, toggleAllSelection, exposeRowSelectionFactory } =
-  useTableSelection({
-    dataSource,
-    tableRef,
-    type: props.selectType,
-  })
+const {
+  rowSelection,
+  onRowSelectionChange,
+  toggleAllSelection,
+  exposeRowSelectionFactory,
+  removeRowSelectionByRowKey,
+} = useTableSelection({
+  dataSource,
+  tableRef,
+  type: props.selectType,
+  rowKey: props.rowKey,
+})
 
 const handleAddTableColumn = () => {
   const newColumn =
@@ -35,7 +41,15 @@ const removeTableColumn = (index: number) => {
   const bool = props.onWillRemoveRow()
   if (!bool) return
 
-  dataSource.value.splice(index, 1)
+  const [row] = dataSource.value.splice(index, 1)
+  removeRowSelectionByRowKey(row[props.rowKey])
+}
+
+const removeSelectiveTableColumn = () => {
+  const ids = rowSelection.selectNodes.map((option) => option[props.rowKey])
+  dataSource.value = dataSource.value.filter(
+    (item) => !ids.includes(item[props.rowKey])
+  )
 }
 
 defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
@@ -45,7 +59,11 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
     <slot name="header">
       <div class="modifiable-table__action">
         <el-button type="primary" @click="handleAddTableColumn">
-          新增
+          新 增
+        </el-button>
+
+        <el-button type="danger" @click="removeSelectiveTableColumn">
+          删 除
         </el-button>
       </div>
     </slot>

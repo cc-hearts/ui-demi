@@ -14,7 +14,7 @@ export interface Column {
 
 export interface RowSelectionOptions<T extends Record<PropertyKey, unknown>> {
   type?: 'radio' | 'checkbox'
-  rowKey?: string
+  rowKey?: PropertyKey
   tableRef?: Ref<typeof ElTable>
   dataSource?: Ref<Array<T>>
   watchDataSourceChangeRefreshSelection?: boolean
@@ -46,6 +46,10 @@ export const _props = {
   selectType: {
     type: String as PropType<'radio' | 'checkbox'>,
     default: 'checkbox',
+  },
+  rowKey: {
+    type: [String, Number] as PropType<PropertyKey>,
+    default: 'id',
   },
 }
 
