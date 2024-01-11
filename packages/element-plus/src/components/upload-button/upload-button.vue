@@ -1,46 +1,16 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { UploadRequestOptions, ElMessage } from 'element-plus'
 import ButtonUploadIcon from './upload-button-icon.vue'
-const props = defineProps({
-  text: {
-    type: String,
-    default: '上传',
-  },
-  modelValue: {
-    type: Array,
-    default: () => [],
-  },
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  url: {
-    type: String,
-    default: '',
-  },
-  limit: {
-    type: Number,
-    default: 1,
-  },
-  onSuccess: {
-    type: Function,
-    required: true,
-    default: () => ({}),
-  },
-  uploadHeaders: {
-    type: Object,
-    default: () => ({}),
-  },
-  extraData: {
-    type: Function,
-    default: () => ({}),
-  },
-})
+import { useVModel } from '@vueuse/core'
+import { _props } from './helper'
+
+const props = defineProps(_props)
 
 const uploadRef = ref()
-const url = props.url || '<your_url>'
+const url = computed(() => props.url || '#')
 const uploadData = ref({ filename: '' })
-const fileList = ref([])
+const fileList = useVModel(props, 'fileList')
 const loading = ref(false)
 
 const closeLoading = () => {
@@ -72,6 +42,7 @@ const handleError = () => {
 
 const beforeUpload = () => {
   loading.value = true
+  // TODO:
   return true
 }
 </script>

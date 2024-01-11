@@ -9,6 +9,12 @@
 
 .vp-doc .el-table table {
   margin: 0;
+
+}
+
+.vp-doc:is(:not(.el-table)) table {
+  width: 100%;
+  display: table;
 }
 
 .vp-doc .el-table tr {
