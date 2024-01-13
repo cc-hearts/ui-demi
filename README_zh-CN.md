@@ -5,6 +5,7 @@ ui-demi 是一个用于对前端各种 UI 库进行二次封装的项目，旨�
 ## 文档
 
 - [element-plus](https://cc-hearts.github.io/ui-demi/element-plus)
+- [ant-design-vue](https://cc-hearts.github.io/ui-demi/ant-design-vue)
 
 ## 功能特性
 

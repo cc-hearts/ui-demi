@@ -5,6 +5,7 @@ ui-demi is a project for secondary packaging of various UI libraries for the fro
 ## Docs
 
 - [element-plus](https://cc-hearts.github.io/ui-demi/element-plus)
+- [ant-design-vue](https://cc-hearts.github.io/ui-demi/ant-design-vue)
 
 ## Feature
 
