@@ -7,7 +7,8 @@
     "url": "git+https://github.com/cc-hearts/ui-demi.git"
   },
   "keywords": [
-    "element-plus"
+    "element-plus",
+    "ant-design-vue"
   ],
   "bin": {
     "ui-demi": "./scripts/cli/bin/app.mjs"
@@ -29,7 +30,8 @@
     "prepare": "husky install",
     "test": "vitest ",
     "build:vue-utils": "pnpm --filter vue-utils run build",
-    "build:element-plus": "pnpm --filter element-plus run build"
+    "build:element-plus": "pnpm --filter element-plus run build",
+    "build:ant-design-vue": "pnpm --filter ant-design-vue run build"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -40,7 +42,8 @@
     "rollup": "^4.9.2",
     "rollup-plugin-typescript2": "^0.36.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.1"
+    "vitest": "^1.1.1",
+    "vuedraggable": "^2.24.3"
   },
   "lint-staged": {
     "*.{vue,js,ts,jsx,tsx,json}": [
@@ -49,6 +52,7 @@
     "*.{md}": "prettier --write"
   },
   "dependencies": {
+    "@cc-heart/utils": "^5.1.1",
     "commander": "^11.1.0",
     "inquirer": "^9.2.12"
   }
