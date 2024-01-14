@@ -3,3 +3,5 @@ dist/
 **/*.log
 *.yaml
 package.json
+
+cache/

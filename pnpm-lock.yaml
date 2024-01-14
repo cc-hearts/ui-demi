@@ -45,9 +45,6 @@ importers:
       vitest:
         specifier: ^1.1.1
         version: 1.1.1(@types/node@20.10.6)
-      vuedraggable:
-        specifier: ^2.24.3
-        version: 2.24.3
 
   packages/_utils:
     devDependencies:
@@ -60,15 +57,21 @@ importers:
       '@packages/vue-utils':
         specifier: workspace:^
         version: link:../vue-utils
+      unocss:
+        specifier: ^0.51.13
+        version: 0.51.13(postcss@8.4.32)(rollup@4.9.2)(vite@4.5.0)
       vitepress:
         specifier: 1.0.0-rc.33
-        version: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(search-insights@2.13.0)(typescript@5.3.3)
+        version: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(postcss@8.4.32)(search-insights@2.13.0)(typescript@5.3.3)
       vitepress-theme-demoblock:
         specifier: ^3.0.3
-        version: 3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(search-insights@2.13.0)(typescript@5.3.3)
+        version: 3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(postcss@8.4.32)(search-insights@2.13.0)(typescript@5.3.3)
       vue:
         specifier: ^3.3.9
         version: 3.4.0(typescript@5.3.3)
+      vuedraggable:
+        specifier: ^4.1.0
+        version: 4.1.0(vue@3.4.0)
     devDependencies:
       '@ant-design/icons-vue':
         specifier: ^7.0.1
@@ -1955,6 +1958,7 @@ packages:
     resolution: {integrity: sha512-D0WfRmU9TQ8I9PFx9Yc+EBHw+vSpIub4IDvQivcp26PtPrdMGAq5SDcpXEo/epqa/DXotVpekHiLNTg3iaKXBQ==}
     dependencies:
       undici-types: 5.26.5
+    dev: true
 
   /@types/node@20.10.6:
     resolution: {integrity: sha512-Vac8H+NlRNNlAmDfGUP7b5h/KA+AtWIzuXy0E6OyP8f1tCLYAtPvKRRDJjAPqhpCb0t6U2j7/xqAuLEebW2kiw==}
@@ -2307,7 +2311,7 @@ packages:
       chokidar: 3.5.3
       fast-glob: 3.3.2
       magic-string: 0.30.5
-      vite: 4.5.0(@types/node@20.10.0)(sass@1.69.5)
+      vite: 4.5.0(@types/node@20.10.6)
     transitivePeerDependencies:
       - rollup
     dev: false
@@ -4043,6 +4047,7 @@ packages:
 
   /immutable@4.3.4:
     resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}
+    dev: true
 
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
@@ -5470,6 +5475,7 @@ packages:
       chokidar: 3.5.3
       immutable: 4.3.4
       source-map-js: 1.0.2
+    dev: true
 
   /scroll-into-view-if-needed@2.2.31:
     resolution: {integrity: sha512-dGCXy99wZQivjmjIqihaBQNjryrz5rueJY7eHfTdyWEiR4ttYpsajb14rn9s5d4DY4EcY6+4+U/maARBXJedkA==}
@@ -5604,9 +5610,9 @@ packages:
       is-fullwidth-code-point: 5.0.0
     dev: true
 
-  /sortablejs@1.10.2:
-    resolution: {integrity: sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==}
-    dev: true
+  /sortablejs@1.14.0:
+    resolution: {integrity: sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==}
+    dev: false
 
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
@@ -6173,6 +6179,43 @@ packages:
       sass: 1.69.5
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
+
+  /vite@4.5.0(@types/node@20.10.6):
+    resolution: {integrity: sha512-ulr8rNLA6rkyFAlVWw2q5YJ91v098AFQ2R0PRFwPzREXOUJQPtFUG0t+/ZikhaOCDqFoDhN6/v8Sq0o4araFAw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 20.10.6
+      esbuild: 0.18.20
+      postcss: 8.4.31
+      rollup: 3.29.4
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: false
 
   /vite@5.0.10(@types/node@20.10.0)(sass@1.69.5):
     resolution: {integrity: sha512-2P8J7WWgmc355HUMlFrwofacvr98DAjoE52BfdbwQtyLH06XKwaL/FMnmKM2crF0iX4MpmMKoDlNCB1ok7zHCw==}
@@ -6306,7 +6349,7 @@ packages:
       - universal-cookie
     dev: true
 
-  /vitepress-theme-demoblock@3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(search-insights@2.13.0)(typescript@5.3.3):
+  /vitepress-theme-demoblock@3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(postcss@8.4.32)(search-insights@2.13.0)(typescript@5.3.3):
     resolution: {integrity: sha512-LmHvoffRnqVvhYie6spOQhA42+Rwxu6/9N1pTADwEufJ/U+GZ4oC00518/6I67bklx1E+NZWrA3G47Y5azRGXw==}
     engines: {node: '>=16.0.0'}
     hasBin: true
@@ -6332,7 +6375,7 @@ packages:
       shiki: 0.14.7
       unified: 10.1.2
       unist-util-visit: 4.1.2
-      vitepress: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(search-insights@2.13.0)(typescript@5.3.3)
+      vitepress: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(postcss@8.4.32)(search-insights@2.13.0)(typescript@5.3.3)
       vue: 3.4.0(typescript@5.3.3)
       yaml: 2.3.4
     transitivePeerDependencies:
@@ -6422,7 +6465,7 @@ packages:
       - universal-cookie
     dev: true
 
-  /vitepress@1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(search-insights@2.13.0)(typescript@5.3.3):
+  /vitepress@1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(postcss@8.4.32)(search-insights@2.13.0)(typescript@5.3.3):
     resolution: {integrity: sha512-XMwr5eXEB3KB1uCuOkojVaqsVSijmd6N9QmaM2M6aqJqzXzxNwuvWSiEGYl4qbwRAX6/nFRofhx9+FndtCNjGQ==}
     hasBin: true
     peerDependencies:
@@ -6445,6 +6488,7 @@ packages:
       mark.js: 8.11.1
       minisearch: 6.3.0
       mrmime: 2.0.0
+      postcss: 8.4.32
       shikiji: 0.9.13
       shikiji-transformers: 0.9.13
       vite: 5.0.10(@types/node@20.10.6)
@@ -6697,11 +6741,14 @@ packages:
       '@vue/shared': 3.4.0
       typescript: 5.3.3
 
-  /vuedraggable@2.24.3:
-    resolution: {integrity: sha512-6/HDXi92GzB+Hcs9fC6PAAozK1RLt1ewPTLjK0anTYguXLAeySDmcnqE8IC0xa7shvSzRjQXq3/+dsZ7ETGF3g==}
+  /vuedraggable@4.1.0(vue@3.4.0):
+    resolution: {integrity: sha512-FU5HCWBmsf20GpP3eudURW3WdWTKIbEIQxh9/8GE806hydR9qZqRRxRE3RjqX7PkuLuMQG/A7n3cfj9rCEchww==}
+    peerDependencies:
+      vue: ^3.0.1
     dependencies:
-      sortablejs: 1.10.2
-    dev: true
+      sortablejs: 1.14.0
+      vue: 3.4.0(typescript@5.3.3)
+    dev: false
 
   /warning@4.0.3:
     resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}

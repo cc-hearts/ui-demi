@@ -9,6 +9,7 @@ import DemoBlock from 'vitepress-theme-demoblock/dist/client/components/DemoBloc
 import Demo from 'vitepress-theme-demoblock/dist/client/components/Demo.vue'
 import './style.css'
 import './override-ui.css'
+import 'uno.css'
 
 export default {
   extends: DefaultTheme,
@@ -19,10 +20,11 @@ export default {
   },
   enhanceApp({ app, router, siteData }) {
     // ...
-    Object.entries({ ...Comp, ...Antd }).forEach(([name, component]) => {
+    Object.entries({ ...Comp }).forEach(([name, component]) => {
       app.component(name, component)
     })
 
+    app.use(Antd)
     app.component('Demo', Demo)
     app.component('DemoBlock', DemoBlock)
   },

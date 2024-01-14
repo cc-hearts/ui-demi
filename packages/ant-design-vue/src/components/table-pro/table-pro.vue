@@ -1,62 +1,44 @@
 <script setup lang="ts">
-import { reactive, onMounted, watchEffect, computed } from 'vue'
 import { SettingOutlined, SyncOutlined } from '@ant-design/icons-vue'
-import { TableColumnType } from 'ant-design-vue'
-import { DataIndex } from 'ant-design-vue/es/vc-table/interface'
+import { onMounted, reactive, toRef, watchEffect } from 'vue'
+import { noop, type TableProps } from './helper'
 import TableColumnAction from './table-columns-action.vue'
-import { RowSelection, noop, type TableProps } from './helper'
+import { useColumnSort } from './use-column-sort'
+import { usePagination } from './use-pagination'
+import { useRowSelection } from './use-row-selection'
 
-const props = withDefaults(defineProps<TableProps>(), {
+defineOptions({ name: 'TablePro' })
+
+const props = withDefaults(defineProps<Partial<TableProps>>(), {
   columns: () => [],
   bordered: false,
   total: 0,
   dataSource: () => [],
   loadData: noop,
   rowSelection: null,
-  rowKey: 'id',
+  rowKey: 'key',
 })
 
-const state = reactive({
+const tableProps = reactive({
   loading: false,
-  columnSetting: [] as any[],
-  showColumnIds: [] as DataIndex[],
-})
-
-const selections = reactive(<RowSelection<any, string>>{
-  selectedRowKeys: [],
-  selectedRows: [],
-  onChange: (selectedRowKeys, selectedRows) => {
-    selections.selectedRowKeys = selectedRowKeys
-    selections.selectedRows = selectedRows
-  },
-})
-
-function getSelectedLength() {
-  return (
-    props.rowSelection?.selectedRowKeys?.length ||
-    selections.selectedRowKeys.length
-  )
-}
-const pagination = reactive({
-  current: 1,
-  pageSize: 10,
-  total: 0,
-  showSizeChanger: true,
-  showQuickJumper: true,
-  showTotal: (total: number) => `共 ${total} 条`,
 })
 
 const loadData = () => {
-  state.loading = true
+  tableProps.loading = true
   Promise.resolve(
     props.loadData?.({
       pageNum: pagination.current,
       pageSize: pagination.pageSize,
     }) || noop
   ).finally(() => {
-    state.loading = false
+    tableProps.loading = false
   })
 }
+
+const { rowSelection, getSelectedLength, resetSelection } = useRowSelection()
+
+const pagination = usePagination({ loadData: props.loadData })
+
 onMounted(() => {
   loadData()
 })
@@ -65,32 +47,13 @@ const handleRefresh = () => {
   loadData()
 }
 
-const handleResetColumns = () => {
-  state.showColumnIds = props.columns.map(
-    (item) => Reflect.get(item, 'dataIndex')!
-  )
-  state.columnSetting = [...props.columns]
-}
-
-const handleChangeColumns = (columns: TableColumnType[]) => {
-  state.columnSetting = columns
-}
-
-const tableColumns = computed(() => {
-  return state.columnSetting.filter((item) =>
-    state.showColumnIds.includes(Reflect.get(item, 'dataIndex')!)
-  )
+const { sortedColumnsProps, getSortedColumns } = useColumnSort({
+  rowKey: 'dataIndex',
+  columns: toRef(props, 'columns'),
 })
 
-const resetSelection = () => {
-  selections.onChange([], [])
-  if (props.rowSelection?.onChange) {
-    props.rowSelection.onChange([], [])
-  }
-}
-
 watchEffect(() => {
-  handleResetColumns()
+  sortedColumnsProps.onReset()
 })
 
 watchEffect(() => {
@@ -110,12 +73,7 @@ defineExpose({
     </div>
     <a-space :size="16">
       <SyncOutlined class="cursor-pointer text-base" @click="handleRefresh" />
-      <TableColumnAction
-        :columns="state.columnSetting"
-        @update:columns="handleChangeColumns"
-        v-model:columnIds="state.showColumnIds"
-        @reset="handleResetColumns"
-      >
+      <TableColumnAction v-bind="sortedColumnsProps">
         <SettingOutlined class="cursor-pointer text-base" />
       </TableColumnAction>
     </a-space>
@@ -124,19 +82,19 @@ defineExpose({
     <a-alert type="info" show-icon>
       <template #message>
         <span>已选择</span>
-        <a-button size="small" type="text">{{ getSelectedLength() }}</a-button>
+        <a-button size="small" type="text">{{ getSelectedLength }}</a-button>
         <a-button type="link" @click="resetSelection">清空</a-button>
       </template>
     </a-alert>
   </div>
   <a-table
-    :loading="state.loading"
-    :columns="tableColumns"
+    :loading="tableProps.loading"
+    :columns="getSortedColumns"
     :pagination="pagination"
-    :dataSource="props.dataSource"
-    :bordered="props.bordered"
-    :row-key="props.rowKey"
-    :row-selection="props.rowSelection || selections"
+    :dataSource="dataSource"
+    :bordered="bordered"
+    :row-key="rowKey"
+    :row-selection="rowSelection"
   >
     <template #bodyCell="records">
       <slot name="bodyCell" v-bind="records" />

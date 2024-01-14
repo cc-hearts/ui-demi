@@ -2,6 +2,7 @@ import { readdirSync } from 'fs'
 import { resolve } from 'path'
 import { defineConfig } from 'vitepress'
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
+import UnoCSS from 'unocss/vite'
 
 const sidebarItems = readdirSync(resolve(process.cwd(), './src/docs'), {
   withFileTypes: true,
@@ -26,7 +27,7 @@ export default defineConfig({
   },
   vite: {
     // @ts-ignore
-    plugins: [demoblockVitePlugin()],
+    plugins: [demoblockVitePlugin(), UnoCSS()],
   },
   themeConfig: {
     sidebar: [
