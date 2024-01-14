@@ -12,3 +12,7 @@
 .vp-doc .ant-pagination li + li {
   margin-top: 0;
 }
+
+p {
+  margin: 0;
+}
