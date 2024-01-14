@@ -9,13 +9,13 @@ import { DataIndex } from 'ant-design-vue/es/vc-table/interface'
 
 const props = defineProps({
   sortedColumns: {
-    type: Array as PropType<
+    type: [Array, Object] as PropType<
       Array<TableColumnType> | Ref<Array<TableColumnType>>
     >,
     default: () => [],
   },
   columnsField: {
-    type: Array as PropType<any>,
+    type: Array as PropType<Array<DataIndex> | Ref<Array<DataIndex>>>,
     default: () => [],
   },
   rowKey: {
@@ -50,7 +50,7 @@ const handleChangeCheckbox = (columnIds: Array<string | number>) => {
   props.onUpdateColumnsField(columnIds)
 }
 const isAllSelected = computed(() => {
-  return props.columnsField.length === unref(props.sortedColumns).length
+  return unref(props.columnsField).length === unref(props.sortedColumns).length
 })
 
 const toggleShowColumns = () => {
@@ -59,7 +59,8 @@ const toggleShowColumns = () => {
   } else {
     props.onUpdateColumnsField(
       unref(props.sortedColumns).map(
-        (item: TableColumnType) => Reflect.get(item, props.rowKey as string)!
+        (item: TableColumnType) =>
+          Reflect.get(item, unref(props.rowKey) as string)!
       )
     )
   }
