@@ -33,7 +33,8 @@ const columns = [
 const dataSource = ref([])
 
 let i = 0
-const loadData = () => {
+const loadData = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   dataSource.value = []
   for (let j = i + 20; i < j; i++) {
     dataSource.value.push({
@@ -48,3 +49,38 @@ const loadData = () => {
 ```
 
 :::
+
+## Props
+
+| 属性         | 类型                                                  | 描述               |
+| ------------ | ----------------------------------------------------- | ------------------ |
+| columns      | [Columns](https://antdv.com/components/table/#column) | 表格的列配置       |
+| bordered     | boolean                                               | 是否显示边框       |
+| total        | number                                                | 数据总数           |
+| dataSource   | Array\<any\>                                          | 表格的数据源       |
+| loadData     | (params: {current: number, pageSize: number}) => void | 加载数据的函数     |
+| rowSelection | [RowSelection](#rowselection) \| null                 | 行选择配置         |
+| rowKey       | string                                                | 行的唯一标识的键名 |
+| pagination   | [Pagination](#pagination)                             | 分页配置           |
+
+### RowSelection
+
+```ts
+interface RowSelection<T, K> {
+  selectedRowKeys: K[]
+  selectedRows: T[]
+  onChange: (selectedRowKeys: K[], selectedRows: T[]) => void
+}
+```
+
+### Pagination
+
+```ts
+interface Pagination {
+  showSizeChanger: boolean
+  showQuickJumper: boolean
+  showTotal: (total: number) => string
+  onChange: (page: number, pageSize: number) => void
+  onShowSizeChange: (current: number, size: number) => void
+}
+```

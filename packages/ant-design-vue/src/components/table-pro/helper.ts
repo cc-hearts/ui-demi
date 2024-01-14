@@ -2,11 +2,6 @@ import { type TableColumnType } from 'ant-design-vue'
 import { Ref } from 'vue'
 export { noop } from '@cc-heart/utils'
 
-export interface IPagination {
-  pageNum: number
-  pageSize: number
-}
-
 export interface RowSelection<T, K> {
   selectedRowKeys: K[]
   selectedRows: T[]
@@ -29,10 +24,10 @@ export interface TableProps {
   bordered: boolean
   total: number
   dataSource: Array<unknown>
-  loadData: <T extends IPagination>(args: T) => any
+  loadData: <T extends Pick<Pagination, 'current' | 'pageSize'>>(args: T) => any
   rowSelection: RowSelection<any, any> | null
   rowKey: string
-  pagination: Exclude<Pagination, 'total' | 'current' | 'pageSize'>
+  pagination: Omit<Pagination, 'total' | 'current' | 'pageSize'>
 }
 
 export interface useRowSelectionParams {
@@ -41,6 +36,7 @@ export interface useRowSelectionParams {
     selectedRows: Array<unknown>
   ) => void
 }
+
 export interface UseColumnSortParams {
   columns: Ref<TableColumnType[]>
   rowKey: string | (() => string)

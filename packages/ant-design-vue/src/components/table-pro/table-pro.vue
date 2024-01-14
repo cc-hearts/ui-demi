@@ -27,7 +27,7 @@ const loadData = () => {
   tableProps.loading = true
   Promise.resolve(
     props.loadData?.({
-      pageNum: pagination.current,
+      current: pagination.current,
       pageSize: pagination.pageSize,
     }) || noop
   ).finally(() => {
@@ -37,7 +37,7 @@ const loadData = () => {
 
 const { rowSelection, getSelectedLength, resetSelection } = useRowSelection()
 
-const pagination = usePagination({ loadData: props.loadData })
+const pagination = usePagination({ loadData })
 
 onMounted(() => {
   loadData()
