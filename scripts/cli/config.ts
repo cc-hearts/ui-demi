@@ -1,1 +1,3 @@
-export const templateDir = ['packages/element-plus']
+export const templateDir = ['element-plus', 'ant-design-vue'].map(
+  (packageName) => `packages/${packageName}`
+)

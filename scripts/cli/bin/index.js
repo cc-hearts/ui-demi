@@ -46177,6 +46177,7 @@ models.forEach(function (fromModel) {
 var colorConvert = convert
 
 ansiStyles.exports
+
 ;(function (module) {
   const colorConvert$1 = colorConvert
 
@@ -51590,7 +51591,9 @@ function replaceImport(code) {
   })
 }
 
-const templateDir = ['packages/element-plus']
+const templateDir = ['element-plus', 'ant-design-vue'].map(
+  (packageName) => `packages/${packageName}`
+)
 
 function genSelectTemplatePrompt(choices) {
   return {
@@ -51664,22 +51667,39 @@ async function readTemplateComponents(
     return [...acc, ...cur]
   }, [])
 }
+async function recursiveComponentFilePaths(dirs, componentDir, relativePath) {
+  let ret = []
+  const task = dirs.map(async (dir) => {
+    if (dir.isFile()) {
+      const dirname = componentDir.split('/').pop() || ''
+      ret.push({
+        path: resolve$1(componentDir, dir.name),
+        relativePath: join(relativePath, dirname),
+        dirname: dir.name,
+      })
+    } else {
+      const dirs = await readdir(resolve$1(dir.path, dir.name), {
+        withFileTypes: true,
+      })
+      const dirname = componentDir.split('/').pop() || ''
+      const fileList = await recursiveComponentFilePaths(
+        dirs,
+        resolve$1(dir.path, dir.name),
+        resolve$1(relativePath, dirname)
+      )
+      ret = [...ret, ...fileList]
+    }
+  })
+  await Promise.all(task)
+  return ret
+}
 async function getComponentFilePaths(
   componentDir,
   relativePath = process.cwd()
 ) {
   try {
     const dirs = await readdir(componentDir, { withFileTypes: true })
-    return dirs
-      .filter((dir) => dir.isFile())
-      .map((dir) => {
-        const dirname = componentDir.split('/').pop() || ''
-        return {
-          path: resolve$1(componentDir, dir.name),
-          relativePath: join(relativePath, dirname),
-          dirname: dir.name,
-        }
-      })
+    return await recursiveComponentFilePaths(dirs, componentDir, relativePath)
   } catch (e) {
     return []
   }

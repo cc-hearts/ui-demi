@@ -1,5 +1,5 @@
 import { findUpFile } from '@cc-heart/utils-service'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { Dirent, existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { pipe } from '@cc-heart/utils'
 import { readdir } from 'fs/promises'
 import inquirer from 'inquirer'
@@ -46,22 +46,50 @@ async function readTemplateComponents(
   }, [])
 }
 
+interface ComponentFilePath {
+  path: string
+  relativePath: string
+  dirname: string
+}
+async function recursiveComponentFilePaths(
+  dirs: Dirent[],
+  componentDir: string,
+  relativePath: string
+): Promise<Array<ComponentFilePath>> {
+  let ret: Array<ComponentFilePath> = []
+  const task = dirs.map(async (dir) => {
+    if (dir.isFile()) {
+      const dirname = componentDir.split('/').pop() || ''
+      ret.push({
+        path: resolve(componentDir, dir.name),
+        relativePath: join(relativePath, dirname),
+        dirname: dir.name,
+      })
+    } else {
+      const dirs = await readdir(resolve(dir.path, dir.name), {
+        withFileTypes: true,
+      })
+      const dirname = componentDir.split('/').pop() || ''
+      const fileList = await recursiveComponentFilePaths(
+        dirs,
+        resolve(dir.path, dir.name),
+        resolve(relativePath, dirname)
+      )
+      ret = [...ret, ...fileList]
+    }
+  })
+
+  await Promise.all(task)
+  return ret
+}
+
 async function getComponentFilePaths(
   componentDir: string,
   relativePath = process.cwd()
 ) {
   try {
     const dirs = await readdir(componentDir, { withFileTypes: true })
-    return dirs
-      .filter((dir) => dir.isFile())
-      .map((dir) => {
-        const dirname = componentDir.split('/').pop() || ''
-        return {
-          path: resolve(componentDir, dir.name),
-          relativePath: join(relativePath, dirname),
-          dirname: dir.name,
-        }
-      })
+    return await recursiveComponentFilePaths(dirs, componentDir, relativePath)
   } catch (e) {
     return []
   }

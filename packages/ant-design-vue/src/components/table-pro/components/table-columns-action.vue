@@ -1,11 +1,10 @@
 <script setup lang="ts" name="ColumnsOperation">
 import { noop } from '@cc-heart/utils'
-import DragSort from './drag-sort-icon.vue'
 import { TableColumnType } from 'ant-design-vue'
-import { ComputedRef, PropType, Ref, computed, unref } from 'vue'
-// @ts-ignore
-import draggable from 'vuedraggable'
 import { DataIndex } from 'ant-design-vue/es/vc-table/interface'
+import { ComputedRef, PropType, Ref, computed, unref } from 'vue'
+import draggable from 'vuedraggable'
+import DragSort from './drag-sort-icon.vue'
 
 const props = defineProps({
   sortedColumns: {

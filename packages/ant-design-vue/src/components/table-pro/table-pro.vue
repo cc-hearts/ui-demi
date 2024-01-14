@@ -2,10 +2,10 @@
 import { SettingOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { onMounted, reactive, toRef, watchEffect } from 'vue'
 import { noop, type TableProps } from './helper'
-import TableColumnAction from './table-columns-action.vue'
-import { useColumnSort } from './use-column-sort'
-import { usePagination } from './use-pagination'
-import { useRowSelection } from './use-row-selection'
+import TableColumnAction from './components/table-columns-action.vue'
+import { useColumnSort } from './hooks/use-column-sort'
+import { usePagination } from './hooks/use-pagination'
+import { useRowSelection } from './hooks/use-row-selection'
 
 defineOptions({ name: 'TablePro' })
 
@@ -56,13 +56,7 @@ watchEffect(() => {
   sortedColumnsProps.onReset()
 })
 
-watchEffect(() => {
-  pagination.total = props.total || 0
-})
-
-defineExpose({
-  reload: loadData,
-})
+defineExpose({ reload: loadData })
 </script>
 <template>
   <div class="m-b-2 flex items-center">
