@@ -2,7 +2,7 @@
   "name": "@packages/element-plus",
   "version": "0.0.1",
   "type": "module",
-  "author": "carl chen",
+  "author": "Carl Chen",
   "license": "MIT",
   "scripts": {
     "dev": "vitepress dev",
@@ -34,8 +34,6 @@
     "sass": "^1.69.5",
     "typescript": "^5.3.2",
     "unplugin-auto-import": "^0.16.7",
-    "vite": "^4.5.0",
-    "vite-plugin-pages": "^0.29.1",
     "vitepress": "1.0.0-rc.33",
     "vitepress-theme-demoblock": "^3.0.3",
     "vue-tsc": "^1.8.22"

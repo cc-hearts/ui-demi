@@ -7,10 +7,11 @@
   "scripts": {
     "dev": "node --loader ts-node/esm --experimental-specifier-resolution=node ./index.ts",
     "build": "rollup -c",
+    "tdd": "node --loader ts-node/esm ./config.ts",
     "test": "vitest"
   },
   "keywords": [],
-  "author": "carl chen",
+  "author": "Carl Chen",
   "license": "MIT",
   "devDependencies": {
     "@babel/generator": "^7.23.6",

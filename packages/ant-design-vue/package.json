@@ -2,7 +2,7 @@
   "name": "@packages/ant-design-vue",
   "version": "0.0.1",
   "type": "module",
-  "author": "carl chen",
+  "author": "Carl Chen",
   "license": "MIT",
   "scripts": {
     "dev": "vitepress dev",

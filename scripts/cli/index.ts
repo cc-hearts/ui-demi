@@ -6,12 +6,12 @@ import inquirer from 'inquirer'
 import { join, resolve, sep } from 'path'
 import { fileURLToPath } from 'url'
 import { replaceImport } from './compile/replace-import.js'
-import { templateDir } from './config.js'
+import { getTemplateDirs } from './config.js'
 import { genComponentPrompt, genSelectTemplatePrompt } from './prompt.js'
 import { initHelp, getArgvOptions } from './commander.js'
 
-function readTemplateDirConfig(rootPath: string) {
-  return templateDir.map((target) => {
+async function readTemplateDirConfig(rootPath: string) {
+  return (await getTemplateDirs()).map((target) => {
     return {
       value: resolve(rootPath, target),
       name: target.split('/').pop() || '',
@@ -131,7 +131,7 @@ async function prompt() {
   }
 
   const rootPath = resolve(rootPkgPath, '..')
-  const templateDirConfig = readTemplateDirConfig(rootPath)
+  const templateDirConfig = await readTemplateDirConfig(rootPath)
   const templatePrompt = genSelectTemplatePrompt(templateDirConfig)
   try {
     const { selectTemplate } = await inquirer.prompt([templatePrompt])

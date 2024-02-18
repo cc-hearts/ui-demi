@@ -14,7 +14,7 @@
     }
   },
   "keywords": [],
-  "author": "carl chen",
+  "author": "Carl Chen",
   "license": "MIT",
   "devDependencies": {
     "@cc-heart/utils-service": "^3.0.0"
