@@ -65,6 +65,6 @@ jobs:
           folder: packages/vue-kit/.vitepress/dist
           token: ${{ secrets.GITHUB_TOKEN }}
           repository-name: cc-hearts/ui-demi
-          target-folder: ant-design-vue
+          target-folder: vue-kit
           single-commit: true
           clean: true
