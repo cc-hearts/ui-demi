@@ -30,7 +30,7 @@ jobs:
       - name: Build element-plus Site
         run: pnpm run build:element-plus
 
-      - name: Deploy to element-plus branch
+      - name: Deploy to element-plus packages
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: ui-demi-docs
@@ -44,11 +44,25 @@ jobs:
       - name: Build ant-design-vue Site
         run: pnpm run build:ant-design-vue
 
-      - name: Deploy to ant-design-vue branch
+      - name: Deploy to ant-design-vue packages
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: ui-demi-docs
           folder: packages/ant-design-vue/.vitepress/dist
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository-name: cc-hearts/ui-demi
+          target-folder: ant-design-vue
+          single-commit: true
+          clean: true
+
+      - name: Deploy to vue kit Site
+        run: pnpm run build:vue-kit
+
+      - name: Deploy to vue kit packages
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          branch: ui-demi-docs
+          folder: packages/vue-kit/.vitepress/dist
           token: ${{ secrets.GITHUB_TOKEN }}
           repository-name: cc-hearts/ui-demi
           target-folder: ant-design-vue

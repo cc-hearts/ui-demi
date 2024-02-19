@@ -37,5 +37,4 @@ interface MonacoEnvironment {
     return new editorWorker()
   },
 }
-
 export { default as MonacoEditor } from './monaco-editor.vue'

@@ -33,7 +33,8 @@
     "dev:ant-design-vue": "pnpm --filter ant-design-vue run dev",
     "build:vue-utils": "pnpm --filter vue-utils run build",
     "build:element-plus": "pnpm --filter element-plus run build",
-    "build:ant-design-vue": "pnpm --filter ant-design-vue run build"
+    "build:ant-design-vue": "pnpm --filter ant-design-vue run build",
+    "build:vue-kit": "pnpm --filter vue-kit run build"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",

@@ -27,6 +27,9 @@ export default defineConfig({
   vite: {
     // @ts-ignore
     plugins: [demoblockVitePlugin()],
+    ssr: {
+      noExternal: ['monaco-editor']
+    }
   },
   themeConfig: {
     sidebar: [
