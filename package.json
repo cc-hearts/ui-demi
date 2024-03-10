@@ -27,6 +27,7 @@
   },
   "scripts": {
     "format": "prettier --write .",
+    "postinstall": "npm run build:vue-utils",
     "prepare": "husky install",
     "test": "vitest ",
     "dev:element-plus": "pnpm --filter element-plus run dev",

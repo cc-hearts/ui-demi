@@ -13,4 +13,12 @@ export {
   ElInput,
   ElUpload,
   ElButtonGroup,
+  ElForm,
+  ElFormItem,
+  ElRow,
+  ElCol,
+  ElSelect,
+  ElOption,
+  ElOptionGroup,
+  ElPagination,
 } from 'element-plus'

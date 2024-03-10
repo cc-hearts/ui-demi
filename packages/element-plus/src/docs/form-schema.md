@@ -1,4 +1,4 @@
-# FormSchema
+# Form-Schema
 
 `FormSchema` 组件基于 `Form` 组件进行封装，使用 JSON Schema 描述表单的结构和验证规则，然后生成对应的表单。
 
@@ -8,8 +8,12 @@
 
 ```vue
 <template>
-  <FormSchema ref="formSchemaIns" :schema="schema" />
-  <a-button @click="submit">提交</a-button>
+  <FormSchema ref="formSchemaIns" :schema="schema">
+    <template #phone>
+      <div>123</div>
+    </template>
+  </FormSchema>
+  <el-button @click="submit">提交</el-button>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -17,8 +21,8 @@ import { ref } from 'vue'
 const formSchemaIns = ref()
 
 const schema = [
-  { label: '姓名', type: 'input', name: 'name' },
-  { label: '邮箱', type: 'input', name: 'email' },
+  { label: '姓名', type: 'input', name: 'name', required: true },
+  { label: '邮箱', type: 'input', name: 'email', required: true },
   {
     label: '性别',
     type: 'select',
@@ -29,6 +33,12 @@ const schema = [
         { label: 'female', value: 'female' },
       ],
     },
+  },
+  {
+    label: '手机号码',
+    type: 'input-number',
+    name: 'phone',
+    slot: { name: 'phone' },
   },
 ]
 

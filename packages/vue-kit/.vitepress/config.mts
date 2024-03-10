@@ -28,8 +28,8 @@ export default defineConfig({
     // @ts-ignore
     plugins: [demoblockVitePlugin()],
     ssr: {
-      noExternal: ['monaco-editor']
-    }
+      noExternal: ['monaco-editor'],
+    },
   },
   themeConfig: {
     sidebar: [

@@ -1,6 +1,6 @@
 export const VERSION = '0.0.1'
 
-interface Options {
+export interface Options {
   label: string
   value: any
 }
@@ -9,37 +9,26 @@ export interface FormSchema {
   label: string
   type: string
   name: string
-  width?: number
   required?: boolean
   span?: number
   slot?: { name: string; [props: string]: any }
-  componentProperty?: {
-    options?: Options[]
+  rules?: Array<Record<string, unknown>>
+  componentProperty: {
+    options?: Options[] // select options
     [props: string]: any
   }
 }
 
 export interface FormLayoutProps {
   span: number
-  gutter?: number
-  labelCol?: Record<string, string | number>
-  wrapperCol?: Record<string, string | number>
+  gutter: number
 }
 
 export interface FormProps {
   name?: string
   layout?: FormLayoutProps
   schema?: FormSchema[]
-  defaultValue?: Record<PropertyKey, any> | (() => Record<PropertyKey, any>)
-  gutter?: number
-}
-
-export interface FormExpose {
-  validate: () => Promise<[boolean, Record<string, unknown>]>
-  getFieldsValue: <T extends Record<PropertyKey, any>>() => T
-  setFieldValue: (key: PropertyKey, value: any) => void
-  setFieldsValue: (target: Record<PropertyKey, any>) => void
-  resetFields: () => void
+  defaultValue?: Record<string, any> | (() => any)
 }
 
 export function initFormValue(schema: FormSchema[]) {
@@ -55,11 +44,11 @@ export function initFormValue(schema: FormSchema[]) {
 }
 
 const baseComponentMap = {
-  input: 'a-input',
-  'input-number': 'a-input-number',
-  radio: 'a-radio',
-  select: 'a-select',
-  checkbox: 'a-checkbox',
+  input: 'el-input',
+  'input-number': 'el-input-number',
+  radio: 'el-radio',
+  select: 'el-select',
+  checkbox: 'el-checkbox',
 }
 
 export function mapComponentBySchemaComponentName(
