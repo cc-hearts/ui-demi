@@ -1,0 +1,23 @@
+{
+  "name": "@ui-demi/compile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "node --loader ts-node/esm ./index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@cc-heart/utils": "^5.1.1",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "glob": "^10.3.10",
+    "vite": "^5.1.6"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}
