@@ -1,6 +1,6 @@
 {
   "name": "@cc-heart/ui-demi",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A library for secondary encapsulation of the UI",
   "repository": {
     "type": "git",
@@ -23,11 +23,23 @@
       "require": "./packages/vue-utils/dist/cjs/index.cjs",
       "import": "./packages/vue-utils/dist/esm/index.js",
       "types": "./packages/vue-utils/dist/types/index.d.ts"
+    },
+    "./vue-kit": {
+      "import": "./es/vue-kit/index.js",
+      "types": "./types/vue-kit/index.d.ts"
+    },
+    "./ant-design-vue": {
+      "import": "./es/ant-design-vue/index.js",
+      "types": "./types/ant-design-vue/index.d.ts"
+    },
+    "./element-plus": {
+      "import": "./es/element-plus/index.js",
+      "types": "./types/element-plus/index.d.ts"
     }
   },
   "scripts": {
     "format": "prettier --write .",
-    "postinstall": "npm run build:vue-utils",
+    "pre:dev": "npm run build:vue-utils",
     "prepare": "husky install",
     "test": "vitest ",
     "dev:element-plus": "pnpm --filter element-plus run dev",
@@ -35,7 +47,9 @@
     "build:vue-utils": "pnpm --filter vue-utils run build",
     "build:element-plus": "pnpm --filter element-plus run build",
     "build:ant-design-vue": "pnpm --filter ant-design-vue run build",
-    "build:vue-kit": "pnpm --filter vue-kit run build"
+    "build:vue-kit": "pnpm --filter vue-kit run build",
+    "compile": "pnpm --filter @ui-demi/compile run build",
+    "types": "pnpm -r run types"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",

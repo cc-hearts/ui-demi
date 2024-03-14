@@ -142,9 +142,8 @@ async function prompt() {
 
     const componentPaths = await getComponentFilePaths(selectComponents)
     const hasNoInstallDeps = await tryRunPresetScript(selectComponents)
-    if (hasNoInstallDeps) {
-      return
-    }
+    if (hasNoInstallDeps) return
+
     componentPaths.forEach((config) => {
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })
