@@ -3,7 +3,7 @@ import { SettingOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { onMounted, reactive, toRef, watchEffect } from 'vue'
 import { noop, type TableProps } from './helper'
 import TableColumnAction from './components/table-columns-action.vue'
-import { useColumnSort } from './hooks/use-column-sort'
+import { useColumnsSort } from './hooks/use-column-sort'
 import { usePagination } from './hooks/use-pagination'
 import { useRowSelection } from './hooks/use-row-selection'
 
@@ -47,7 +47,7 @@ const handleRefresh = () => {
   loadData()
 }
 
-const { sortedColumnsProps, getSortedColumns } = useColumnSort({
+const { sortedColumnsProps, getSortedColumns } = useColumnsSort({
   rowKey: 'dataIndex',
   columns: toRef(props, 'columns'),
 })

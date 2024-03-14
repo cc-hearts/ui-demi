@@ -1,5 +1,5 @@
 import { computed, shallowReactive } from 'vue'
-import { RowSelection, useRowSelectionParams } from './helper'
+import { RowSelection, useRowSelectionParams } from '../helper'
 
 export function useRowSelection(options: useRowSelectionParams = {}) {
   const rowSelection = shallowReactive(<RowSelection<unknown, unknown>>{

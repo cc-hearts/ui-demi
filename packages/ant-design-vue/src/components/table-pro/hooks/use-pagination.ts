@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import type { Pagination, TableProps } from './helper'
+import type { Pagination, TableProps } from '../helper'
 
 export function usePagination(
   options: Partial<Pagination & { loadData: TableProps['loadData'] }> = {}
@@ -16,7 +16,7 @@ export function usePagination(
 
       if (options.loadData) {
         options.loadData({
-          pageNum: page,
+          current: page,
           pageSize,
         })
       }

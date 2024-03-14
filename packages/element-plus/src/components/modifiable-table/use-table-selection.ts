@@ -1,4 +1,4 @@
-import { shallowReactive, watch } from 'vue'
+import { shallowReactive, watch, nextTick } from 'vue'
 import type { RowSelectionOptions, SelectNodes } from './helper'
 
 export function useTableSelection<T extends Record<PropertyKey, unknown>>(

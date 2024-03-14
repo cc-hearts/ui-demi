@@ -1,4 +1,4 @@
-import { PropType, type UnwrapRef } from 'vue'
+import { PropType, type UnwrapRef, type Ref } from 'vue'
 import { ElTable } from 'element-plus'
 
 export const VERSION = '0.0.1'

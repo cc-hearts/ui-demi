@@ -28,3 +28,6 @@ components.d.ts
 publish.sh
 
 packages/**/.vitepress/cache
+
+es/
+types/

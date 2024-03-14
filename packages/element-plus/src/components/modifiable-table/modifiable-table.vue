@@ -46,7 +46,9 @@ const removeTableColumn = (index: number) => {
 }
 
 const removeSelectiveTableColumn = () => {
-  const ids = rowSelection.selectNodes.map((option) => option[props.rowKey])
+  const ids = rowSelection.selectNodes.map(
+    (option: Record<PropertyKey, unknown>) => option[props.rowKey]
+  )
   dataSource.value = dataSource.value.filter(
     (item) => !ids.includes(item[props.rowKey])
   )
