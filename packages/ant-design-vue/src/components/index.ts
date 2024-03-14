@@ -1,2 +1,2 @@
-export * from './table-pro'
-export * from './form-schema'
+export * from './table-pro/index'
+export * from './form-schema/index'
