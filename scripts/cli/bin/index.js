@@ -46177,6 +46177,7 @@ models.forEach(function (fromModel) {
 var colorConvert = convert
 
 ansiStyles.exports
+
 ;(function (module) {
   const colorConvert$1 = colorConvert
 
@@ -51684,13 +51685,13 @@ async function recursiveComponentFilePaths(dirs, componentDir, relativePath) {
         dirname: dir.name,
       })
     } else {
-      const dirs = await readdir(resolve$1(dir.path, dir.name), {
+      const dirs = await readdir(resolve$1(componentDir, dir.name), {
         withFileTypes: true,
       })
       const dirname = componentDir.split('/').pop() || ''
       const fileList = await recursiveComponentFilePaths(
         dirs,
-        resolve$1(dir.path, dir.name),
+        resolve$1(componentDir, dir.name),
         resolve$1(relativePath, dirname)
       )
       ret = [...ret, ...fileList]
@@ -51746,9 +51747,7 @@ async function prompt() {
     const { selectComponents } = await inquirer.prompt([componentPrompt])
     const componentPaths = await getComponentFilePaths(selectComponents)
     const hasNoInstallDeps = await tryRunPresetScript(selectComponents)
-    if (hasNoInstallDeps) {
-      return
-    }
+    if (hasNoInstallDeps) return
     componentPaths.forEach((config) => {
       writeComponentFile(config.path, config.relativePath, config.dirname)
     })

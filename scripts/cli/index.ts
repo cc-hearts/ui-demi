@@ -66,13 +66,13 @@ async function recursiveComponentFilePaths(
         dirname: dir.name,
       })
     } else {
-      const dirs = await readdir(resolve(dir.path, dir.name), {
+      const dirs = await readdir(resolve(componentDir, dir.name), {
         withFileTypes: true,
       })
       const dirname = componentDir.split('/').pop() || ''
       const fileList = await recursiveComponentFilePaths(
         dirs,
-        resolve(dir.path, dir.name),
+        resolve(componentDir, dir.name),
         resolve(relativePath, dirname)
       )
       ret = [...ret, ...fileList]
