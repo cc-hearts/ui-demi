@@ -1,0 +1,30 @@
+{
+  "name": "@packages/vue-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/esm/index.js",
+  "keywords": [],
+  "author": "Carl Chen",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^3.3.9"
+  },
+  "scripts": {
+    "build": "npx rimraf ./dist && rollup -c && tsc -p tsconfig.build.json"
+  },
+  "exports": {
+    ".": [
+      {
+        "import": "./dist/esm/index.js",
+        "require": "./dist/cjs/index.cjs",
+        "types": "./dist/types/index.d.ts"
+      }
+    ]
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "rollup": "^4.6.1",
+    "rollup-plugin-typescript2": "^0.36.0"
+  }
+}
