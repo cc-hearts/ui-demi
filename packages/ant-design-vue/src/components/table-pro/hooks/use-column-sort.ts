@@ -1,11 +1,11 @@
 import { TableColumnType } from 'ant-design-vue'
 import { DataIndex } from 'ant-design-vue/es/vc-table/interface'
 import { computed, ref } from 'vue'
-import { UseColumnSortParams } from './helper'
+import { UseColumnSortParams } from '../helper'
 
-export function useColumnSort(
+export function useColumnsSort(
   props: UseColumnSortParams = { rowKey: 'key', columns: ref([]) }
-) {
+): any {
   const sortedColumns = ref<TableColumnType[]>([])
   const columnsField = ref<DataIndex[]>([])
 

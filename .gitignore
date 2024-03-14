@@ -30,3 +30,4 @@ publish.sh
 packages/**/.vitepress/cache
 
 es/
+types/
