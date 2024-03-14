@@ -1,0 +1,20 @@
+{
+  "name": "@packages/vue-kit",
+  "version": "0.0.1",
+  "type": "module",
+  "author": "Carl Chen",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "vitepress": "1.0.0-rc.33",
+    "vitepress-theme-demoblock": "^3.0.3"
+  },
+  "dependencies": {
+    "monaco-editor": "^0.46.0",
+    "vue": "^3.3.9"
+  }
+}

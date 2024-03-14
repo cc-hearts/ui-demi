@@ -1,0 +1,25 @@
+{
+  "name": "@packages/ant-design-vue",
+  "version": "0.0.1",
+  "type": "module",
+  "author": "Carl Chen",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@packages/vue-utils": "workspace:^",
+    "unocss": "^0.51.13",
+    "vitepress": "1.0.0-rc.33",
+    "vitepress-theme-demoblock": "^3.0.3",
+    "vue": "^3.3.9",
+    "vuedraggable": "^4.1.0"
+  },
+  "devDependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "ant-design-vue": "^4.1.0"
+  }
+}

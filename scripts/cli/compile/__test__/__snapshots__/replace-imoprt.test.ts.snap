@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`replace-import > should replace import 1`] = `
+"import CollapseCard from './collapse-card.vue';
+import { withInstall } from "@cc-heart/ui-demi/vue-utils";
+import { VERSION } from './helper.js';
+withInstall(CollapseCard, VERSION);
+export { CollapseCard };"
+`;
