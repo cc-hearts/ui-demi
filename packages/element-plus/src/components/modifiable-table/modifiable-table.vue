@@ -89,7 +89,7 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
           :prop="item.prop"
           :label="item.label"
         >
-          <template v-if="item.labelSlot" #label>
+          <template v-if="item.labelSlot" #header>
             <slot :name="item.labelSlot.name" />
           </template>
           <template v-if="item.slot" #default="row">
