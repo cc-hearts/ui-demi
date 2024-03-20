@@ -1,0 +1,6 @@
+.modal__footer {
+  text-align: right;
+  & > button + button {
+    margin-left: 8px;
+  }
+}

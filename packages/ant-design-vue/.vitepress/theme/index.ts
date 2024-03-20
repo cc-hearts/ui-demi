@@ -20,11 +20,11 @@ export default {
   },
   enhanceApp({ app, router, siteData }) {
     // ...
+    app.use(Antd)
     Object.entries({ ...Comp }).forEach(([name, component]) => {
       app.component(name, component)
     })
 
-    app.use(Antd)
     app.component('Demo', Demo)
     app.component('DemoBlock', DemoBlock)
   },
