@@ -1,14 +1,12 @@
 import { computed, shallowReactive } from 'vue'
-import { RowSelection, useRowSelectionParams } from '../helper'
-
-export function useRowSelection(options: useRowSelectionParams = {}) {
-  const rowSelection = shallowReactive(<RowSelection<unknown, unknown>>{
-    selectedRowKeys: [],
-    selectedRows: [],
-    onChange: (
-      selectedRowKeys: Array<unknown>,
-      selectedRows: Array<unknown>
-    ) => {
+import { useRowSelectionParams } from '../helper'
+export function useRowSelection<K = string | number, T = unknown>(
+  options: useRowSelectionParams = {}
+) {
+  const rowSelection = shallowReactive({
+    selectedRowKeys: [] as K[],
+    selectedRows: [] as T[],
+    onChange: (selectedRowKeys: Array<K>, selectedRows: Array<T>) => {
       if (options.onChange) {
         options.onChange(selectedRowKeys, selectedRows)
       } else {
@@ -17,11 +15,13 @@ export function useRowSelection(options: useRowSelectionParams = {}) {
       }
     },
   })
-
   const getSelectedLength = computed(() => rowSelection.selectedRowKeys.length)
-
   const resetSelection = () => {
     rowSelection.onChange([], [])
   }
-  return { rowSelection, getSelectedLength, resetSelection }
+  return {
+    rowSelection,
+    getSelectedLength,
+    resetSelection,
+  }
 }

@@ -33,6 +33,7 @@ export function useColumnsSort(
   }
 
   const getSortedColumns = computed(() => {
+    // @ts-ignore
     return sortedColumns.value.filter((item) =>
       columnsField.value.includes(Reflect.get(item, rowKey.value)!)
     )

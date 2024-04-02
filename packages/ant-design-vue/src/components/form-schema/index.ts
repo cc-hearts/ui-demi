@@ -5,3 +5,4 @@ import { VERSION } from './helper.js'
 withInstall(FormSchema, VERSION)
 
 export { FormSchema }
+export * from './utils/define-form-schema-props'

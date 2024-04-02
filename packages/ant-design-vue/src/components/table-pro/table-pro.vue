@@ -3,9 +3,9 @@ import { SettingOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { onMounted, reactive, toRef, watchEffect } from 'vue'
 import { noop, type TableProps } from './helper'
 import TableColumnAction from './components/table-columns-action.vue'
-import { useColumnsSort } from './hooks/use-column-sort'
-import { usePagination } from './hooks/use-pagination'
-import { useRowSelection } from './hooks/use-row-selection'
+import { useColumnsSort } from './utils/use-column-sort'
+import { usePagination } from './utils/use-pagination'
+import { useRowSelection } from './utils/use-row-selection'
 
 defineOptions({ name: 'TablePro' })
 
@@ -95,3 +95,4 @@ defineExpose({ reload: loadData })
     </template>
   </a-table>
 </template>
+./utils/use-column-sort./utils/use-pagination./utils/use-row-selection

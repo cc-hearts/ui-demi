@@ -5,3 +5,5 @@ import { VERSION } from './helper.js'
 withInstall(TablePro, VERSION)
 
 export { TablePro }
+
+export * from './utils/define-table-pro-props'

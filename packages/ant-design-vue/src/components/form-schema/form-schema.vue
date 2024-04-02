@@ -76,7 +76,7 @@ const props = withDefaults(defineProps<FormProps>(), {
   defaultValue: () => ({}),
 })
 
-// ================ inital values =================
+// ================ initial values =================
 const formInstance = ref()
 
 const formValue = ref<Record<PropertyKey, any>>({
