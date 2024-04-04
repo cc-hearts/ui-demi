@@ -30,25 +30,6 @@
             v-model:value="formValue[item.name]"
             v-bind="item.componentProperty"
           />
-          <!-- <template v-else-if="item.type === 'input'">
-              <a-input v-model:value="formValue[item.name]" :placeholder="'请输入' + item.label" v-bind="item.extra" />
-            </template>
-            <template v-else-if="item.type === 'input-number'">
-              <a-input-number class="w-full" v-model:value="formValue[item.name]" :placeholder="'请输入' + item.label"
-                v-bind="item.extra" />
-            </template>
-            <template v-else-if="item.type === 'select'">
-              <a-select v-model:value="formValue[item.name]" :placeholder="'请选择' + item.label" v-bind="item.extra"
-                :options="unref(item.extra?.options || [])">
-              </a-select>
-            </template>
-            <template v-else-if="item.type === 'radio'">
-              <a-radio-group v-model:value="formValue[item.name]" v-bind="item.extra">
-                <template v-for="l in item.options" :key="l.value">
-                  <a-radio :value="l.value">{{ l.label }}</a-radio>
-                </template>
-              </a-radio-group>
-            </template> -->
         </a-form-item>
       </a-col>
     </a-row>

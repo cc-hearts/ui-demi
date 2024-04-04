@@ -1,4 +1,6 @@
-export const VERSION = '0.0.1'
+import type { MaybeRef } from 'vue'
+
+export const VERSION = '0.0.2'
 
 interface Options {
   label: string
@@ -14,7 +16,7 @@ export interface FormSchema {
   span?: number
   slot?: { name: string; [props: string]: any }
   componentProperty?: {
-    options?: Options[]
+    options?: MaybeRef<Options[]>
     [props: string]: any
   }
 }
