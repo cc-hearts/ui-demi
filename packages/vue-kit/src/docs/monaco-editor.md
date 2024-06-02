@@ -20,11 +20,12 @@
 
 ## props
 
-| 属性名         | 类型    | 默认值       | 描述                                             |
-| -------------- | ------- | ------------ | ------------------------------------------------ |
-| theme          | String  | `vs-dark`    | 编辑器主题，可选值为 `vs`, `vs-dark`, `hc-black` |
-| minimapEnabled | Boolean | true         | 是否启用缩略图                                   |
-| language       | String  | `javascript` | 编辑器语言                                       |
+| 属性名              | 类型    | 默认值       | 描述                                             |
+| ------------------- | ------- | ------------ | ------------------------------------------------ |
+| theme               | String  | `vs-dark`    | 编辑器主题，可选值为 `vs`, `vs-dark`, `hc-black` |
+| minimapEnabled      | Boolean | true         | 是否启用缩略图                                   |
+| language            | String  | `javascript` | 编辑器语言                                       |
+| modelValue(v-model) | String  | ``           | 编辑器内容                                       |
 
 ## expose
 

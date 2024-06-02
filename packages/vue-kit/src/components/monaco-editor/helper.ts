@@ -1,5 +1,3 @@
-export const VERSION = '0.0.1'
-
 export const MonacoEditorProps = {
   theme: {
     type: String,
@@ -13,5 +11,9 @@ export const MonacoEditorProps = {
   language: {
     type: String,
     default: 'javascript',
+  },
+  modelValue: {
+    type: String,
+    default: '',
   },
 }

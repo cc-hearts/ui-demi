@@ -2,29 +2,39 @@
   <div ref="monacoRef"></div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watchEffect, watch } from 'vue'
 import { MonacoEditorProps } from './helper'
-// /esm/vs/editor/editor.api
-import * as monaco from 'monaco-editor'
+import { editor } from 'monaco-editor'
 
 const props = defineProps(MonacoEditorProps)
 
 const monacoRef = ref()
-let monacoEditorInstance: monaco.editor.IStandaloneCodeEditor | null = null
+let monacoEditorInstance: editor.IStandaloneCodeEditor | null = null
 
 const updateMonacoValue = (value: string) => {
   monacoEditorInstance?.setValue(value)
 }
+watchEffect(() => {
+  updateMonacoValue(props.modelValue)
+})
 
 const getValue = () => {
   return monacoEditorInstance?.getValue()
 }
 
+watch(
+  () => props.language,
+  () => {
+    if (monacoEditorInstance) {
+      editor.setModelLanguage(monacoEditorInstance.getModel()!, props.language)
+    }
+  }
+)
+
 onMounted(() => {
-  console.log(props.language)
-  monacoEditorInstance = monaco.editor.create(monacoRef.value, {
-    language: 'javascript',
-    value: '',
+  monacoEditorInstance = editor.create(monacoRef.value, {
+    language: props.language,
+    value: props.modelValue,
     folding: true,
     theme: props.theme,
     scrollbar: {
@@ -34,6 +44,7 @@ onMounted(() => {
     minimap: {
       enabled: props.minimapEnabled,
     },
+    automaticLayout: true,
     renderValidationDecorations: 'on',
   })
 })
