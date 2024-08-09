@@ -27,6 +27,19 @@ export default defineConfig({
   vite: {
     // @ts-ignore
     plugins: [demoblockVitePlugin()],
+    resolve: {
+      alias: {
+        '@': resolve('src'),
+        '~': resolve(),
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: "@use '@/assets/scss/lib.scss' as *;\n",
+        },
+      },
+    },
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

@@ -1,0 +1,16 @@
+@use './lib.scss' as *;
+
+html {
+  color: getCssVar('colorText');
+}
+
+body {
+  background-color: getCssVar('colorBgBase');
+  transition: background-color 0.2s ease;
+}
+:root.dark {
+  --#{$namespace}-colorText: rgba(255, 255, 255, 0.85);
+  --#{$namespace}-colorBgBase: #000;
+  --#{$namespace}-colorFill: rgba(255, 255, 255, 0.18);
+  --#{$namespace}-colorTextSecondary: rgba(255, 255, 255, 0.65);
+}
