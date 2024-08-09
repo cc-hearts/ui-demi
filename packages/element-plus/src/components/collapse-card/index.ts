@@ -1,7 +1,5 @@
-import CollapseCard from './collapse-card.vue'
-import { withInstall } from '@packages/vue-utils'
-import { VERSION } from './helper.js'
+import './collapse-card.scss'
 
-withInstall(CollapseCard, VERSION)
+import CollapseCard from './collapse-card.vue'
 
 export { CollapseCard }

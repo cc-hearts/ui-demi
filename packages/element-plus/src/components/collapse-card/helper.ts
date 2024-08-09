@@ -1,12 +1,14 @@
-export const VERSION = '0.0.1'
+import { defineCssNamespace } from '../_utils/css-namespace'
 
-export const _props = {
-  title: {
-    type: String,
-    default: '',
-  },
-  visible: {
-    type: Boolean,
-    default: false,
-  },
+export interface Props {
+  /**
+   * @description:  title card
+   */
+  title: string
+  /**
+   * @description: collapse of card
+   */
+  collapse: boolean
 }
+
+export const ns = defineCssNamespace('collapse-card')
