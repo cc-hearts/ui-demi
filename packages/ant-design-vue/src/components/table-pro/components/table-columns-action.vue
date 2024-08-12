@@ -42,7 +42,6 @@ const handleChangeColumns = (val: any[]) => {
 
 const emitChangeColumn = () => {
   props.onUpdateSortedColumns(tempColumnSettings)
-  tempColumnSettings = []
 }
 
 const handleChangeCheckbox = (columnIds: Array<string | number>) => {
