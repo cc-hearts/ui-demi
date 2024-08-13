@@ -1,25 +1,42 @@
 <script setup lang="ts">
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus'
-import { _props } from './helper'
+import { isUndef, isStr } from '@cc-heart/utils'
+import type { Props } from './helper'
 
 defineOptions({ name: 'Descriptions' })
-defineProps(_props)
+
+const props = withDefaults(defineProps<Props>(), {
+  columns: () => [],
+  border: false,
+  span: 3,
+  defaultValue: '-',
+})
+
+const internalFormatterValue = (value: string) => {
+  if ((!value && isUndef(value)) || (isStr(value) && value === '')) {
+    return props.defaultValue
+  }
+
+  return value
+}
 </script>
 
 <template>
-  <el-descriptions :column="count" :border="border">
-    <template v-for="item in descriptionItems" :key="item.field">
-      <el-descriptions-item :span="item.span" :label="item.label">
+  <ElDescriptions :column="span" :border="border">
+    <template v-for="item in columns" :key="item.field">
+      <ElDescriptionsItem :span="item.span" :label="item.label">
         <template v-if="item.labelSlot" #label>
           <slot :name="item.labelSlot.name" :data="item" />
         </template>
+
         <template v-if="item.slot">
           <slot :name="item.slot.name" :data="item" />
         </template>
+
         <template v-else>
-          {{ item.value }}
+          {{ internalFormatterValue(item.value) }}
         </template>
-      </el-descriptions-item>
+      </ElDescriptionsItem>
     </template>
-  </el-descriptions>
+  </ElDescriptions>
 </template>

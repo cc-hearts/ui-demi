@@ -1,7 +1,3 @@
-import { PropType } from 'vue'
-
-export const VERSION = '0.0.1'
-
 export interface DescriptionItem {
   label: string
   field: string
@@ -11,17 +7,27 @@ export interface DescriptionItem {
   labelSlot?: { name: string }
 }
 
-export const _props = {
-  count: {
-    type: Number,
-    default: 3,
-  },
-  descriptionItems: {
-    type: Array as PropType<Array<DescriptionItem>>,
-    default: () => [],
-  },
-  border: {
-    type: Boolean,
-    default: true,
-  },
+export interface Props {
+  /**
+   * @description: Number of columns displayed in a row
+   * @default 3
+   */
+  span: number
+
+  /**
+   * @description An array of `DescriptionItem` objects defining the columns.
+   * @default []
+   */
+  columns: Array<DescriptionItem>
+  /**
+   * @description Indicates whether to show a border.
+   * @default true
+   */
+  border: boolean
+
+  /**
+   * @description The default value to use if none is provided.
+   * @default '-'
+   */
+  defaultValue: string
 }

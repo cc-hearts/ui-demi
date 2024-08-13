@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ElCollapseTransition } from 'element-plus'
 import ArrowDownIcon from './arrow-down-icon.vue'
-import type { Props } from './helper'
 import { ns } from './helper'
+import type { Props } from './helper'
 
 defineOptions({ name: 'CollapseCard' })
 
