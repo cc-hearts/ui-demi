@@ -1,4 +1,4 @@
-@include b('collapse-card') {
+@include ns('collapse-card') {
   --collapse-card-bg-color: var(--el-bg-color-overlay);
   --collapse-card-border: var(--el-border-color-light);
   --collapse-arrow-icon-color: var(--el-primary-color);
@@ -8,37 +8,37 @@
   background-color: var(--collapse-card-bg-color);
   border: 1px solid var(--collapse-card-border);
 
-  @include e('active') {
+  @include b('active') {
     $is-at-root: false !global;
 
-    @include e('arrow') {
+    @include b('arrow') {
       & > svg {
         transform: rotate(180deg);
       }
     }
 
-    @include e('title') {
+    @include b('title') {
       border-bottom: 1px solid var(--collapse-card-border);
     }
 
     $is-at-root: true !global;
   }
 
-  @include e('title') {
+  @include b('title') {
     padding: 8px 12px;
 
-    @include m('default') {
+    @include e('default') {
       display: flex;
       cursor: pointer;
       align-items: center;
     }
 
-    @include m('text') {
+    @include e('text') {
       color: var(--collapse-arrow-icon-color);
     }
   }
 
-  @include e('arrow') {
+  @include b('arrow') {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,7 +54,7 @@
     }
   }
 
-  @include e('content') {
+  @include b('content') {
     padding: var(--collapse-card-padding);
   }
 }

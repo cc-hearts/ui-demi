@@ -18,22 +18,22 @@ const handleToggleCollapse = () => {
 </script>
 
 <template>
-  <div :class="[ns.cls, isCollapse && ns.e('active')]">
-    <div :class="[ns.e('title')]">
+  <div :class="[ns.cls, isCollapse && ns.b('active')]">
+    <div :class="[ns.b('title')]">
       <slot name="title">
-        <div :class="[ns.em('title', 'default')]" @click="handleToggleCollapse">
-          <div :class="[ns.e('arrow')]">
+        <div :class="[ns.be('title', 'default')]" @click="handleToggleCollapse">
+          <div :class="[ns.b('arrow')]">
             <slot name="title-icon">
               <arrow-down-icon />
             </slot>
           </div>
-          <span :class="[ns.em('title', 'text')]">{{ title }}</span>
+          <span :class="[ns.be('title', 'text')]">{{ title }}</span>
         </div>
       </slot>
     </div>
     <el-collapse-transition>
       <div v-show="isCollapse">
-        <div :class="ns.e('content')">
+        <div :class="ns.b('content')">
           <slot />
         </div>
       </div>
