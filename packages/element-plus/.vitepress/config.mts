@@ -3,7 +3,7 @@ import { resolve } from 'path'
 import { defineConfig } from 'vitepress'
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
 
-const sidebarItems = readdirSync(resolve(process.cwd(), './src/docs'), {
+const sidebarItems = readdirSync(resolve(process.cwd(), './docs'), {
   withFileTypes: true,
 })
 
@@ -12,7 +12,7 @@ const sidebar = sidebarItems
   .map((item) => {
     const name = item.name.replace('.md', '')
 
-    return { text: name, link: `/src/docs/${name}` }
+    return { text: name, link: `/docs/${name}` }
   })
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -29,14 +29,13 @@ export default defineConfig({
     plugins: [demoblockVitePlugin()],
     resolve: {
       alias: {
-        '@': resolve('src'),
         '~': resolve(),
       },
     },
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: "@use '@/assets/scss/lib.scss' as *;\n",
+          additionalData: "@use '~/assets/scss/lib.scss' as *;\n",
         },
       },
     },

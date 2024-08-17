@@ -20,7 +20,7 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "~/*": ["./*"]
     }
   },
   "include": [
@@ -29,6 +29,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "auto-imports.d.ts",
-    "component.d.ts"
+    "component.d.ts",
+    "vite-env.d.ts"
   ]
 }

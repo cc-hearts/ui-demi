@@ -1,0 +1,60 @@
+@include b('collapse-card') {
+  --collapse-card-bg-color: var(--el-bg-color-overlay);
+  --collapse-card-border: var(--el-border-color-light);
+  --collapse-arrow-icon-color: var(--el-primary-color);
+  --collapse-card-padding: 12px;
+
+  border-radius: 4px;
+  background-color: var(--collapse-card-bg-color);
+  border: 1px solid var(--collapse-card-border);
+
+  @include e('active') {
+    $is-at-root: false !global;
+
+    @include e('arrow') {
+      & > svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    @include e('title') {
+      border-bottom: 1px solid var(--collapse-card-border);
+    }
+
+    $is-at-root: true !global;
+  }
+
+  @include e('title') {
+    padding: 8px 12px;
+
+    @include m('default') {
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+    }
+
+    @include m('text') {
+      color: var(--collapse-arrow-icon-color);
+    }
+  }
+
+  @include e('arrow') {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: rgba(59, 130, 255, 0.15);
+    border-radius: 2px;
+    margin-right: 10px;
+
+    & > svg {
+      color: var(--collapse-arrow-icon-color);
+      transition: transform 0.3s;
+    }
+  }
+
+  @include e('content') {
+    padding: var(--collapse-card-padding);
+  }
+}
