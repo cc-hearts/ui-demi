@@ -1,0 +1,20 @@
+@include ns('table-pro') {
+  --table-pro-padding: 12px 0;
+
+  @include b('action') {
+    padding: var(--table-pro-padding);
+  }
+
+  @include b('select-action') {
+    --#{namespace}-select-action-background: rgba(0, 0, 0, 0.02);
+    --#{namespace}-select-action-color: rgba(0, 0, 0, 0.45);
+
+    display: flex;
+    border-radius: 4px;
+    justify-content: space-between;
+    background: var(--#{namespace}-select-action-background);
+    color: var( --#{namespace}-select-action-color);
+    padding: 12px;
+    font-size: 14px;
+  }
+}

@@ -4,6 +4,12 @@
 
 对 `element-plus` 的 `Descriptions` 组件进一步的封装，减少 `el-descriptions-item` 等重复模版代码。
 
+::: tip Feature
+
+- 支持至多展示两行，超过两行将被隐藏， `hover` 元素通过 `tooltip` 显示完整内容。
+
+:::
+
 ## 基本使用
 
 :::demo

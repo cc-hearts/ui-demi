@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import {
-  computed,
-  getCurrentInstance,
-  isProxy,
-  onMounted,
-  ref,
-  toRaw,
-} from 'vue'
+import { computed, getCurrentInstance, onMounted, ref, toRaw } from 'vue'
+
 import type { Props } from './helper'
 import { ElTable } from 'element-plus'
 import { useTableSelection } from './use-table-selection'
 import { noop } from '@cc-heart/utils'
+import { defineCssNamespace } from '../_utils/css-namespace'
 
 defineOptions({ name: 'TablePro' })
 
@@ -31,6 +26,8 @@ const props = withDefaults(defineProps<Props>(), {
   extraTableProps: () => ({}),
   actionSlotProps: () => ({}),
 })
+
+const ns = defineCssNamespace('table-pro')
 
 const tableRef = ref()
 
@@ -71,6 +68,7 @@ const {
   toggleAllSelection,
   exposeRowSelectionFactory,
   removeRowSelection,
+  clearSelection,
 } = useTableSelection({
   dataSource: internalDataSource,
   tableRef,
@@ -126,9 +124,9 @@ const removeSelectiveTableColumn = () => {
 defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
 </script>
 <template>
-  <div class="table-pro">
+  <div :class="[ns.cls]">
     <slot name="header">
-      <div v-if="isModify" class="table-pro__action">
+      <div v-if="isModify" :class="[ns.b('action')]">
         <el-button type="primary" @click="handleAddTableColumn">
           新 增
         </el-button>
@@ -140,6 +138,18 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
         >
           删 除
         </el-button>
+      </div>
+    </slot>
+
+    <slot name="select-action">
+      <div
+        v-if="isModify && rowSelection.selectNodes.length"
+        :class="[ns.b('select-action')]"
+      >
+        <div>已选择 {{ rowSelection.selectNodes.length }} 项</div>
+        <el-button link type="primary" @click="clearSelection"
+          >取消选择</el-button
+        >
       </div>
     </slot>
 
@@ -195,13 +205,3 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
     </el-table>
   </div>
 </template>
-
-<style lang="scss">
-.table-pro {
-  --table-pro-padding: 12px 0;
-
-  &__action {
-    padding: var(--table-pro-padding);
-  }
-}
-</style>

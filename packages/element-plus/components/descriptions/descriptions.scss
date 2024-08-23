@@ -1,0 +1,20 @@
+@mixin multipleLineHidden {
+  display: -webkit-box;
+  display: box;
+  display: -moz-box;
+  overflow: hidden;
+  box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+@include ns('descriptions') {
+  @include b('label') {
+    @include multipleLineHidden;
+  }
+
+  @include b('value') {
+    @include multipleLineHidden;
+  }
+}
