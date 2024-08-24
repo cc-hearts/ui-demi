@@ -9,6 +9,9 @@
 	"exports": {
 		"./*": "./*"
 	},
+  "peerDependencies": {
+    "vue": ">=3.4.0"
+  },
   "author": "Carl Chen",
   "license": "MIT"
 }

@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, onMounted, ref, toRaw } from 'vue'
-
-import type { Props } from './helper'
 import { ElTable } from 'element-plus'
 import { useTableSelection } from './use-table-selection'
 import { noop } from '@cc-heart/utils'
 import { defineCssNamespace } from '../_utils/css-namespace'
+import type { TableProProps } from './helper'
 
 defineOptions({ name: 'TablePro' })
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TableProProps>(), {
   isModify: false,
   isSelection: false,
   loading: false,
