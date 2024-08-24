@@ -103,3 +103,18 @@ const submit = async () => {
 | `getFieldsValue` | `-`                                              | 获取表单的所有字段值。                                                         |
 | `getFieldValue`  | `(field: PropertyKey) => any`                    | 获取指定字段的值。                                                             |
 | `getInstance`    | `-`                                              | 获取表单实例的计算属性。                                                       |
+| `getFormValue`    | `-`                                              | 获取表单值的计算属性。                                                       |
+
+## FAQ
+
+### schema 中的 type 类型组件如果没有覆盖到，如何进行扩展？
+
+可以通过 `extensionComponentMap` 方法进行扩展，例如：
+
+> `extensionComponentMap` 的调用时机应要早于 `FormSchema` 的初始化，否则会导致扩展的组件无法被识别。 建议在 `main.ts` 中进行扩展。
+
+```ts
+import { extensionComponentMap } from 'form-schema'
+// CustomSelect is custom component
+extensionComponentMap.set('select', CustomSelect)
+```

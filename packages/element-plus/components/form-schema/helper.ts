@@ -12,18 +12,6 @@ import DateWrapper from './nodes/date-wrapper.vue'
 
 export type { FormSchema, FormProps, FormLayoutProps, Options }
 
-export function initFormValue(schema: FormSchema[]) {
-  return schema.reduce((acc, cur) => {
-    switch (cur.type) {
-      case 'input': {
-        Reflect.set(acc, cur.name, '')
-        break
-      }
-    }
-    return acc
-  }, {})
-}
-
 const baseComponentMap = {
   input: ElInput,
   'input-number': InputNumberWrapper,
