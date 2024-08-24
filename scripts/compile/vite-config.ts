@@ -15,6 +15,14 @@ export default function generatorConfig(
   const outDir = outFile.split('/').slice(0, -1).join('/')
   return defineConfig({
     plugins: [vue()],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData:
+            "@use '@packages/helpers/assets/scss/lib.scss' as *;\n",
+        },
+      },
+    },
     build: {
       emptyOutDir: false,
       outDir,
