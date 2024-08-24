@@ -18,7 +18,7 @@ const workspaceRootPath = resolve(process.cwd(), '../../')
       modules: 'es',
     },
     {
-      entryDir: 'packages/element-plus/src/components',
+      entryDir: 'packages/element-plus/components',
       outputRootDir: 'es/element-plus',
       modules: 'es',
     },

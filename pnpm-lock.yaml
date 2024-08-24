@@ -97,6 +97,9 @@ importers:
       '@intlify/unplugin-vue-i18n':
         specifier: ^0.10.1
         version: 0.10.1(rollup@4.9.2)(vue-i18n@9.14.0)
+      '@packages/helpers':
+        specifier: workspace:*
+        version: link:../helpers
       '@packages/vue-utils':
         specifier: workspace:^
         version: link:../vue-utils
@@ -154,6 +157,8 @@ importers:
       vue-tsc:
         specifier: ^1.8.27
         version: 1.8.27(typescript@5.5.4)
+
+  packages/helpers: {}
 
   packages/vue-kit:
     dependencies:

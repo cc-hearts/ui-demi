@@ -1,17 +1,10 @@
 <script setup lang="ts">
-import { computed, readonly, ref, unref } from 'vue'
-import {
-  FormProps,
-  initFormValue,
-  mapComponentBySchemaComponentName,
-} from './helper'
+import { computed, ref } from 'vue'
+import { FormProps, mapComponentBySchemaComponentName } from './helper'
 
-defineOptions({
-  name: 'FormSchema',
-})
+defineOptions({ name: 'FormSchema' })
 
 const props = withDefaults(defineProps<FormProps>(), {
-  name: 'basic',
   schema: () => [],
   layout: () => ({ span: 3, gutter: 12 }),
   defaultValue: () => ({}),
@@ -55,23 +48,33 @@ const resetFields = () => {
   formInstance.value.resetFields()
 }
 
-const setFieldValue = (field: PropertyKey, value: unknown) => {
-  formValue.value[field] = value
+const formFields = computed(() => {
+  return props.schema.map((target) => target.name)
+})
+
+const setFieldValue = (field: string, value: unknown) => {
+  if (formFields.value.includes(field)) formValue.value[field] = value
 }
 
-const setFieldsValue = (target: Record<PropertyKey, any>) => {
-  Object.assign(formInstance.value, target)
+const setFieldsValue = (target: Record<string, any>) => {
+  const fieldsValue = Object.keys(target).reduce((acc, key) => {
+    if (formFields.value.includes(key)) {
+      Reflect.set(acc, key, target[key])
+    }
+    return acc
+  }, {})
+
+  Object.assign(formInstance.value, fieldsValue)
 }
 
 const getFieldsValue = () => formValue
-
 const getFieldValue = (field: PropertyKey) => formValue[field]
-
 const getInstance = () => computed(() => formInstance.value)
-
+const getFormValue = () => computed(() => formValue.value)
 defineExpose({
   validate,
   getInstance,
+  getFormValue,
   resetFields,
   setFieldValue,
   setFieldsValue,
