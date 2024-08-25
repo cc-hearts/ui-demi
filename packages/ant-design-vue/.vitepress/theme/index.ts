@@ -9,7 +9,6 @@ import DemoBlock from 'vitepress-theme-demoblock/dist/client/components/DemoBloc
 import Demo from 'vitepress-theme-demoblock/dist/client/components/Demo.vue'
 import './style.css'
 import './override-ui.css'
-import 'uno.css'
 
 export default {
   extends: DefaultTheme,
