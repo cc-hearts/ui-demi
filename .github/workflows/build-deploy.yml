@@ -22,8 +22,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install Dependencies
-        run: pnpm install --filter @packages/element-plus @packages/vue-utils @packages/ant-design-vue
-
+        run: pnpm i
       - name: Build Vue Utils
         run: pnpm run build:vue-utils
 
