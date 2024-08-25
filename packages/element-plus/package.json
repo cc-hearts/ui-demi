@@ -12,9 +12,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "peerDependencies": {
-    "vue": ">=3.4.0",
+    "@element-plus/icons-vue": ">=2.3.1",
     "element-plus": ">=2.4.3",
-    "@element-plus/icons-vue": ">=2.3.1"
+    "vue": ">=3.4.0"
   },
   "devDependencies": {
     "@packages/vue-utils": "workspace:^",

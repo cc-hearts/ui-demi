@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -94,6 +94,9 @@ importers:
       '@element-plus/icons-vue':
         specifier: '>=2.3.1'
         version: 2.3.1(vue@3.4.37)
+      '@packages/ant-design-vue':
+        specifier: workspace:^
+        version: link:../ant-design-vue
       element-plus:
         specifier: '>=2.4.3'
         version: 2.4.3(vue@3.4.37)
@@ -125,10 +128,10 @@ importers:
     devDependencies:
       vitepress:
         specifier: 1.0.0-rc.33
-        version: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(sass-embedded@1.77.8)(search-insights@2.13.0)(typescript@5.3.3)
+        version: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(sass-embedded@1.77.8)(search-insights@2.13.0)(typescript@5.5.4)
       vitepress-theme-demoblock:
         specifier: ^3.0.3
-        version: 3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(search-insights@2.13.0)(typescript@5.5.4)
+        version: 3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(sass-embedded@1.77.8)(search-insights@2.13.0)(typescript@5.5.4)
       vue-tsc:
         specifier: ^2.0.6
         version: 2.0.6(typescript@5.5.4)
@@ -6007,7 +6010,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitepress-theme-demoblock@3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(search-insights@2.13.0)(typescript@5.5.4):
+  /vitepress-theme-demoblock@3.0.3(@algolia/client-search@4.22.0)(@types/node@20.10.6)(sass-embedded@1.77.8)(search-insights@2.13.0)(typescript@5.5.4):
     resolution: {integrity: sha512-LmHvoffRnqVvhYie6spOQhA42+Rwxu6/9N1pTADwEufJ/U+GZ4oC00518/6I67bklx1E+NZWrA3G47Y5azRGXw==}
     engines: {node: '>=16.0.0'}
     hasBin: true
@@ -6033,7 +6036,7 @@ packages:
       shiki: 0.14.7
       unified: 10.1.2
       unist-util-visit: 4.1.2
-      vitepress: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(sass-embedded@1.77.8)(search-insights@2.13.0)(typescript@5.3.3)
+      vitepress: 1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(sass-embedded@1.77.8)(search-insights@2.13.0)(typescript@5.5.4)
       vue: 3.4.38(typescript@5.5.4)
       yaml: 2.3.4
     transitivePeerDependencies:
@@ -6057,6 +6060,7 @@ packages:
       - react
       - react-dom
       - sass
+      - sass-embedded
       - search-insights
       - sortablejs
       - stylus
@@ -6155,6 +6159,62 @@ packages:
       shikiji-transformers: 0.9.13
       vite: 5.4.1(@types/node@20.10.6)(sass-embedded@1.77.8)
       vue: 3.4.38(typescript@5.3.3)
+    transitivePeerDependencies:
+      - '@algolia/client-search'
+      - '@types/node'
+      - '@types/react'
+      - '@vue/composition-api'
+      - async-validator
+      - axios
+      - change-case
+      - drauu
+      - fuse.js
+      - idb-keyval
+      - jwt-decode
+      - less
+      - lightningcss
+      - nprogress
+      - qrcode
+      - react
+      - react-dom
+      - sass
+      - sass-embedded
+      - search-insights
+      - sortablejs
+      - stylus
+      - sugarss
+      - terser
+      - typescript
+      - universal-cookie
+    dev: true
+
+  /vitepress@1.0.0-rc.33(@algolia/client-search@4.22.0)(@types/node@20.10.6)(sass-embedded@1.77.8)(search-insights@2.13.0)(typescript@5.5.4):
+    resolution: {integrity: sha512-XMwr5eXEB3KB1uCuOkojVaqsVSijmd6N9QmaM2M6aqJqzXzxNwuvWSiEGYl4qbwRAX6/nFRofhx9+FndtCNjGQ==}
+    hasBin: true
+    peerDependencies:
+      markdown-it-mathjax3: ^4.3.2
+      postcss: ^8.4.32
+    peerDependenciesMeta:
+      markdown-it-mathjax3:
+        optional: true
+      postcss:
+        optional: true
+    dependencies:
+      '@docsearch/css': 3.6.1
+      '@docsearch/js': 3.6.1(@algolia/client-search@4.22.0)(search-insights@2.13.0)
+      '@types/markdown-it': 13.0.7
+      '@vitejs/plugin-vue': 5.1.2(vite@5.4.1)(vue@3.4.38)
+      '@vue/devtools-api': 6.5.1
+      '@vueuse/core': 10.11.1(vue@3.4.38)
+      '@vueuse/integrations': 10.7.1(focus-trap@7.5.4)(vue@3.4.38)
+      focus-trap: 7.5.4
+      mark.js: 8.11.1
+      minisearch: 6.3.0
+      mrmime: 2.0.0
+      shikiji: 0.9.13
+      shikiji-transformers: 0.9.13
+      vite: 5.4.1(@types/node@20.10.6)(sass-embedded@1.77.8)
+      vue: 3.4.38(typescript@5.5.4)
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/node'
