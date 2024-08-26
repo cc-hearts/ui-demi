@@ -6,8 +6,8 @@
   }
 
   @include b('select-action') {
-    --#{namespace}-select-action-background: rgba(0, 0, 0, 0.02);
-    --#{namespace}-select-action-color: rgba(0, 0, 0, 0.45);
+    --#{namespace}-select-action-background: var(--el-color-info-light-9);
+    --#{namespace}-select-action-color: var(--el-text-color-regular);
 
     display: flex;
     border-radius: 4px;
@@ -16,5 +16,6 @@
     color: var( --#{namespace}-select-action-color);
     padding: 12px;
     font-size: 14px;
+    margin-bottom: 12px;
   }
 }
