@@ -178,7 +178,7 @@ defineExpose({
     <template #trigger>
       <slot name="trigger">
         <template v-if="type === 'text'">
-          <el-button ref="triggerUploadButtonRef" :icon="icon">
+          <el-button ref="triggerUploadButtonRef" :icon="icon ?? undefined">
             {{ text }}
           </el-button>
         </template>

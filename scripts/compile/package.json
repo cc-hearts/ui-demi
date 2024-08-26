@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "node --loader ts-node/esm ./index.ts"
+    "build": "node ./index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Carl Chen",
   "license": "MIT",
   "dependencies": {
     "@cc-heart/utils": "^5.1.1",

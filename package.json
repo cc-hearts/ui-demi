@@ -60,6 +60,7 @@
     "prettier": "^2.8.8",
     "rollup": "^4.9.2",
     "rollup-plugin-typescript2": "^0.36.0",
+    "sass": "^1.77.8",
     "sass-embedded": "^1.77.8",
     "typescript": "^5.3.3",
     "vitepress": "1.0.0-rc.33",
