@@ -24,19 +24,19 @@ const handleToggleCollapse = () => {
         <div :class="[ns.be('title', 'default')]" @click="handleToggleCollapse">
           <div :class="[ns.b('arrow')]">
             <slot name="title-icon">
-              <arrow-down-icon />
+              <ArrowDownIcon />
             </slot>
           </div>
           <span :class="[ns.be('title', 'text')]">{{ title }}</span>
         </div>
       </slot>
     </div>
-    <el-collapse-transition>
+    <ElCollapseTransition>
       <div v-show="isCollapse">
         <div :class="ns.b('content')">
           <slot />
         </div>
       </div>
-    </el-collapse-transition>
+    </ElCollapseTransition>
   </div>
 </template>

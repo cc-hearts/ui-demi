@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, onMounted, ref, toRaw } from 'vue'
-import { ElTable } from 'element-plus'
+import { ElButton, ElTable, ElTableColumn } from 'element-plus'
 import { useTableSelection } from './use-table-selection'
 import { noop } from '@cc-heart/utils'
 import { defineCssNamespace } from '../_utils/css-namespace'
-import type { TableProProps } from './helper'
+import type { ExtendsElTableExpose, TableProProps } from './helper'
 
 defineOptions({ name: 'TablePro' })
 
@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<TableProProps>(), {
 
 const ns = defineCssNamespace('table-pro')
 
-const tableRef = ref()
+const tableRef = ref<ExtendsElTableExpose>()
 
 const internalDataSource = defineModel('dataSource', {
   default: [] as Array<Record<PropertyKey, unknown>>,
@@ -126,17 +126,17 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
   <div :class="[ns.cls]">
     <slot name="header">
       <div v-if="isModify" :class="[ns.b('action')]">
-        <el-button type="primary" @click="handleAddTableColumn">
+        <ElButton type="primary" @click="handleAddTableColumn">
           新 增
-        </el-button>
+        </ElButton>
 
-        <el-button
+        <ElButton
           type="danger"
           @click="removeSelectiveTableColumn"
           :disabled="!rowSelection.selectNodes.length"
         >
           删 除
-        </el-button>
+        </ElButton>
       </div>
     </slot>
 
@@ -146,13 +146,13 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
         :class="[ns.b('select-action')]"
       >
         <div>已选择 {{ rowSelection.selectNodes.length }} 项</div>
-        <el-button link type="primary" @click="clearSelection"
-          >取消选择</el-button
+        <ElButton link type="primary" @click="clearSelection"
+          >取消选择</ElButton
         >
       </div>
     </slot>
 
-    <el-table
+    <ElTable
       ref="tableRef"
       v-loading="loading"
       :data="internalDataSource"
@@ -161,7 +161,7 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
       @select-all="toggleAllSelection"
       v-bind="extraTableProps"
     >
-      <el-table-column v-if="isSelection || isModify" type="selection" />
+      <ElTableColumn v-if="isSelection || isModify" type="selection" />
 
       <template #empty>
         <slot name="empty">
@@ -170,14 +170,14 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
       </template>
 
       <template v-for="item in columns" :key="item.prop">
-        <el-table-column
+        <ElTableColumn
           :align="item.align"
           :prop="item.prop"
           :label="item.label"
           :fixed="item.fixed"
           :width="item.width"
           :min-width="item.minWidth"
-          v-bind="item.extraAttribute || {}"
+          v-bind="item.extraAttributes || {}"
         >
           <template v-if="item.labelSlot" #header>
             <slot :name="item.labelSlot.name" :label-attr="item.labelSlot" />
@@ -185,22 +185,22 @@ defineExpose({ getDataSource, ...exposeRowSelectionFactory() })
           <template v-if="item.slot" #default="row">
             <slot :name="item.slot.name" v-bind="row" :slot-attr="item.slot" />
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </template>
 
       <slot name="action">
-        <el-table-column
+        <ElTableColumn
           :label="defaultActionColumnLabel"
           v-if="useDefaultActionSlot"
           v-bind="actionSlotProps"
         >
           <template #default="scope">
-            <el-button link type="danger" @click="removeTableColumn(scope.row)">
-              删除</el-button
+            <ElButton link type="danger" @click="removeTableColumn(scope.row)">
+              删除</ElButton
             >
           </template>
-        </el-table-column>
+        </ElTableColumn>
       </slot>
-    </el-table>
+    </ElTable>
   </div>
 </template>

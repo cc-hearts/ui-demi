@@ -35,7 +35,8 @@ export default defineConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: "@use '@packages/helpers/assets/scss/lib.scss' as *;\n",
+          additionalData:
+            "@use '@packages/helpers/assets/scss/lib.scss' as *;\n",
         },
       },
     },

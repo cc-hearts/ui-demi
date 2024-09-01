@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { FormProps, mapComponentBySchemaComponentName } from './helper'
+import { ElCol, ElForm, ElFormItem, ElRow } from 'element-plus'
 
 defineOptions({ name: 'FormSchema' })
 
@@ -84,20 +85,20 @@ defineExpose({
 </script>
 
 <template>
-  <el-form
+  <ElForm
     ref="formInstance"
     :model="formValue"
     :rules="formRules"
     :label-position="labelPosition"
   >
-    <el-row :gutter="layout.gutter">
-      <el-col
+    <ElRow :gutter="layout.gutter">
+      <ElCol
         v-for="item in schema"
         :key="item.name"
         :span="item.span || calcDefaultSpan"
         :offset="item.offset"
       >
-        <el-form-item
+        <ElFormItem
           :label="item.hiddenLabel ? '' : item.label"
           :label-width="item.hiddenLabel ? 0 : item.labelWidth"
           :prop="item.name"
@@ -122,8 +123,8 @@ defineExpose({
             v-model="formValue[item.name]"
             v-bind="item.componentProperty"
           />
-        </el-form-item>
-      </el-col>
-    </el-row>
-  </el-form>
+        </ElFormItem>
+      </ElCol>
+    </ElRow>
+  </ElForm>
 </template>

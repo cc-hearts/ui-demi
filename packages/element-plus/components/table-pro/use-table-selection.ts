@@ -1,12 +1,16 @@
 import { isFn } from '@cc-heart/utils'
 import { nextTick, shallowReactive, toRaw, watch } from 'vue'
-import type { RowSelectionOptions, SelectNodes } from './helper'
+import type {
+  ExtendsElTableExpose,
+  RowSelectionOptions,
+  SelectNodes,
+} from './helper'
 
 const parseRowKey = (rowKey: string | (() => string)): string => {
   if (isFn(rowKey)) return rowKey()
   return rowKey
 }
-export function useTableSelection<T extends Record<PropertyKey, unknown>>(
+export function useTableSelection<T extends ExtendsElTableExpose>(
   options: RowSelectionOptions<T> = {}
 ) {
   const getOptionWithDefaultValue = () => {

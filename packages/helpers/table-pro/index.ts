@@ -1,6 +1,6 @@
 import { type UnwrapRef, type Ref } from 'vue'
 
-export interface Column<T> {
+export interface Column {
   /**
    * 列的标签名称，用于表头显示。
    */
@@ -64,6 +64,8 @@ export interface Column<T> {
    * ElTableColumn 覆盖属性
    */
   extraAttributes?: Record<string, unknown>
+
+  [key: PropertyKey]: unknown
 }
 
 export interface RowSelectionOptions<T extends Record<PropertyKey, unknown>> {
@@ -162,7 +164,7 @@ export interface Props<T = any> {
    * 表格的列配置。
    * @default []
    */
-  columns?: Column<T>[]
+  columns?: Column[]
 
   /**
    * Function that handles row deletion. Returns a boolean value that determines whether the built-in deletion logic is executed.
