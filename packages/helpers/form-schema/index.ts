@@ -1,3 +1,5 @@
+import { Ref, ComputedRef } from 'vue'
+
 export interface Options {
   label: string
   value: any
@@ -65,7 +67,7 @@ export interface FormSchema {
    * @default '-'
    */
   componentProperty?: {
-    options?: Options[] // select options
+    options?: Ref<Options[]> | ComputedRef<Options[]> // select options
     [props: string]: any
   }
 }
