@@ -55,6 +55,8 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@types/node": "^20.10.6",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "@vue/test-utils": "^2.4.6",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^2.8.8",
