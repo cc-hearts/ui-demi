@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`collapsed card modules > collapsed card snapshot 1`] = `
+"<div class="cc-collapse-card">
+  <div class="cc-collapse-card-title">
+    <div class="cc-collapse-card-title__default">
+      <div class="cc-collapse-card-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M11.475 14.475L7.85 10.85q-.075-.075-.112-.162T7.7 10.5q0-.2.138-.35T8.2 10h7.6q.225 0 .363.15t.137.35q0 .05-.15.35l-3.625 3.625q-.125.125-.25.175T12 14.7q-.15 0-.275-.05t-.25-.175Z"></path>
+        </svg></div><span class="cc-collapse-card-title__text"></span>
+    </div>
+  </div>
+  <transition-stub name="el-collapse-transition" appear="false" persisted="false" css="true">
+    <div style="display: none;">
+      <div class="cc-collapse-card-content"></div>
+    </div>
+  </transition-stub>
+</div>"
+`;

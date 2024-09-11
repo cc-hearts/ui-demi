@@ -16,7 +16,6 @@
     "vue-tsc": "^2.0.6"
   },
   "dependencies": {
-    "monaco-editor": "^0.46.0",
-    "vue": "^3.3.9"
+    "monaco-editor": "^0.46.0"
   }
 }
