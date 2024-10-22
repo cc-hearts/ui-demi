@@ -41,7 +41,7 @@ const props = defineProps({
   },
 })
 
-let tempColumnSettings = [] as any[]
+let tempColumnSettings = [...unref(props.sortedColumns)] as any[]
 const handleChangeColumns = (val: any[]) => {
   tempColumnSettings = val
 }
@@ -78,13 +78,12 @@ const handleReset = () => {
     <template #reference>
       <slot />
     </template>
-    <div class="flex items-center">
-      <ElCheckbox :checked="isAllSelected" @update:checked="toggleShowColumns"
+    <div class="flex items-center justify-between">
+      <ElCheckbox :checked="isAllSelected" @change="toggleShowColumns"
         >列展示</ElCheckbox
       >
       <ElButton link @click="handleReset"> 重置 </ElButton>
     </div>
-    <ElDivider />
 
     <ElCheckboxGroup
       :modelValue="unref(columnsField)"
@@ -128,5 +127,8 @@ const handleReset = () => {
 }
 .items-center {
   align-items: center;
+}
+.justify-between {
+  justify-content: space-between;
 }
 </style>
