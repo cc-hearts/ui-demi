@@ -23,142 +23,84 @@ const columns = [
 ]
 
 const getData = async () => {
-  return [
-    {
-      name: '张三',
-      age: 25,
-      gender: '男',
-      occupation: '工程师',
-      address: '北京市海淀区',
-      email: 'zhangsan@example.com',
-      phone: '13812345678',
-      hireDate: '2023-01-01',
-      resignationDate: '',
-      department: '技术部',
-    },
-    {
-      name: '李四',
-      age: 30,
-      gender: '女',
-      occupation: '设计师',
-      address: '上海市浦东新区',
-      email: 'lisi@example.com',
-      phone: '13987654321',
-      hireDate: '2022-05-15',
-      resignationDate: '2023-08-20',
-      department: '设计部',
-    },
-    {
-      name: '王五',
-      age: 28,
-      gender: '男',
-      occupation: '销售经理',
-      address: '广州市天河区',
-      email: 'wangwu@example.com',
-      phone: '13765432109',
-      hireDate: '2021-11-11',
-      resignationDate: '',
-      department: '销售部',
-    },
-    {
-      name: '赵六',
-      age: 35,
-      gender: '女',
-      occupation: '产品经理',
-      address: '深圳市南山区',
-      email: 'zhaoliu@example.com',
-      phone: '13654321098',
-      hireDate: '2022-03-20',
-      resignationDate: '2023-10-10',
-      department: '产品部',
-    },
-    {
-      name: '钱七',
-      age: 32,
-      gender: '男',
-      occupation: '运营总监',
-      address: '成都市武侯区',
-      email: 'qianqi@example.com',
-      phone: '13543210987',
-      hireDate: '2021-09-05',
-      resignationDate: '',
-      department: '运营部',
-    },
-  ]
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        [
+          {
+            name: '张三',
+            age: 25,
+            gender: '男',
+            occupation: '工程师',
+            address: '北京市海淀区',
+            email: 'zhangsan@example.com',
+            phone: '13812345678',
+            hireDate: '2023-01-01',
+            resignationDate: '',
+            department: '技术部',
+          },
+          {
+            name: '李四',
+            age: 30,
+            gender: '女',
+            occupation: '设计师',
+            address: '上海市浦东新区',
+            email: 'lisi@example.com',
+            phone: '13987654321',
+            hireDate: '2022-05-15',
+            resignationDate: '2023-08-20',
+            department: '设计部',
+            id: 4,
+          },
+          {
+            name: '王五',
+            age: 28,
+            gender: '男',
+            occupation: '销售经理',
+            address: '广州市天河区',
+            email: 'wangwu@example.com',
+            phone: '13765432109',
+            hireDate: '2021-11-11',
+            resignationDate: '',
+            id: 3,
+            department: '销售部',
+          },
+          {
+            name: '赵六',
+            age: 35,
+            gender: '女',
+            occupation: '产品经理',
+            address: '深圳市南山区',
+            email: 'zhaoliu@example.com',
+            phone: '13654321098',
+            hireDate: '2022-03-20',
+            resignationDate: '2023-10-10',
+            department: '产品部',
+            id: 2,
+          },
+          {
+            name: '钱七',
+            age: 32,
+            gender: '男',
+            id: 1,
+            occupation: '运营总监',
+            address: '成都市武侯区',
+            email: 'qianqi@example.com',
+            phone: '13543210987',
+            hireDate: '2021-09-05',
+            resignationDate: '',
+            department: '运营部',
+          },
+        ],
+        5,
+      ])
+    }, 3000)
+  })
 }
 </script>
 
 <template>
-  <TablePro :columns="columns" :getData="getData">
-    <template #name="scope">
-      <el-input v-model="scope.row.name" />
-    </template>
-  </TablePro>
-</template>
-```
-
-:::
-
-## 可编辑表格
-
-:::demo
-
-```vue
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const getData = async () => {
-  return [
-    {
-      name: '张三',
-      age: 25,
-      gender: '男',
-      occupation: '工程师',
-      address: '北京市海淀区',
-      email: 'zhangsan@example.com',
-      phone: '13812345678',
-      hireDate: '2023-01-01',
-      resignationDate: '',
-      department: '技术部',
-    },
-  ]
-}
-
-const columns = [
-  { label: '姓名', prop: 'name', width: '100px' },
-  { label: '年龄', prop: 'age', width: '80px' },
-  { label: '性别', prop: 'gender', width: '60px' },
-  { label: '职业', prop: 'occupation', width: '120px' },
-  { label: '地址', prop: 'address', width: '200px' },
-  { label: '手机号码', prop: 'phone', width: '150px' },
-  { label: '入职日期', prop: 'hireDate', width: '120px' },
-  { label: '离职日期', prop: 'resignationDate', width: '120px' },
-  { label: '部门', prop: 'department', width: '100px' },
-]
-
-const originData = () => {
-  return {
-    name: '张三',
-    age: Math.floor(Math.random() * 100),
-    gender: '男',
-    occupation: '工程师',
-    address: '北京市海淀区',
-    phone: '13812345678',
-    hireDate: '2023-01-01',
-    resignationDate: '1',
-    department: '技术部',
-  }
-}
-</script>
-<template>
-  <TablePro
-    is-modify
-    :columns="columns"
-    :getData="getData"
-    :originData="originData"
-    useDefaultActionSlot
-    defaultActionColumnLabel="操作"
-  >
+  <TablePro :columns="columns" :request="getData" is-selection>
     <template #name="scope">
       <el-input v-model="scope.row.name" />
     </template>

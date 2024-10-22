@@ -10,9 +10,10 @@ const parseRowKey = (rowKey: string | (() => string)): string => {
   if (isFn(rowKey)) return rowKey()
   return rowKey
 }
-export function useTableSelection<T extends ExtendsElTableExpose>(
-  options: RowSelectionOptions<T> = {}
-) {
+export function useTableSelection<
+  T extends Record<PropertyKey, any>,
+  U extends ExtendsElTableExpose = ExtendsElTableExpose
+>(options: RowSelectionOptions<T, U> = {}) {
   const getOptionWithDefaultValue = () => {
     const {
       type = 'radio',
@@ -54,7 +55,7 @@ export function useTableSelection<T extends ExtendsElTableExpose>(
     }
     if (tableRef) {
       rows.forEach((row) => {
-        const index = nodes.findIndex((node) => node[rowKey] === row[rowKey])
+        const index = nodes.findIndex((node) => node![rowKey] === row![rowKey])
         tableRef.value?.toggleRowSelection(row, index > -1)
       })
     }
@@ -62,8 +63,8 @@ export function useTableSelection<T extends ExtendsElTableExpose>(
   const refreshSelection = async (dataSource: SelectNodes<T> = []) => {
     const { rowKey: _rowKey } = getOptionWithDefaultValue()
     const rowKey = parseRowKey(_rowKey)
-    const ids = rowSelection.selectNodes.map((node) => node[rowKey!])
-    const dataList = dataSource.filter((data) => ids.includes(data[rowKey!]))
+    const ids = rowSelection.selectNodes.map((node) => node![rowKey!])
+    const dataList = dataSource.filter((data) => ids.includes(data![rowKey!]))
     if (dataList.length === 0) return
     await nextTick()
     onRowSelectionChange(dataList)
@@ -100,7 +101,7 @@ export function useTableSelection<T extends ExtendsElTableExpose>(
     const curKey = parseRowKey(key)
 
     const index = rowSelection.selectNodes.findIndex(
-      (node) => node[curKey] === rowKey
+      (node) => node![curKey] === rowKey
     )
     if (index > -1) {
       rowSelection.selectNodes.splice(index, 1)

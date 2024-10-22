@@ -2,7 +2,7 @@ import type { ElTable } from 'element-plus'
 import { Props } from '@packages/helpers/table-pro/index.ts'
 import { Ref, ref } from 'vue'
 
-export interface TableProProps extends Props<typeof ElTable> {}
+export interface TableProProps extends Props {}
 export type {
   RowSelectionOptions,
   SelectNodes,

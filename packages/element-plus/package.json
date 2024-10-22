@@ -16,7 +16,8 @@
     "element-plus": ">=2.4.3"
   },
   "devDependencies": {
+    "@packages/helpers": "workspace:*",
     "@packages/vue-utils": "workspace:^",
-		"@packages/helpers": "workspace:*"
+    "vuedraggable": "^4.1.0"
   }
 }

@@ -68,7 +68,10 @@ export interface Column {
   [key: PropertyKey]: unknown
 }
 
-export interface RowSelectionOptions<T extends Record<PropertyKey, unknown>> {
+export interface RowSelectionOptions<
+  T extends Record<PropertyKey, any>,
+  U extends Record<PropertyKey, any>
+> {
   /**
    * 行选择的类型，可选值为 'radio' 或 'checkbox'。
    *
@@ -88,16 +91,16 @@ export interface RowSelectionOptions<T extends Record<PropertyKey, unknown>> {
   /**
    * 引用表格实例的 `Ref` 对象，用于操作表格的选择。
    *
-   * @type {Ref<T>}
+   * @type {Ref<U | undefined>}
    */
-  tableRef?: Ref<T>
+  tableRef?: Ref<U | undefined>
 
   /**
    * 数据源的 `Ref` 对象，用于管理和跟踪表格的数据源。
    *
-   * @type {Ref<Array<T>>}
+   * @type {Ref<Array<T | undefined>>}
    */
-  dataSource?: Ref<Array<T>>
+  dataSource?: Ref<Array<T | undefined>>
 
   /**
    * 是否在数据源变化时刷新选中的行。
@@ -108,20 +111,20 @@ export interface RowSelectionOptions<T extends Record<PropertyKey, unknown>> {
   watchDataSourceChangeRefreshSelection?: boolean
 }
 
-export interface Props<T = any> {
+export interface Props {
   /**
-   * Whether the component is in modify mode.
-   * 组件是否处于修改模式。
+   * Whether the component show Action panel
+   * 组件是否显示操作面板
    * @default false
    */
-  isModify?: boolean
+  isActionPanel?: boolean
 
   /**
    * show animation while loading data
-   * 加载数据时显示动画
+   * 加载数据时显示loading动画
    * @default false
    */
-  loading?: boolean
+  isLoading?: boolean
 
   /**
    * Whether selection mode is enabled.
@@ -131,33 +134,11 @@ export interface Props<T = any> {
   isSelection?: boolean
 
   /**
-   * Function to get data. This function should return an object.
-   * 获取数据的函数。该函数应返回一个对象。
-   * @default () => ({})
-   */
-  getData?: () => Record<PropertyKey, unknown>
-
-  /**
-   * Whether to invoke `getData` function when the component is mounted.
-   * 组件挂载时是否调用 `getData` 函数。
-   * @default true
-   */
-  isFetchDataOnMounted?: boolean
-
-  /**
    * Data source for the component.
    * 组件的数据源。
    * @default []
    */
   dataSource?: Array<Record<PropertyKey, unknown>>
-
-  /**
-   * Original data for modifying table data.
-   * This can be an object or a function that returns an object.
-   * 用于修改表格数据的原始数据。可以是一个对象或返回对象的函数。
-   * @default () => ({})
-   */
-  originData?: Record<PropertyKey, any> | (() => Record<PropertyKey, any>)
 
   /**
    * Columns configuration for the table.
@@ -167,21 +148,11 @@ export interface Props<T = any> {
   columns?: Column[]
 
   /**
-   * Function that handles row deletion. Returns a boolean value that determines whether the built-in deletion logic is executed.
-   * 处理行删除的函数。返回 布尔值 决定是否执行内置的删除逻辑。
-   * @default () => true
-   */
-  onWillRemoveRow?: (
-    dataSource: Array<Record<PropertyKey, unknown>>,
-    row: Record<PropertyKey, unknown>
-  ) => boolean
-
-  /**
    * Whether to use the default action slot.
    * 是否使用默认的操作插槽。
    * @default false
    */
-  useDefaultActionSlot?: boolean
+  isUseActionSlot?: boolean
 
   /**
    * Label for the default action column.
@@ -189,6 +160,13 @@ export interface Props<T = any> {
    * @default 'action'
    */
   defaultActionColumnLabel?: string
+
+  /**
+   * Properties for the action slot.
+   * 操作插槽的属性。
+   * @default {}
+   */
+  actionSlotProps?: Record<string, unknown>
 
   /**
    * Type of selection (radio or checkbox).
@@ -205,14 +183,26 @@ export interface Props<T = any> {
   rowKey?: string | (() => string)
 
   /**
-   * Properties for the action slot.
-   * 操作插槽的属性。
-   * @default {}
+   * 表格获取 dataSource 数据的请求方式
+   * @default: () => [{},0]
    */
-  actionSlotProps?: Record<string, unknown>
+  request: (params: {
+    pageNo: number
+    pageSize: number
+  }) => Promise<[Props['dataSource'], number]>
 
   /**
-   * ElTable组件覆盖属性
+   *
+   */
+  tableHeaderSubTitle?: string
+  /**
+   * Pagination组件覆盖属性
+   * @default {}
+   */
+  extraPaginationProps?: Record<string, unknown>
+
+  /**
+   * Table组件覆盖属性
    * @default {}
    */
   extraTableProps?: Record<string, unknown>
@@ -225,5 +215,6 @@ export type RemoveUndefined<T> = T extends T
   : never
 
 export type SelectNodes<
-  T extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>
-> = RemoveUndefined<UnwrapRef<RowSelectionOptions<T>['dataSource']>>
+  T extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>,
+  U extends Record<PropertyKey, unknown> = Record<PropertyKey, unknown>
+> = RemoveUndefined<UnwrapRef<RowSelectionOptions<T, U>['dataSource']>>
