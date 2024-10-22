@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vitepress dev",
+    "test": "vitest",
     "build": "vitepress build",
     "preview": "vitepress preview",
     "types": "vue-tsc --declaration --emitDeclarationOnly -p tsconfig.build.json",
@@ -18,6 +19,8 @@
   "devDependencies": {
     "@packages/helpers": "workspace:*",
     "@packages/vue-utils": "workspace:^",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "happy-dom": "^15.7.3",
+    "vitest": "^1.1.1"
   }
 }
