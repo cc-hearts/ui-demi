@@ -1,0 +1,1 @@
+import{_ as e,c as i,o as a,R as s}from"./chunks/framework.Kkfsnacg.js";const m=JSON.parse('{"title":"ui-demi/vue-kit","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),t={name:"index.md"},l=s("",9),n=[l];function d(h,o,p,c,r,u){return a(),i("div",null,n)}const _=e(t,[["render",d]]);export{m as __pageData,_ as default};
