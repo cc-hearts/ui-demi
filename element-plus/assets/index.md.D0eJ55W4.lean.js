@@ -1,0 +1,1 @@
+import{_ as e,c as i,o as a,R as s}from"./chunks/framework.BpIn9R8a.js";const _=JSON.parse('{"title":"ui-demi/element-plus","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),t={name:"index.md"},l=s("",9),n=[l];function d(p,o,h,c,r,u){return a(),i("div",null,n)}const k=e(t,[["render",d]]);export{_ as __pageData,k as default};

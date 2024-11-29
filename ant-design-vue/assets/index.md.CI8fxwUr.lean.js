@@ -1,0 +1,1 @@
+import{_ as e,c as i,o as a,R as s}from"./chunks/framework.BnDe1mFz.js";const _=JSON.parse('{"title":"ui-demi/ant-design-vue","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),t={name:"index.md"},n=s("",9),d=[n];function l(o,h,p,c,r,u){return a(),i("div",null,d)}const k=e(t,[["render",l]]);export{_ as __pageData,k as default};
